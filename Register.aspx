@@ -6,7 +6,7 @@
 <head runat="server">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%: Page.Title %> - My ASP.NET Application</title>
+    <title><%: Page.Title %>Register</title>
 
     <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/bundles/modernizr") %>
@@ -38,6 +38,27 @@
             </Scripts>
         </asp:ScriptManager>
         <div class="container">
+		<asp:SqlDataSource ID="RegisterPersonaData" runat="server"
+			ProviderName = "System.Data.SqlClient"
+			ConnectionString = "<%$ ConnectionStrings:DBConnection %>"
+			InsertCommand="insert into persona (personaname, personaavatar) values (@name, @avatar);"
+			>
+			<InsertParameters>
+				<asp:ControlParameter ControlID="Name" Name="name" PropertyName="Text" />
+				<asp:ControlParameter ControlID="Avatar" Name="avatar" PropertyName="FileName" />
+			</InsertParameters>
+		</asp:SqlDataSource>
+		<asp:SqlDataSource ID="RegisterUserData" runat="server"
+			ProviderName = "System.Data.SqlClient"
+			ConnectionString = "<%$ ConnectionStrings:DBConnection %>"
+			UpdateCommand="update users set useremail = @email, username = @username, userpassword = @password where userid = ident_current('persona');"
+			>
+			<UpdateParameters>
+				<asp:ControlParameter ControlID="Email" Name="email" PropertyName="Text" />
+				<asp:ControlParameter ControlID="Username" Name="username" PropertyName="Text" />
+				<asp:ControlParameter ControlID="Password" Name="password" PropertyName="Text" />
+			</UpdateParameters>
+		</asp:SqlDataSource>
             <div class="row">
                 <div class="col-md-4"></div>
                 <div class="col-md-4">
@@ -47,6 +68,9 @@
                     <p>Full Name*</p>
                     <asp:TextBox ID="Name" runat="server"></asp:TextBox> <br />
                     <asp:RequiredFieldValidator ID="NameVal" ControlToValidate="Name" runat="server">Full name is required</asp:RequiredFieldValidator> <br />
+					<p>Username*</p>
+                    <asp:TextBox ID="Username" runat="server"></asp:TextBox> <br />
+                    <asp:RequiredFieldValidator ID="UsernameVal" ControlToValidate="Username" runat="server">Username is required</asp:RequiredFieldValidator> <br />
                     <p>Password*</p>
                     <asp:TextBox ID="Password" Text="Password" TextMode="Password" runat="server"></asp:TextBox> <br />
                     <asp:RequiredFieldValidator ID="PasswordVal" ControlToValidate="Password" runat="server">Password is required</asp:RequiredFieldValidator> <br />
@@ -55,7 +79,7 @@
                     <asp:RequiredFieldValidator ID="PasswordAgainVal" ControlToValidate="PasswordAgain" runat="server">Verify your password</asp:RequiredFieldValidator> <br />
                     <p>Avatar</p>
                     <asp:FileUpload ID="Avatar" AllowMultiple="false" runat="server" /> <br />
-                    <asp:Button ID="Submit" Text="Submit" CssClass="btn-primary" runat="server" /> <br />
+                    <asp:Button ID="Submit" Text="Submit" OnClick="submitclick" CssClass="btn-primary" runat="server" /> <br />
                 </div>
                 <div class="col-md-4"></div>
             </div>
