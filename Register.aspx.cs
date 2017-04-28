@@ -39,7 +39,7 @@ public partial class Register : System.Web.UI.Page
 				System.Diagnostics.Debug.WriteLine("There was a problem creating your profile. Error: " + ex.Message);
 			}
 		}
-
+		
 		RegisterUserData.Insert();
 	}
 }
