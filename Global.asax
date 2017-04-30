@@ -7,6 +7,7 @@
 
     void Application_Start(object sender, EventArgs e)
     {
+        RouteTable.Routes.MapHubs();
         RouteConfig.RegisterRoutes(RouteTable.Routes);
         BundleConfig.RegisterBundles(BundleTable.Bundles);
     }
