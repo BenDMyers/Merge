@@ -62,6 +62,12 @@
 				</div>
             </div>
         </div>
+        <!-- HEREIN LIES YE OLE CHAT BOXE -->
+        <div id="chatBar" class="well">
+            <script type="text/javascript">
+                
+            </script>
+        </div>
         <div class="container body-content">
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>

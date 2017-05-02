@@ -10,7 +10,9 @@ public class PMHub : Hub
 
     public void Connect(string userName)
     {
-        ConnectedUsers.Add(new UserDetail(Context.ConnectionId, userName));
+        UserDetail newUser = new UserDetail(Context.ConnectionId, userName);
+        if (!ConnectedUsers.Contains(newUser))
+        ConnectedUsers.Add(newUser);
     }
 
     public void Disconnect(string userName)
@@ -20,7 +22,7 @@ public class PMHub : Hub
 
     public void Send(string name, string target, string message)
     {
-        Clients.Client(FindUserByUserName(target).GetID()).sendMessage(message);
+        Clients.Client(FindUserByUserName(target).GetID()).sendMessage(name, message);
     }
 
     private UserDetail FindUserByUserName(string userName)

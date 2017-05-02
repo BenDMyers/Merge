@@ -6,6 +6,7 @@ body {
 
 /* Wrapping element */
 /* Set some basic padding to keep content from hitting the edges */
+/* Also pad Ye ole chat boxe*/
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
@@ -25,5 +26,21 @@ textarea {
     }
     .body-content {
         padding: 0;
+        padding-left:200px;
+    }
+}
+
+#chatBar {
+    position: fixed;
+    left: 0px;
+    width: 200px;
+    height: 100%;
+    visibility: visible;
+}
+
+/* Get rid of Ye Ole Chat Boxe on smaller screens */
+@media screen and (max-width: 767px) {
+    #chatBar {
+        visibility: hidden;
     }
 }
