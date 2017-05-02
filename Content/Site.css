@@ -44,3 +44,17 @@ textarea {
         visibility: hidden;
     }
 }
+
+/* Minor Tweaks for Orange Buttons */
+.btn-primary {
+    color: #fff;
+}
+
+.btn-primary>a:hover {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Fun with Modals */
+.modal {
+    color: #191919;
+}

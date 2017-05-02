@@ -6,7 +6,7 @@
 <head runat="server">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%: Page.Title %> - My ASP.NET Application</title>
+    <title><%: Page.Title %> | Merge</title>
 
     <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/bundles/modernizr") %>
@@ -40,6 +40,34 @@
         <script src ="/Scripts/jquery.signalR-1.1.4.min.js"></script>
         <script src ="/signalr/hubs"></script>
 
+        <!-- POSTING MODAL -->
+        <div class="modal fade" id="PostModal" tabindex="-1" role="dialog" itemid="PostModal">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Write a post</h4>
+                    </div>
+                    <div id="postTypeSelection" class="modal-body">
+                        <h5><b>Post type</b></h5>
+                        <asp:RadioButtonList ID="PostTypeSelector" runat="server" RepeatDirection="Horizontal" Width="100%">
+                            <asp:ListItem Text="Text" Value="Text" Selected="True"></asp:ListItem>
+                            <asp:ListItem Text="Code" Value="Code"></asp:ListItem>
+                            <asp:ListItem Text="Picture" Value="Picture"></asp:ListItem>
+                        </asp:RadioButtonList>
+                    </div>
+                    <div id="postContent" class="modal-body">
+                        <!-- This part to be filled in via JavaScript -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Discard</button>
+                        <button type="button" class="btn btn-primary">Post</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+        <!-- NAVBAR -->
         <div class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">

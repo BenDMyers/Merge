@@ -3100,18 +3100,18 @@ fieldset[disabled] .btn-default.focus {
   background-color: #333;
 }
 .btn-primary {
-  color: black;
+  color: white;
   background-color: #FF9900;
   border-color: #e68a00;
 }
 .btn-primary:focus,
 .btn-primary.focus {
-  color: black;
+  color: rgba(255, 255, 255, 0.5);
   background-color: #cc7a00;
   border-color: #663d00;
 }
 .btn-primary:hover {
-  color: black;
+  color: rgba(255, 255, 255, 0.75);
   background-color: #cc7a00;
   border-color: #a86500;
 }
