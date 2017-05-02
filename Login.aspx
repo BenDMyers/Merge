@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Login.aspx.cs" Inherits="Login" %>
+﻿<%@ Page Title="Log In" Language="C#" AutoEventWireup="true" CodeFile="Login.aspx.cs" Inherits="Login" %>
 
 <!DOCTYPE html>
 
@@ -6,14 +6,14 @@
 <head runat="server">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%: Page.Title %>Register</title>
+    <title><%: Page.Title %> | Merge</title>
 
     <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/bundles/modernizr") %>
     </asp:PlaceHolder>
     <webopt:bundlereference runat="server" path="~/Content/css" />
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
 </head>
 <body>
     <form runat="server">
@@ -38,11 +38,24 @@
             </Scripts>
         </asp:ScriptManager>
         <div class="container">
-		<asp:SqlDataSource ID="RegisterUserData" runat="server"
-			ProviderName = "System.Data.SqlClient"
-			ConnectionString = "<%$ ConnectionStrings:DBConnection %>"
-			SelectCommand="select u.username, u.userpassword from users u where (u.username = @username and u.password = @password);"
-			>
+
+            <!-- NAVBAR -->
+            <div class="navbar navbar-inverse navbar-fixed-top">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand site-brand" runat="server" href="~/">Merge</a>
+                    </div>
+                </div>
+            </div>
+
+		<asp:SqlDataSource ID="RegisterUserData" runat="server" ProviderName = "System.Data.SqlClient" 
+            ConnectionString = "<%$ ConnectionStrings:DBConnection %>"
+            SelectCommand="select u.username, u.userpassword from users u where (u.username = @username and u.password = @password);">
 			<SelectParameters>
 				<asp:ControlParameter ControlID="Username" Name="username" PropertyName="Text" />
 				<asp:ControlParameter ControlID="Password" Name="password" PropertyName="Text" />
@@ -51,16 +64,25 @@
             <div class="row">
                 <div class="col-md-4"></div>
                 <div class="col-md-4">
+                    <br />
                     <p>Username*</p>
-                    <asp:TextBox ID="Username" runat="server"></asp:TextBox> <br />
+                    <asp:TextBox ID="Username" runat="server" CssClass="form-control"></asp:TextBox> <br />
                     <asp:RequiredFieldValidator ID="UsernameVal" ControlToValidate="Username" runat="server">Username is required</asp:RequiredFieldValidator> <br />
                     <p>Password*</p>
-                    <asp:TextBox ID="Password" Text="Password" TextMode="Password" runat="server"></asp:TextBox> <br />
+                    <asp:TextBox ID="Password" Text="Password" TextMode="Password" runat="server" CssClass="form-control"></asp:TextBox> <br />
                     <asp:RequiredFieldValidator ID="PasswordVal" ControlToValidate="Password" runat="server">Password is required</asp:RequiredFieldValidator> <br />
-					<asp:Button ID="LoginButton" Text="Login" OnClick="loginclick" CssClass="btn-primary" runat="server" /> <br />
+					<asp:Button ID="LoginButton" Text="Log In" OnClick="loginclick" CssClass="btn btn-primary" runat="server" /> <br /><br />
+                    <p><em>Not a member yet? <a href="Register.aspx">Sign up!</a></em></p>
 				</div>
                 <div class="col-md-4"></div>
             </div>
+
+            <hr />
+            <footer class="site-brand" style="text-align: center;">
+                <p>&copy; <%: DateTime.Now.Year %> Merge</p>
+                <p>the computer science &quot;social&quot; network</p>
+                <p><a href="https://github.com/o080o">Alex Durville</a> | <a href="https://github.com/KayleeHartman">Kaylee Hartman</a> | <a href="https://github.com/BenDMyers">Ben Myers</a> | <a href="https://github.com/Dadadah">Jacob Schlecht</a> | <a href="https://github.com/starkeyandhutch">Drew Starkey</a></p>
+            </footer>
         </div>
     </form>
 </body>

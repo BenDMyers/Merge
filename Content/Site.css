@@ -45,13 +45,15 @@ textarea {
     }
 }
 
+/* Logo Stuff */
+.site-brand {
+    font-family: 'Roboto Mono', monospace;
+    font-variant: small-caps;
+}
+
 /* Minor Tweaks for Orange Buttons */
 .btn-primary {
     color: #fff;
-}
-
-.btn-primary>a:hover {
-    color: rgba(255, 255, 255, 0.5);
 }
 
 /* Fun with Modals */
