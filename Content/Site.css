@@ -38,6 +38,40 @@ textarea {
     visibility: visible;
 }
 
+/* FOR A FOLDER BULLET POINT */
+.li-chatbox-folder:before {
+    font-family: 'FontAwesome';
+    content: '\f07c';
+    margin: 0 5px 0 -15px;
+    color: #ffff77;
+}
+
+/* FOR A USER BULLET POINT */
+.li-chatbox-user:before {
+    font-family: 'FontAwesome';
+    content: '\f2bc';
+    margin: 0 5px 0 -15px;
+    color: #f2f2f2;
+}
+
+/* FOR A GROUP BULLET POINT */
+.li-chatbox-group:before {
+    font-family: 'FontAwesome';
+    content: '\f233';
+    margin: 0 5px 0 -15px;
+    color: #f2f2f2;
+}
+
+.li-chatbox a {
+    color: #bfbfbf;
+}
+
+.li-chatbox a:hover {
+    color: rgba(191, 191, 191, 0.75);
+    font-style: italic;
+    text-decoration: underline;
+}
+
 /* Get rid of Ye Ole Chat Boxe on smaller screens */
 @media screen and (max-width: 767px) {
     #chatBar {
