@@ -25,10 +25,10 @@ public partial class NewsFeed : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         User user = new User("Bob", "n/a");
-        AddPost(Panel, user,"Hello yhere!z");
+        AddPost(Panel, user,"Hello yhere!z", imgSrc: "http://placekitten.com.s3.amazonaws.com/homepage-samples/200/286.jpg");
         AddPost(Panel, user, "asdfadfg");
-        AddPost(Panel, user, "zomg posting is fun", codeSrc:"function(){ return 'this is some javascript' }");
-        AddPost(Panel, user, "Hedddllo yhere!z");
+        AddPost(Panel, user, "zomg posting is fun", imgSrc: "http://placekitten.com.s3.amazonaws.com/homepage-samples/200/286.jpg", codeSrc:"function(){ return 'this is some javascript' }");
+        AddPost(Panel, user, "Hedddllo yhere!z", codeSrc:"<div><input type=button></input></div>");
     }
 
     private void AddPost(Panel panel, User user, String text, String imgSrc=null, String codeSrc=null)
@@ -42,12 +42,6 @@ public partial class NewsFeed : System.Web.UI.Page
         post.Controls.Add(box);
         post.Controls.Add(userBox);
 
-        if (imgSrc != null)
-        {
-            Image img = new Image();
-            img.ImageUrl = imgSrc;
-            post.Controls.Add(img);
-        }
 
         if (codeSrc != null)
         {
@@ -58,13 +52,19 @@ public partial class NewsFeed : System.Web.UI.Page
             Literal codePre = new Literal();
             codePre.Text = "<pre><code>";
             Label code = new Label();
-            code.Text = codeSrc;
+            code.Text = HttpUtility.HtmlEncode(codeSrc); // maybe not code injection? 
             Literal codePost = new Literal();
             codePost.Text = "</pre></code>";
 
             post.Controls.Add(codePre);
             post.Controls.Add(code);
             post.Controls.Add(codePost);
+        }
+        if (imgSrc != null)
+        {
+            Image img = new Image();
+            img.ImageUrl = imgSrc;
+            post.Controls.Add(img);
         }
 
         panel.Controls.Add(post);
