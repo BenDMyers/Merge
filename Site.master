@@ -55,16 +55,17 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title site-brand">Write a post</h4>
                     </div>
-                    <div id="postTypeSelection" class="modal-body">
-                        <h5><b>Post type</b></h5>
-                        <asp:RadioButtonList ID="PostTypeSelector" runat="server" RepeatDirection="Horizontal" Width="100%">
-                            <asp:ListItem Text=" Text Only" Value="TextOnly" Selected="True"></asp:ListItem>
-                            <asp:ListItem Text=" Code" Value="Code"></asp:ListItem>
-                            <asp:ListItem Text=" Picture" Value="Picture"></asp:ListItem>
-                        </asp:RadioButtonList>
+                    <div class="modal-body" style="margin-bottom: 0px; padding-bottom: 0px;"><h5>Post contents: </h5></div>
+                    <div id="postText" class="modal-body" style="width: 100%; margin-left: 0px; margin-right: 0px; padding-left: 0px; padding-right: 0px;">
+                        <asp:TextBox ID="WriteTextBox" runat="server" TextMode="MultiLine" Rows="4" Width="100%" CssClass="form-control" MultiLine="true" AcceptsTab="true"></asp:TextBox>         
                     </div>
-                    <div id="postText" class="modal-body" style="width: 100%;">
-                        <asp:TextBox ID="WriteTextBox" runat="server" TextMode="MultiLine" Rows="4" Width="100%" CssClass="form-control" MultiLine="true" AcceptsTab="true"></asp:TextBox>
+                    <hr />
+                    <div class="modal-body" style="margin-bottom: 0px; padding-top: 0px; padding-bottom: 0px;"><h5>Code:</h5></div>
+                    <div id="postCode" class="modal-body" style="width: 100%; margin-left: 0px; margin-right: 0px; margin-bottom: 0px; padding-left: 0px; padding-right: 0px;">
+                        <asp:TextBox ID="WriteCodeBox" runat="server" TextMode="MultiLine" Rows="4" Width="100%" CssClass="form-control" MultiLine="true" AcceptsTab="true"></asp:TextBox>         
+                        <div id="codePreview" style="background-color: #dddddd; padding: 10px;">
+                            <asp:Label ID="CodePreviewLabel" runat="server" Text=" " Width="100%"></asp:Label>
+                        </div>        
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Discard</button>
@@ -136,7 +137,7 @@
             <footer class="site-brand" style="text-align: center;">
                 <p>&copy; <%: DateTime.Now.Year %> Merge</p>
                 <p>the computer science &quot;social&quot; network</p>
-                <p><a href="https://github.com/o080o">Alex Durville</a> | <a href="https://github.com/KayleeHartman">Kaylee Hartman</a> | <a href="https://github.com/BenDMyers">Ben Myers</a> | <a href="https://github.com/Dadadah">Jacob Schlecht</a> | <a href="https://github.com/starkeyandhutch">Drew Starkey</a></p>
+                <p><a href="https://github.com/o080o">Alex Durville</a> | <a href="https://www.linkedin.com/in/kayleehartmanokstate/">Kaylee Hartman</a> | <a href="https://github.com/BenDMyers">Ben Myers</a> | <a href="https://github.com/Dadadah">Jacob Schlecht</a> | <a href="https://github.com/starkeyandhutch">Drew Starkey</a></p>
             </footer>
         </div>
     </form>

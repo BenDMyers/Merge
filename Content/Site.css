@@ -1,4 +1,8 @@
-﻿/* Move down content because we have a fixed navbar that is 50px tall */
+﻿* {
+    font-family: 'Roboto Mono', monospace;
+}
+
+/* Move down content because we have a fixed navbar that is 50px tall */
 body {
     padding-top: 50px;
     padding-bottom: 20px;
@@ -96,4 +100,20 @@ textarea {
 
 #WriteTextBox {
     max-width: none;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+#WriteCodeBox {
+    max-width: none;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-bottom: 0px;
+}
+
+#CodePreviewBox {
+    max-width: none;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-top: 0px;
 }
