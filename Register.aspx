@@ -97,7 +97,7 @@
             <footer class="site-brand" style="text-align: center;">
                 <p>&copy; <%: DateTime.Now.Year %> Merge</p>
                 <p>the computer science &quot;social&quot; network</p>
-                <p><a href="https://github.com/o080o">Alex Durville</a> | <a href="https://github.com/KayleeHartman">Kaylee Hartman</a> | <a href="https://github.com/BenDMyers">Ben Myers</a> | <a href="https://github.com/Dadadah">Jacob Schlecht</a> | <a href="https://github.com/starkeyandhutch">Drew Starkey</a></p>
+                <p><a href="https://github.com/o080o">Alex Durville</a> | <a href="https://www.linkedin.com/in/kayleehartmanokstate/">Kaylee Hartman</a> | <a href="https://github.com/BenDMyers">Ben Myers</a> | <a href="https://github.com/Dadadah">Jacob Schlecht</a> | <a href="https://github.com/starkeyandhutch">Drew Starkey</a></p>
             </footer>
         </div>
     </form>
