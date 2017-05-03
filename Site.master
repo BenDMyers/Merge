@@ -73,7 +73,7 @@
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Discard</button>
-                        <button type="button" class="btn btn-primary">Post</button>
+                        <asp:Button ID="PostButton" Text="Post" OnClick="postClick" CssClass="btn btn-primary" runat="server" />
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->

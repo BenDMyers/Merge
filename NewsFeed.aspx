@@ -21,9 +21,6 @@ database stuffs Kaylee-->
 				left join users u on u.userid = p.puserid
 				left join groups g on g.groupid = p.pgroupid
 				order by p.postid desc;">
-			<SelectParameters>
-				<asp:ControlParameter ControlID="Stuff" Name="put stuffs here" PropertyName="Text" />
-			</SelectParameters>
 	</asp:SqlDataSource>
 
     <br /><br />
