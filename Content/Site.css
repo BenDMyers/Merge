@@ -78,7 +78,7 @@ textarea {
     }
 }
 
-/* Logo Stuff */
+/* Logo/Branding Stuff */
 .site-brand {
     font-family: 'Roboto Mono', monospace;
     font-variant: small-caps;
@@ -92,4 +92,8 @@ textarea {
 /* Fun with Modals */
 .modal {
     color: #191919;
+}
+
+#WriteTextBox {
+    max-width: none;
 }

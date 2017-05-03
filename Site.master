@@ -48,18 +48,18 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title">Write a post</h4>
+                        <h4 class="modal-title site-brand">Write a post</h4>
                     </div>
                     <div id="postTypeSelection" class="modal-body">
                         <h5><b>Post type</b></h5>
                         <asp:RadioButtonList ID="PostTypeSelector" runat="server" RepeatDirection="Horizontal" Width="100%">
-                            <asp:ListItem Text="Text" Value="Text" Selected="True"></asp:ListItem>
-                            <asp:ListItem Text="Code" Value="Code"></asp:ListItem>
-                            <asp:ListItem Text="Picture" Value="Picture"></asp:ListItem>
+                            <asp:ListItem Text=" Text Only" Value="TextOnly" Selected="True"></asp:ListItem>
+                            <asp:ListItem Text=" Code" Value="Code"></asp:ListItem>
+                            <asp:ListItem Text=" Picture" Value="Picture"></asp:ListItem>
                         </asp:RadioButtonList>
                     </div>
-                    <div id="postContent" class="modal-body">
-                        <!-- This part to be filled in via JavaScript -->
+                    <div id="postText" class="modal-body" style="width: 100%;">
+                        <asp:TextBox ID="WriteTextBox" runat="server" TextMode="MultiLine" Rows="4" Width="100%" CssClass="form-control" MultiLine="true" AcceptsTab="true"></asp:TextBox>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Discard</button>
