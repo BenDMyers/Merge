@@ -13,16 +13,30 @@ public class PMHub : Hub
         UserDetail newUser = new UserDetail(Context.ConnectionId, userName);
         if (!ConnectedUsers.Contains(newUser))
         ConnectedUsers.Add(newUser);
+        Clients.All.updateOnlineUsers(userName, true);
     }
 
     public void Disconnect(string userName)
     {
         ConnectedUsers.Remove(new UserDetail(Context.ConnectionId, userName));
+        Clients.All.updateOnlineUsers(userName, false);
     }
 
     public void Send(string name, string target, string message)
     {
-        Clients.Client(FindUserByUserName(target).GetID()).sendMessage(name, message);
+        UserDetail messageTarget = FindUserByUserName(target);
+        if (messageTarget == null) return;
+        Clients.Client(messageTarget.GetID()).sendMessage(name, message);
+    }
+
+    public void WhosOnline()
+    {
+        List<string> ConnectedUserNames = new List<string>();
+        foreach (UserDetail user in ConnectedUsers)
+        {
+            ConnectedUserNames.Add(user.GetUserName());
+        }
+        Clients.Caller.onlineUsers(ConnectedUserNames.ToArray());
     }
 
     private UserDetail FindUserByUserName(string userName)
@@ -47,7 +61,7 @@ public class PMHub : Hub
 
         public string GetID()
         {
-            return UserName;
+            return ConnectionId;
         }
     }
 }
