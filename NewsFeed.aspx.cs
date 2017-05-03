@@ -4,9 +4,15 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Data;
+using System.Data.SqlClient;
 
 public partial class NewsFeed : System.Web.UI.Page
 {
+
+    // this is a shortcut for your connection string
+    static string DatabaseConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
+
 
     // simple container class for user info.
     private class User
@@ -21,6 +27,19 @@ public partial class NewsFeed : System.Web.UI.Page
         }
     }
 
+    private DataTable testSql()
+    {
+        // do stuff
+        using (SqlConnection conn = new SqlConnection(DatabaseConnectionString))
+        {
+            SqlCommand cmd = new SqlCommand("SELECT * FROM POSTT", conn);
+            cmd.Connection.Open();
+            DataTable TempTable = new DataTable();
+            TempTable.Load(cmd.ExecuteReader());
+            return TempTable;
+        }
+    }
+
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -29,6 +48,7 @@ public partial class NewsFeed : System.Web.UI.Page
         AddPost(Panel, user, "asdfadfg");
         AddPost(Panel, user, "zomg posting is fun", imgSrc: "http://placekitten.com.s3.amazonaws.com/homepage-samples/200/286.jpg", codeSrc:"function(){ return 'this is some javascript' }");
         AddPost(Panel, user, "Hedddllo yhere!z", codeSrc:"<div><input type=button></input></div>");
+        
     }
 
     private void AddPost(Panel panel, User user, String text, String imgSrc=null, String codeSrc=null)
