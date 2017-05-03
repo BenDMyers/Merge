@@ -14,6 +14,7 @@ public class PMHub : Hub
         if (!ConnectedUsers.Contains(newUser))
         ConnectedUsers.Add(newUser);
         Clients.All.updateOnlineUsers(userName, true);
+        WhosOnline();
     }
 
     public void Disconnect(string userName)
@@ -22,10 +23,12 @@ public class PMHub : Hub
         Clients.All.updateOnlineUsers(userName, false);
     }
 
-    public void Send(string name, string target, string message)
+    public void Send(string target, string message)
     {
         UserDetail messageTarget = FindUserByUserName(target);
-        if (messageTarget == null) return;
+        UserDetail messageSender = FindUserById(Context.ConnectionId);
+        if (messageTarget == null || messageSender == null) return;
+        var name = messageSender.GetUserName();
         Clients.Client(messageTarget.GetID()).sendMessage(name, message);
     }
 
@@ -42,6 +45,11 @@ public class PMHub : Hub
     private UserDetail FindUserByUserName(string userName)
     {
         return ConnectedUsers.Find(x => x.GetUserName() == userName);
+    }
+
+    private UserDetail FindUserById(string id)
+    {
+        return ConnectedUsers.Find(x => x.GetID() == id);
     }
 
     internal class UserDetail

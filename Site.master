@@ -113,9 +113,14 @@
 
                     $.connection.hub.start().done(function () {
                         pmchat.server.connect("TempUserName");
-                        pmchat.server.whosOnline();
-                        console.log(currentOnlineUsers);
                     });
+
+                    $.connection.client.sendMessage = function (from, message) {
+                        // Herein lies the code to recieve messages.
+                    };
+
+                    // How you send a message, First string is target, second string is message
+                    //$.connection.hub.send("TempUserName", "This is a message");
                 })
             </script>
         </div>
