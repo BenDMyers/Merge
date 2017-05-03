@@ -95,7 +95,28 @@
         <!-- HEREIN LIES YE OLE CHAT BOXE -->
         <div id="chatBar" class="well">
             <script type="text/javascript">
-                
+                var currentOnlineUsers = [];
+                $(function () {
+                    var pmchat = $.connection.pMHub;
+
+                    pmchat.client.updateOnlineUsers = function (newUserName, justConnected) {
+                        if (justConnected === true) {
+                            currentOnlineUsers.push(newUserName);
+                        } else {
+                            currentOnlineUsers.splice(currentOnlineUsers.indexOf(newUserName), 1);
+                        }
+                    };
+
+                    pmchat.client.onlineUsers = function (userNames) {
+                        currentOnlineUsers = userNames;
+                    }
+
+                    $.connection.hub.start().done(function () {
+                        pmchat.server.connect("TempUserName");
+                        pmchat.server.whosOnline();
+                        console.log(currentOnlineUsers);
+                    });
+                })
             </script>
         </div>
         <div class="container body-content">
