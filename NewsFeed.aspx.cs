@@ -33,22 +33,53 @@ public partial class NewsFeed : System.Web.UI.Page
 
     private void AddPost(Panel panel, User user, String text, String imgSrc=null, String codeSrc=null)
     {
+        // layout of this code block should resemble the layout of the generated HTML!
+        // ( i.e. outer elements are created first, and added after - creation is open tag, adding is close tag
         Panel post = new Panel();
-        Label userBox = new Label();
-        Label box = new Label();
-        
-        box.Text = text;
-        userBox.Text = user.username;
-        post.Controls.Add(box);
-        post.Controls.Add(userBox);
+        post.CssClass = "post-container";
+        Panel block = new Panel();
+        block.CssClass = "post-block";
 
+        // make the username and avatar container
+        Panel userContainer = new Panel();
+        userContainer.CssClass = "user-info"; 
+
+        Image userAvatar = new Image();
+        userAvatar.CssClass = "avatar";
+        userAvatar.ImageUrl = user.avatar;
+
+        Label userText = new Label();
+        userText.Text = user.username;
+
+        // and finally add them to the container
+        userContainer.Controls.Add(userAvatar);
+        userContainer.Controls.Add(userText);
+
+        // and add the container to the outer block
+        block.Controls.Add(userContainer);
+
+
+        // add the text container
+        Panel textContainer = new Panel();
+        textContainer.CssClass = "content-container text-content";
+
+        Label textLabel = new Label();
+        textLabel.Text = text;
+        textContainer.Controls.Add(textLabel);
+
+        //and finally add the container to the outer block
+        block.Controls.Add(textContainer);
 
         if (codeSrc != null)
         {
             //Literal code = new Literal();
             //code.Text = "<pre><code>" + "</code></pre>"; //ROFL HOW FAST CAN YOU SAY CODE INJECTION!
 
+            Panel codePanel = new Panel();
+            codePanel.CssClass = "content-container code-content";
 
+            // make the code element - this involves some special html tags that don't exist in asp
+            // so FUCK ASP.NET and let's write literal HTML
             Literal codePre = new Literal();
             codePre.Text = "<pre><code>";
             Label code = new Label();
@@ -56,17 +87,28 @@ public partial class NewsFeed : System.Web.UI.Page
             Literal codePost = new Literal();
             codePost.Text = "</pre></code>";
 
-            post.Controls.Add(codePre);
-            post.Controls.Add(code);
-            post.Controls.Add(codePost);
+            // and add the code to the container
+            codePanel.Controls.Add(codePre);
+            codePanel.Controls.Add(code);
+            codePanel.Controls.Add(codePost);
+
+            block.Controls.Add(codePanel);
         }
         if (imgSrc != null)
         {
+            Panel imageContainer = new Panel();
+            imageContainer.CssClass = "content-container img-content";
+
             Image img = new Image();
+            img.CssClass = "post-image";
             img.ImageUrl = imgSrc;
-            post.Controls.Add(img);
+            imageContainer.Controls.Add(img);
+
+            //and finally add the container to the outer block
+            block.Controls.Add(imageContainer);
         }
 
+        post.Controls.Add(block);
         panel.Controls.Add(post);
     }
 }
