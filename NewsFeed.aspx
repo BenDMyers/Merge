@@ -9,7 +9,9 @@ post repeater-ish thing
 see Alex and Ben
 database stuffs Kaylee-->
 
+
     <button id="ModalTestToggler" type="button" class="btn btn-primary" onclick="$('#PostModal').modal('toggle')">Toggle Modal</button>
+    <asp:Panel ID="Panel" runat="server"></asp:Panel>
 
     <%--<br /><br />
 

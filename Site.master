@@ -15,6 +15,11 @@
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <script src="https://use.fontawesome.com/b5113cd04c.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+    
+    <!-- this is the stuff for highlighter.js -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/styles/default.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script> <!-- tadah! -->
 </head>
 <body>
     <form runat="server">
