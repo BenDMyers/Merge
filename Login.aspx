@@ -43,17 +43,12 @@
             <div class="navbar navbar-inverse navbar-fixed-top">
                 <div class="container">
                     <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
                         <a class="navbar-brand site-brand" runat="server" href="~/">Merge</a>
                     </div>
                 </div>
             </div>
 
-		<asp:SqlDataSource ID="RegisterUserData" runat="server" ProviderName = "System.Data.SqlClient" 
+		<asp:SqlDataSource ID="LoginUserData" runat="server" ProviderName = "System.Data.SqlClient" 
             ConnectionString = "<%$ ConnectionStrings:DBConnection %>"
             SelectCommand="select u.username, u.userpassword from users u where (u.username = @username and u.password = @password);">
 			<SelectParameters>
@@ -70,7 +65,8 @@
                     <asp:RequiredFieldValidator ID="UsernameVal" ControlToValidate="Username" runat="server">Username is required</asp:RequiredFieldValidator> <br />
                     <p>Password*</p>
                     <asp:TextBox ID="Password" Text="Password" TextMode="Password" runat="server" CssClass="form-control"></asp:TextBox> <br />
-                    <asp:RequiredFieldValidator ID="PasswordVal" ControlToValidate="Password" runat="server">Password is required</asp:RequiredFieldValidator> <br />
+                    <asp:RequiredFieldValidator ID="PasswordVal" ControlToValidate="Password" runat="server">Password is required</asp:RequiredFieldValidator> <br /><br />
+					<asp:Label ID="ErrorLabel" runat="server" Text=""></asp:Label><br /><br />
 					<asp:Button ID="LoginButton" Text="Log In" OnClick="loginclick" CssClass="btn btn-primary" runat="server" /> <br /><br />
                     <p><em>Not a member yet? <a href="Register.aspx">Sign up!</a></em></p>
 				</div>

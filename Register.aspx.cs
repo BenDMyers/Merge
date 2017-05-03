@@ -41,5 +41,6 @@ public partial class Register : System.Web.UI.Page
 		}
 		
 		RegisterUserData.Insert();
+		Response.Redirect("NewsFeed.aspx");
 	}
 }
