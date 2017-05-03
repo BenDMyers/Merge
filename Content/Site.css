@@ -111,9 +111,10 @@ textarea {
     margin-bottom: 0px;
 }
 
-#CodePreviewBox {
+#CodePreviewPanel {
     max-width: none;
     margin-left: 0px;
     margin-right: 0px;
     margin-top: 0px;
+    padding: 10px 10px 10px 10px;
 }
