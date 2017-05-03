@@ -4,7 +4,6 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Data;
 using System.Data.SqlClient;
 
 public partial class NewsFeed : System.Web.UI.Page
@@ -50,6 +49,18 @@ public partial class NewsFeed : System.Web.UI.Page
         AddPost(Panel, user, "Hedddllo yhere!z", codeSrc:"<div><input type=button></input></div>");
         
     }
+		/*Connect to the database and check to see if user already exists, if it does, compare the password
+		string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
+		SqlConnection conn = new SqlConnection(connectionString);
+		string query = "create or alter function countcom() ";
+		SqlCommand com = new SqlCommand(query, conn);
+		conn.Open();
+
+		//Actually execute the query and return the results
+		com.ExecuteNonQuery();
+
+		conn.Close();*/
+	}
 
     private void AddPost(Panel panel, User user, String text, String imgSrc=null, String codeSrc=null)
     {
