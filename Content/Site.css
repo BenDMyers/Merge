@@ -37,6 +37,8 @@ textarea {
     height: 100%;
     visibility: visible;
     padding-left: 0px;
+    margin-top: 0px;
+    top: 50px;
 }
 
 /* FOR A FOLDER BULLET POINT */
