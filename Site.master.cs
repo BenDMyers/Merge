@@ -67,12 +67,30 @@ public partial class SiteMaster : MasterPage
 
     protected void Page_Load(object sender, EventArgs e)
     {
-
+        HiddenNameLabel.Text = (string)Session["Username"];
     }
 
 	public void postClick(object sender, EventArgs e)
 	{
 		DateTime myDateTime = DateTime.Now;
+
+		if (PostPic.HasFile)
+		{
+			//Using a try statement allows us to output debugging problems.
+			try
+			{
+				string filename = PostPic.FileName;
+				PostPic.SaveAs(Server.MapPath("~/pictures/postpics/") + filename);
+			}
+			catch (Exception ex)
+			{
+				System.Diagnostics.Debug.WriteLine("Upload status: The file could not be uploaded. The following error occured: " + ex.Message);
+			}
+		}
+		else
+		{
+			
+		}
 
 		//Connect to the database and check to see if user already exists, if it does, compare the password
 		string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;

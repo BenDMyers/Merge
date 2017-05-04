@@ -6,21 +6,30 @@ using Microsoft.AspNet.SignalR;
 
 public class PMHub : Hub
 {
-    private List<UserDetail> ConnectedUsers = new List<UserDetail>();
+    private static List<UserDetail> ConnectedUsers = new List<UserDetail>();
 
     public void Connect(string userName)
     {
-        UserDetail newUser = new UserDetail(Context.ConnectionId, userName);
-        if (!ConnectedUsers.Contains(newUser))
-        ConnectedUsers.Add(newUser);
-        Clients.All.updateOnlineUsers(userName, true);
-        WhosOnline();
+        var item = ConnectedUsers.FirstOrDefault(x => x.GetID() == Context.ConnectionId);
+        if (item == null)
+        {
+            item = new UserDetail(Context.ConnectionId, userName);
+            ConnectedUsers.Add(item);
+            Clients.Others.updateOnlineUsers(userName, true);
+        }
+        Clients.Caller.requestUsers();
     }
 
-    public void Disconnect(string userName)
+    public override System.Threading.Tasks.Task OnDisconnected()
     {
-        ConnectedUsers.Remove(new UserDetail(Context.ConnectionId, userName));
-        Clients.All.updateOnlineUsers(userName, false);
+        var item = ConnectedUsers.FirstOrDefault(x => x.GetID() == Context.ConnectionId);
+        if (item != null)
+        {
+            ConnectedUsers.Remove(item);
+            var id = Context.ConnectionId;
+            Clients.All.updateOnlineUsers(item.GetUserName(), false);
+        }
+        return base.OnDisconnected();
     }
 
     public void Send(string target, string message)
@@ -39,7 +48,7 @@ public class PMHub : Hub
         {
             ConnectedUserNames.Add(user.GetUserName());
         }
-        Clients.Caller.onlineUsers(ConnectedUserNames.ToArray());
+        Clients.Caller.onlineUsers(ConnectedUserNames);
     }
 
     private UserDetail FindUserByUserName(string userName)

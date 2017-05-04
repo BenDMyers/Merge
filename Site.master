@@ -47,6 +47,8 @@
         <script src ="/Scripts/jquery.signalR-1.1.4.min.js"></script>
         <script src ="/signalr/hubs"></script>
 
+        <script src="/Scripts/modal.js"></script>
+
         <!-- POSTING MODAL -->
         <div class="modal fade" id="PostModal" tabindex="-1" role="dialog" itemid="PostModal">
             <div class="modal-dialog" role="document">
@@ -96,14 +98,30 @@
                         <li><a runat="server" href="~/UserProfile">Profile</a></li>
                         <li><a runat="server" href="~/GroupList">Groups</a></li>
                     </ul>
+                    <div class="nav navbar-nav navbar-right">
+                        <ul class="nav navbar-nav">
+                            <li><a runat="server" href="~/">Log Out</a></li>
+                        </ul>
+                    </div>
+                    <div class="nav navbar-nav navbar-right">
+                        <button id="PostModalToggler" type="button" class="btn btn-primary navbar-btn" onclick="$('#PostModal').modal('toggle')"><span class="fa fa-file"></span> New Post</button>
+                    </div>
                 </div>
+                
 				<div id="loginorout">
 
 				</div>
             </div>
         </div>
+        <asp:Label ID="HiddenNameLabel" runat="server"></asp:Label>
         <!-- HEREIN LIES YE OLE CHAT BOXE -->
         <div id="chatBar" class="well">
+            <ul class="fa-ul">
+                <li class="li-chatbox li-chatbox-folder">Users<ul id="usersList" class="fa-ul"></ul></li>
+                <li class="li-chatbox li-chatbox-folder">Groups<ul id="groupsList" class="fa-ul">
+                    <li class="li-chatbox li-chatbox-group"><a href="">Association_for_Computing_Machinery.grp</a></li>
+                    <li class="li-chatbox li-chatbox-group"><a href="">Video_Game_Developers_Club.grp</a></li></ul></li>
+            </ul>
             <script type="text/javascript">
                 var currentOnlineUsers = [];
                 $(function () {
@@ -115,14 +133,22 @@
                         } else {
                             currentOnlineUsers.splice(currentOnlineUsers.indexOf(newUserName), 1);
                         }
+                        updateChatBar();
                     };
 
+                    pmchat.client.requestUsers = function () {
+                        pmchat.server.whosOnline();
+                        console.log("Requesting Users");
+                    }
+
                     pmchat.client.onlineUsers = function (userNames) {
+                        console.log("Received Users: " + userNames);
                         currentOnlineUsers = userNames;
+                        updateChatBar();
                     }
 
                     $.connection.hub.start().done(function () {
-                        pmchat.server.connect("TempUserName");
+                        pmchat.server.connect($("#HiddenNameLabel").text());
                     });
 
                     $.connection.client.sendMessage = function (from, message) {
@@ -131,6 +157,14 @@
 
                     // How you send a message, First string is target, second string is message
                     //$.connection.hub.send("TempUserName", "This is a message");
+
+                    function updateChatBar() {
+                        var usersList = $("#usersList");
+                        usersList.empty();
+                        currentOnlineUsers.forEach(function (value, i, curArray) {
+                            usersList.append("<li class='li-chatbox li-chatbox-user'><a href=''>" + value + ".usr</a></li>");
+                        });
+                    }
                 })
             </script>
         </div>

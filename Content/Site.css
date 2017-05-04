@@ -36,6 +36,7 @@ textarea {
     width: 200px;
     height: 100%;
     visibility: visible;
+    padding-left: 0px;
 }
 
 /* FOR A FOLDER BULLET POINT */
@@ -142,4 +143,8 @@ textarea {
     width: 100%;
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
+}
+
+#HiddenNameLabel {
+    visibility:hidden;
 }
