@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Data.SqlClient;
 
 public partial class SiteMaster : MasterPage
 {
@@ -66,9 +67,34 @@ public partial class SiteMaster : MasterPage
 
     protected void Page_Load(object sender, EventArgs e)
     {
+
     }
 
-    protected void Unnamed_LoggingOut(object sender, LoginCancelEventArgs e)
+	public void postClick(object sender, EventArgs e)
+	{
+		DateTime myDateTime = DateTime.Now;
+
+		//Connect to the database and check to see if user already exists, if it does, compare the password
+		string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
+		SqlConnection conn = new SqlConnection(connectionString);
+		string query = "insert into postt (ptext, ptimestamp, phascom, puserid, ppicfile, pcode) values (@posttext, @timestamp, @hascom, @userid, @picfile, @codetext);";
+		SqlCommand com = new SqlCommand(query, conn);
+		conn.Open();
+
+
+		com.Parameters.AddWithValue("@posttext", WriteTextBox.Text);
+		com.Parameters.AddWithValue("@timestamp", myDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff"));
+		com.Parameters.AddWithValue("@hascom", 0);
+		com.Parameters.AddWithValue("@userid", Int32.Parse(Session["UserId"].ToString()));
+		com.Parameters.AddWithValue("@picfile", PostPic.ToString());
+		com.Parameters.AddWithValue("@codetext", WriteCodeBox.Text);
+
+		com.ExecuteNonQuery();
+
+		conn.Close();
+	}
+
+	protected void Unnamed_LoggingOut(object sender, LoginCancelEventArgs e)
     {
         Context.GetOwinContext().Authentication.SignOut();
     }

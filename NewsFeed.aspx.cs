@@ -4,9 +4,15 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Data;
+using System.Data.SqlClient;
 
 public partial class NewsFeed : System.Web.UI.Page
 {
+
+    // this is a shortcut for your connection string
+    static string DatabaseConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
+
 
     // simple container class for user info.
     private class User
@@ -14,24 +20,73 @@ public partial class NewsFeed : System.Web.UI.Page
         public String username;
         public String avatar;
 
-        public User(String cusername, String cavatar)
+        public User(String curusername, String curavatar)
         {
-            username = cusername;   // lulx these names are terrible
-            avatar = cavatar;       // lulz these names are terriblz
+            username = curusername;   // lulz these names are terrible
+            avatar = curavatar;       // lulz these names are terrible
+        }
+    }
+
+    private DataTable testSql()
+    {
+        // do stuff
+        using (SqlConnection conn = new SqlConnection(DatabaseConnectionString))
+        {
+            SqlCommand cmd = new SqlCommand("SELECT * FROM POSTT", conn);
+            cmd.Connection.Open();
+            DataTable TempTable = new DataTable();
+            TempTable.Load(cmd.ExecuteReader());
+            return TempTable;
         }
     }
 
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        User user = new User("Bob", "n/a");
-        AddPost(Panel, user,"Hello yhere!z", imgSrc: "http://placekitten.com.s3.amazonaws.com/homepage-samples/200/286.jpg");
-        AddPost(Panel, user, "asdfadfg");
-        AddPost(Panel, user, "zomg posting is fun", imgSrc: "http://placekitten.com.s3.amazonaws.com/homepage-samples/200/286.jpg", codeSrc:"function(){ return 'this is some javascript' }");
-        AddPost(Panel, user, "Hedddllo yhere!z", codeSrc:"<div><input type=button></input></div>");
-    }
+		//Connect to the database and check to see if user already exists, if it does, compare the password
+		string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
+		SqlConnection conn = new SqlConnection(connectionString);
+		string query = "select TOP(20) * from postt p left join users u on u.userid = p.puserid left join groups g on g.groupid = p.pgroupid order by p.postid desc;";
+		SqlCommand cmd = new SqlCommand(query, conn);
 
-    private void AddPost(Panel panel, User user, String text, String imgSrc=null, String codeSrc=null)
+		conn.Open();
+
+		//Actually execute the query and return the results
+		SqlDataReader reader = cmd.ExecuteReader();
+		string[] checkarray = new string[21];
+		while (reader.Read())
+		{
+			checkarray[0] = reader[0].ToString();       //postid
+			checkarray[1] = reader[1].ToString();       //ptext
+			checkarray[2] = reader[2].ToString();       //ptimestamp
+			checkarray[3] = reader[3].ToString();       //phascom
+			checkarray[4] = reader[4].ToString();       //commentid
+			checkarray[5] = reader[5].ToString();       //puserid
+			checkarray[6] = reader[6].ToString();       //pgroupid
+			checkarray[7] = reader[7].ToString();       //pcode
+			checkarray[8] = reader[8].ToString();       //ppicfile
+			checkarray[9] = reader[9].ToString();       //pedate
+			checkarray[10] = reader[10].ToString();     //petime
+			checkarray[11] = reader[11].ToString();     //peinfo
+			checkarray[12] = reader[12].ToString();     //userid
+			checkarray[13] = reader[13].ToString();     //username
+			checkarray[14] = reader[14].ToString();     //userrealname
+			checkarray[15] = reader[15].ToString();     //useravatar
+			checkarray[16] = reader[16].ToString();     //useremail
+			checkarray[17] = reader[17].ToString();     //userpassword
+			checkarray[18] = reader[18].ToString();     //groupid
+			checkarray[19] = reader[19].ToString();     //groupname
+			checkarray[20] = reader[20].ToString();     //groupavatar
+
+			User user = new User(checkarray[13], checkarray[15]);
+			AddPost(Panel, user, checkarray[1], checkarray[8], checkarray[7]);
+
+		}
+		reader.Close();
+		conn.Close();
+	}
+
+    private void AddPost(Panel panel, User user, String text, String imgSrc, String codeSrc)
     {
         // layout of this code block should resemble the layout of the generated HTML!
         // ( i.e. outer elements are created first, and added after - creation is open tag, adding is close tag
@@ -79,7 +134,7 @@ public partial class NewsFeed : System.Web.UI.Page
             codePanel.CssClass = "content-container code-content";
 
             // make the code element - this involves some special html tags that don't exist in asp
-            // so FUCK ASP.NET and let's write literal HTML
+            // so F**K ASP.NET and let's write literal HTML
             Literal codePre = new Literal();
             codePre.Text = "<pre><code>";
             Label code = new Label();

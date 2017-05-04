@@ -49,7 +49,7 @@ public partial class Login : System.Web.UI.Page
 				{
 					//passwords dont match
 					//give the user a warning.
-					ErrorLabel.Text = "Please enter the correct username and password!";
+					ErrorLabel.Text = "Please enter the correct password!";
 				}
 			}
 		}
