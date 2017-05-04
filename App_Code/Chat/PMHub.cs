@@ -38,6 +38,7 @@ public class PMHub : Hub
         UserDetail messageSender = FindUserById(Context.ConnectionId);
         if (messageTarget == null || messageSender == null) return;
         var name = messageSender.GetUserName();
+        Clients.Caller.sendMessage(name, message);
         Clients.Client(messageTarget.GetID()).sendMessage(name, message);
     }
 
@@ -46,9 +47,19 @@ public class PMHub : Hub
         List<string> ConnectedUserNames = new List<string>();
         foreach (UserDetail user in ConnectedUsers)
         {
-            ConnectedUserNames.Add(user.GetUserName());
+            if (!ConnectedUserNames.Contains(user.GetUserName()))
+                ConnectedUserNames.Add(user.GetUserName());
         }
         Clients.Caller.onlineUsers(ConnectedUserNames);
+    }
+
+    public void ConnectedToChat(string target)
+    {
+        UserDetail messageTarget = FindUserByUserName(target);
+        UserDetail messageSender = FindUserById(Context.ConnectionId);
+        if (messageTarget == null) return;
+        Clients.Client(messageTarget.GetID()).receiveChatRequest(messageSender.GetUserName());
+        Clients.Client(messageTarget.GetID()).sendMessage(messageSender.GetUserName(), "<em>Joined the chat.</em>");
     }
 
     private UserDetail FindUserByUserName(string userName)

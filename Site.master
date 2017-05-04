@@ -124,8 +124,15 @@
             </ul>
             <script type="text/javascript">
                 var currentOnlineUsers = [];
+                var whoWantsToChat = {};
                 $(function () {
                     var pmchat = $.connection.pMHub;
+
+                    $.connection.hub.start().done(function () {
+                        pmchat.server.connect($("#HiddenNameLabel").text());
+                        if (window.location.pathname.endsWith("Chat"))
+                            $.connection.pMHub.server.connectedToChat(window.location.href.split("=")[1])
+                    });
 
                     pmchat.client.updateOnlineUsers = function (newUserName, justConnected) {
                         if (justConnected === true) {
@@ -147,22 +154,44 @@
                         updateChatBar();
                     }
 
-                    $.connection.hub.start().done(function () {
-                        pmchat.server.connect($("#HiddenNameLabel").text());
-                    });
+                    pmchat.client.receiveChatRequest = function (from) {
+                        var messageSpot = $('#chatIncoming');
+                        if (messageSpot.length != 0) {
+                            var messagingWith = $('#outgoingUser').text();
+                            if (from == messagingWith) {
+                                pmchat.server.send(from, "<em>Joined the chat.</em>");
+                                return;
+                            }
+                        }
+                        whoWantsToChat[from] = true;
+                        updateChatBar();
+                    }
 
-                    $.connection.client.sendMessage = function (from, message) {
-                        // Herein lies the code to recieve messages.
-                    };
+                    pmchat.client.sendMessage = function (from, contents) {
+                        var messageSpot = $('#chatIncoming');
 
-                    // How you send a message, First string is target, second string is message
-                    //$.connection.hub.send("TempUserName", "This is a message");
+                        if (messageSpot.length != 0) {
+                            var messagingWith = $('#outgoingUser').text();
+                            var myUserName = $('#HiddenNameLabel').text();
+                            if (from == messagingWith || from == myUserName) {
+                                messageSpot.append("<strong>" + from + "</strong><p>" + contents + "</p>");
+                                $('#chatIncoming').stop().animate({
+                                    scrollTop: $('#chatIncoming')[0].scrollHeight
+                                }, 800);
+                                return;
+                            }
+                        }
+                    }
 
                     function updateChatBar() {
                         var usersList = $("#usersList");
                         usersList.empty();
                         currentOnlineUsers.forEach(function (value, i, curArray) {
-                            usersList.append("<li class='li-chatbox li-chatbox-user'><a href=''>" + value + ".usr</a></li>");
+                            var wantsToChat = "";
+                            if (whoWantsToChat[value] != null && whoWantsToChat[value]) {
+                                wantsToChat = "(!)";
+                            }
+                            usersList.append("<li class='li-chatbox li-chatbox-user'><a href='Chat?target=" + value + "'>" + value + ".usr " + wantsToChat + "</a></li>");
                         });
                     }
                 })
