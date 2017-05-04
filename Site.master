@@ -47,6 +47,8 @@
         <script src ="/Scripts/jquery.signalR-1.1.4.min.js"></script>
         <script src ="/signalr/hubs"></script>
 
+        <script src="/Scripts/modal.js"></script>
+
         <!-- POSTING MODAL -->
         <div class="modal fade" id="PostModal" tabindex="-1" role="dialog" itemid="PostModal">
             <div class="modal-dialog" role="document">
