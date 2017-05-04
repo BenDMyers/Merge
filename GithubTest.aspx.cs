@@ -15,8 +15,56 @@ public partial class GithubTest : System.Web.UI.Page
         public string type { get; set; }
     }
 
+    private class EventPost
+    {
+        public Control generate(Event evt)
+        {
+            return null;
+        }
+    }
+
+    private class ActionEventPost : EventPost
+    {
+        private String action;
+
+        public ActionEventPost(String action)
+        {
+            this.action = action;
+        }
+
+        public Control generate(Event evt)
+        {
+            Panel container = new Panel();
+            Label action = new Label();
+            action.Text = "someone" + action;
+            container.Controls.Add(action);
+            return container;
+        }
+    }
+
+    private Dictionary<String, EventPost> events = new Dictionary<String, EventPost>();
+    //events["PushEvent"] = new EventPost();
+    
+
+
+    private class EventRenderer
+    {
+        // here is the hookup between events and their respective generators.
+     //   events["PushEvent"] = this.PushEvent;
+
+        private Control PushEvent(Event evnt)
+        {
+            return null;
+        }
+    }
+    
+
     protected void Page_Load(object sender, EventArgs e)
     {
+        // define the post relationship
+        events["PushPost"] = new ActionEventPost("Pushed something!");
+
+
         // do a call to github events and hope, hope HOPE
         var client = new RestClient(); // var?!?
         client.BaseUrl = new Uri("https://api.github.com");
@@ -38,7 +86,12 @@ public partial class GithubTest : System.Web.UI.Page
             List<Event> events = response.Data;
             foreach( Event evnt in events)
             {
-                bug(evnt.type);
+                // bug(evnt.type);
+                EventPost postType = events[evnt.type];
+                if (postType != null)
+                {
+                    debugr.Controls.Add(postType.generate(evnt));
+                }
             }
         }
 
@@ -46,6 +99,8 @@ public partial class GithubTest : System.Web.UI.Page
         bug(response.ToString());
 
     }
+
+    
 
     private void bug(String thing)
     {
