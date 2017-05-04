@@ -102,8 +102,15 @@
 				</div>
             </div>
         </div>
+        <asp:Label ID="HiddenNameLabel" runat="server"></asp:Label>
         <!-- HEREIN LIES YE OLE CHAT BOXE -->
         <div id="chatBar" class="well">
+            <ul class="fa-ul">
+                <li class="li-chatbox li-chatbox-folder">Users<ul id="usersList" class="fa-ul"></ul></li>
+                <li class="li-chatbox li-chatbox-folder">Groups<ul id="groupsList" class="fa-ul">
+                    <li class="li-chatbox li-chatbox-group"><a href="">Association_for_Computing_Machinery.grp</a></li>
+                    <li class="li-chatbox li-chatbox-group"><a href="">Video_Game_Developers_Club.grp</a></li></ul></li>
+            </ul>
             <script type="text/javascript">
                 var currentOnlineUsers = [];
                 $(function () {
@@ -119,10 +126,11 @@
 
                     pmchat.client.onlineUsers = function (userNames) {
                         currentOnlineUsers = userNames;
+                        updateChatBar();
                     }
 
                     $.connection.hub.start().done(function () {
-                        pmchat.server.connect("TempUserName");
+                        pmchat.server.connect($("#HiddenNameLabel").text());
                     });
 
                     $.connection.client.sendMessage = function (from, message) {
@@ -131,6 +139,14 @@
 
                     // How you send a message, First string is target, second string is message
                     //$.connection.hub.send("TempUserName", "This is a message");
+
+                    function updateChatBar() {
+                        var usersList = $("#usersList");
+                        usersList.empty();
+                        currentOnlineUsers.forEach(function (value, i, curArray) {
+                            usersList.append("<li class='li-chatbox li-chatbox-user'><a href=''>" + value + ".usr</a></li>");
+                        });
+                    }
                 })
             </script>
         </div>
