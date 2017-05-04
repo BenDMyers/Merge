@@ -96,7 +96,16 @@
                         <li><a runat="server" href="~/UserProfile">Profile</a></li>
                         <li><a runat="server" href="~/GroupList">Groups</a></li>
                     </ul>
+                    <div class="nav navbar-nav navbar-right">
+                        <ul class="nav navbar-nav">
+                            <li><a runat="server" href="~/">Log Out</a></li>
+                        </ul>
+                    </div>
+                    <div class="nav navbar-nav navbar-right">
+                        <button id="PostModalToggler" type="button" class="btn btn-primary navbar-btn" onclick="$('#PostModal').modal('toggle')"><span class="fa fa-file"></span> New Post</button>
+                    </div>
                 </div>
+                
 				<div id="loginorout">
 
 				</div>
