@@ -92,6 +92,10 @@ public partial class SiteMaster : MasterPage
 		com.ExecuteNonQuery();
 
 		conn.Close();
+
+        WriteTextBox.Text = "";
+        WriteCodeBox.Text = "";
+        Response.Redirect(Request.RawUrl);
 	}
 
 	protected void Unnamed_LoggingOut(object sender, LoginCancelEventArgs e)
