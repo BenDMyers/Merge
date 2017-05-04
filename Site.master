@@ -68,7 +68,7 @@
 
                     <div class="modal-body" style="margin-bottom: 0px; padding-top: 0px; padding-bottom: 0px;"><h5>Picture:</h5></div>
                     <div id="postPic" class="modal-body" style="width: 100%; margin-bottom: 0px;">
-                        <asp:FileUpload ID="PostPic" AllowMultiple="false" runat="server" CssClass="form-control-file" type="file"/>
+                        <asp:FileUpload ID="PostPic" AllowMultiple="false" runat="server" CssClass="form-control-file"/>
                     </div>
 
                     <div class="modal-footer">

@@ -21,7 +21,7 @@ public partial class Register : System.Web.UI.Page
 			try
 			{
 				string filename = Avatar.FileName;
-				Avatar.SaveAs(Server.MapPath("~/avatars/") + filename);
+				Avatar.SaveAs(Server.MapPath("~/pictures/avatars/") + filename);
 			}
 			catch (Exception ex)
 			{
