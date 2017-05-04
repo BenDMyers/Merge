@@ -32,7 +32,7 @@ public partial class Register : System.Web.UI.Page
 		{
 			try
 			{
-				Avatar.SaveAs(Server.MapPath("~/images/img_avatar3.png"));
+				Avatar.SaveAs(Server.MapPath("~/pictures/avatars/default.jpg"));
 			}
 			catch (Exception ex)
 			{
@@ -41,6 +41,6 @@ public partial class Register : System.Web.UI.Page
 		}
 		
 		RegisterUserData.Insert();
-		Response.Redirect("NewsFeed.aspx");
+		Response.Redirect("Login.aspx");
 	}
 }
