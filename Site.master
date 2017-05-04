@@ -133,9 +133,16 @@
                         } else {
                             currentOnlineUsers.splice(currentOnlineUsers.indexOf(newUserName), 1);
                         }
+                        updateChatBar();
                     };
 
+                    pmchat.client.requestUsers = function () {
+                        pmchat.server.whosOnline();
+                        console.log("Requesting Users");
+                    }
+
                     pmchat.client.onlineUsers = function (userNames) {
+                        console.log("Received Users: " + userNames);
                         currentOnlineUsers = userNames;
                         updateChatBar();
                     }

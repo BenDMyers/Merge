@@ -6,17 +6,18 @@ using Microsoft.AspNet.SignalR;
 
 public class PMHub : Hub
 {
-    private List<UserDetail> ConnectedUsers = new List<UserDetail>();
+    private static List<UserDetail> ConnectedUsers = new List<UserDetail>();
 
     public void Connect(string userName)
     {
-        UserDetail newUser = new UserDetail(Context.ConnectionId, userName);
-        if (!ConnectedUsers.Contains(newUser))
+        var item = ConnectedUsers.FirstOrDefault(x => x.GetID() == Context.ConnectionId);
+        if (item == null)
         {
-            ConnectedUsers.Add(newUser);
+            item = new UserDetail(Context.ConnectionId, userName);
+            ConnectedUsers.Add(item);
             Clients.Others.updateOnlineUsers(userName, true);
         }
-        WhosOnline();
+        Clients.Caller.requestUsers();
     }
 
     public override System.Threading.Tasks.Task OnDisconnected()
@@ -47,7 +48,7 @@ public class PMHub : Hub
         {
             ConnectedUserNames.Add(user.GetUserName());
         }
-        Clients.Caller.onlineUsers(ConnectedUserNames.ToArray());
+        Clients.Caller.onlineUsers(ConnectedUserNames);
     }
 
     private UserDetail FindUserByUserName(string userName)
