@@ -13,7 +13,7 @@ database stuffs Kaylee-->
     <button id="ModalTestToggler" type="button" class="btn btn-primary" onclick="$('#PostModal').modal('toggle')">Toggle Modal</button>
     <asp:Panel ID="Panel" runat="server"></asp:Panel>
 	<%--This is the select statement is for displaying last 20 posts made --%>
-	<%--<asp:SqlDataSource ID="PosttData" runat="server" ProviderName = "System.Data.SqlClient" 
+	<asp:SqlDataSource ID="PosttData" runat="server" ProviderName = "System.Data.SqlClient" 
             ConnectionString = "<%$ ConnectionStrings:DBConnection %>"
             SelectCommand="
 			select TOP(20) * 
