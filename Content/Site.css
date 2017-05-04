@@ -1,11 +1,8 @@
-﻿* {
-    font-family: 'Roboto Mono', monospace;
-}
-
-/* Move down content because we have a fixed navbar that is 50px tall */
+﻿/* Move down content because we have a fixed navbar that is 50px tall */
 body {
     padding-top: 50px;
     padding-bottom: 20px;
+    font-family: 'Roboto Mono', monospace;
 }
 
 /* Wrapping element */
@@ -117,4 +114,32 @@ textarea {
     margin-right: 0px;
     margin-top: 0px;
     padding: 10px 10px 10px 10px;
+}
+
+.post-container {
+    background-color: #555555;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-radius: 20px 20px;
+}
+
+.avatar {
+    border-radius: 6px;
+}
+
+.user-info {
+    font-size: 300%;
+    font-variant: small-caps;
+    font-weight: bold;
+}
+
+.post-block>.text-content {
+    font-size: 125%;
+    padding: 10px 10px 10px 10px;
+}
+
+.img-content, .post-image {
+    width: 100%;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
 }
