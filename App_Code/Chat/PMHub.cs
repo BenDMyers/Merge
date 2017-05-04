@@ -12,15 +12,23 @@ public class PMHub : Hub
     {
         UserDetail newUser = new UserDetail(Context.ConnectionId, userName);
         if (!ConnectedUsers.Contains(newUser))
-        ConnectedUsers.Add(newUser);
-        Clients.All.updateOnlineUsers(userName, true);
+        {
+            ConnectedUsers.Add(newUser);
+            Clients.Others.updateOnlineUsers(userName, true);
+        }
         WhosOnline();
     }
 
-    public void Disconnect(string userName)
+    public override System.Threading.Tasks.Task OnDisconnected()
     {
-        ConnectedUsers.Remove(new UserDetail(Context.ConnectionId, userName));
-        Clients.All.updateOnlineUsers(userName, false);
+        var item = ConnectedUsers.FirstOrDefault(x => x.GetID() == Context.ConnectionId);
+        if (item != null)
+        {
+            ConnectedUsers.Remove(item);
+            var id = Context.ConnectionId;
+            Clients.All.updateOnlineUsers(item.GetUserName(), false);
+        }
+        return base.OnDisconnected();
     }
 
     public void Send(string target, string message)

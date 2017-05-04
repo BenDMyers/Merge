@@ -23,14 +23,5 @@ database stuffs Kaylee-->
 	</asp:SqlDataSource>
 
     <br /><br />
-
-    <ul class="fa-ul">
-        <li class="li-chatbox li-chatbox-folder">Users<ul class="fa-ul">
-            <li class="li-chatbox li-chatbox-user"><a href="">Ben.usr</a></li>
-            <li class="li-chatbox li-chatbox-user"><a href="">Jacob.usr</a></li></ul></li>
-        <li class="li-chatbox li-chatbox-folder">Groups<ul class="fa-ul">
-            <li class="li-chatbox li-chatbox-group"><a href="">Association_for_Computing_Machinery.grp</a></li>
-            <li class="li-chatbox li-chatbox-group"><a href="">Video_Game_Developers_Club.grp</a></li></ul></li>
-    </ul>
 </asp:Content>
 
