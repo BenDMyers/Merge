@@ -70,29 +70,32 @@
                 <div class="col-md-4"></div>
                 <div class="col-md-4 form-group">
                     <br />
-                    <p>OSU Email*</p>
+                    <p>OSU Email<asp:RegularExpressionValidator ID="EmailRegexVal" ControlToValidate="Email" ErrorMessage="Email must be valid OSU email." ValidationExpression="([0-9]|[A-Z]|[a-z]|\.|[!#$%&'*\+\-\/=?^_`{|}~])+@((okstate\.edu)|(ostatemail\.okstate\.edu))" runat="server">*</asp:RegularExpressionValidator></p>
                     <asp:TextBox ID="Email" runat="server" CssClass="form-control"></asp:TextBox> <br />
-                    <asp:RegularExpressionValidator ID="EmailRegexVal" ControlToValidate="Email" ValidationExpression="([0-9]|[a-z]|\.|[!#$%&'*\+\-\/=?^_`{|}~])+@((okstate\.edu)|(ostatemail\.okstate\.edu))" runat="server">Email must be valid OSU email</asp:RegularExpressionValidator> <br />
-                    <p>Full Name*</p>
+                    <p>Full Name<asp:RequiredFieldValidator ID="NameVal" ControlToValidate="Name" ErrorMessage="Full name is required." runat="server">*</asp:RequiredFieldValidator></p>
                     <asp:TextBox ID="Name" runat="server" CssClass="form-control"></asp:TextBox> <br />
-                    <asp:RequiredFieldValidator ID="NameVal" ControlToValidate="Name" runat="server">Full name is required</asp:RequiredFieldValidator> <br />
-					<p>Username*</p>
+					<p>Username<asp:RequiredFieldValidator ID="UsernameVal" ControlToValidate="Username" ErrorMessage="Username is required." runat="server">*</asp:RequiredFieldValidator></p>
                     <asp:TextBox ID="Username" runat="server" CssClass="form-control"></asp:TextBox> <br />
-                    <asp:RequiredFieldValidator ID="UsernameVal" ControlToValidate="Username" runat="server">Username is required</asp:RequiredFieldValidator> <br />
-                    <p>Password*</p>
+                    <p>Password<asp:RequiredFieldValidator ID="PasswordVal" ControlToValidate="Password" ErrorMessage="Password is required." runat="server">*</asp:RequiredFieldValidator></p>
                     <asp:TextBox ID="Password" Text="Password" TextMode="Password" runat="server" CssClass="form-control"></asp:TextBox> <br />
-                    <asp:RequiredFieldValidator ID="PasswordVal" ControlToValidate="Password" runat="server">Password is required</asp:RequiredFieldValidator> <br />
-                    <p>Re-enter Password*</p>
+                    <p>Re-enter Password<asp:RequiredFieldValidator ID="PasswordAgainVal" ControlToValidate="PasswordAgain" ErrorMessage="Verify your password." runat="server">*</asp:RequiredFieldValidator></p>
                     <asp:TextBox ID="PasswordAgain" Text="Re-enter Password" TextMode="Password" runat="server" CssClass="form-control"></asp:TextBox> <br />
-                    <asp:RequiredFieldValidator ID="PasswordAgainVal" ControlToValidate="PasswordAgain" runat="server">Verify your password</asp:RequiredFieldValidator> <br />
                     <p>Avatar</p>
                     <asp:FileUpload ID="Avatar" AllowMultiple="false" runat="server" CssClass="form-control-file" type="file"/> <br />
+                </div>
+                <div class="col-md-4">
+                    <asp:ValidationSummary ID="ValSum" DisplayMode="BulletList" HeaderText="The following errors have occured: " runat="server" />
+                    <asp:Label ID="ErrorLabel" runat="server"></asp:Label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
                     <asp:Button ID="Submit" Text="Submit" OnClick="submitclick" CssClass="btn btn-primary" runat="server" /> <br /><br />
                     <p><em>Already a member? <a href="Login.aspx">Sign in!</a></em></p>
                 </div>
                 <div class="col-md-4"></div>
             </div>
-
             <hr />
             <footer class="site-brand" style="text-align: center;">
                 <p>&copy; <%: DateTime.Now.Year %> Merge</p>
