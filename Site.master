@@ -99,9 +99,7 @@
                         <li><a runat="server" href="~/GroupList">Groups</a></li>
                     </ul>
                     <div class="nav navbar-nav navbar-right">
-                        <ul class="nav navbar-nav">
-                            <li><a runat="server" href="~/LogOut">Log Out</a></li>
-                        </ul>
+                           <button id="LogOutToggler" type="button" class="btn btn-primary navbar-btn" onclick="logoutclick"><span class="fa fa-file"></span>Log Out</button>
                     </div>
                     <div class="nav navbar-nav navbar-right">
                         <button id="PostModalToggler" type="button" class="btn btn-primary navbar-btn" onclick="$('#PostModal').modal('toggle')"><span class="fa fa-file"></span> New Post</button>

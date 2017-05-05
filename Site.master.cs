@@ -119,17 +119,26 @@ public partial class SiteMaster : MasterPage
         Context.GetOwinContext().Authentication.SignOut();
     }
 
-    //protected void Update_Code_Preview()
-    //{
-    //    Literal codePre = new Literal();
-    //    codePre.Text = "<pre><code>";
-    //    Label code = new Label();
-    //    code.Text = HttpUtility.HtmlEncode(WriteCodeBox.Text); // maybe not code injection? 
-    //    Literal codePost = new Literal();
-    //    codePost.Text = "</pre></code>";
+	public void logoutclick(object sender, EventArgs e)
+	{
+		Session["LogOut"] = "1";
+		Session["Username"] = null;
+		Session["UserId"] = null;
+		Response.Redirect("Login.aspx");
 
-    //    CodePreviewPanel.Controls.Add(codePre);
-    //    CodePreviewPanel.Controls.Add(code);
-    //    CodePreviewPanel.Controls.Add(codePost);
-    //}
+	}
+
+	//protected void Update_Code_Preview()
+	//{
+	//    Literal codePre = new Literal();
+	//    codePre.Text = "<pre><code>";
+	//    Label code = new Label();
+	//    code.Text = HttpUtility.HtmlEncode(WriteCodeBox.Text); // maybe not code injection? 
+	//    Literal codePost = new Literal();
+	//    codePost.Text = "</pre></code>";
+
+	//    CodePreviewPanel.Controls.Add(codePre);
+	//    CodePreviewPanel.Controls.Add(code);
+	//    CodePreviewPanel.Controls.Add(codePost);
+	//}
 }
