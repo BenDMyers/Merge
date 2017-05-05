@@ -9,9 +9,8 @@ using System.Data.SqlClient;
 
 public partial class NewsFeed : System.Web.UI.Page
 {
-
-    // this is a shortcut for your connection string
-    static string DatabaseConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
+	// this is a shortcut for your connection string
+	static string DatabaseConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
 
 
     // simple container class for user info.
@@ -43,6 +42,12 @@ public partial class NewsFeed : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
+		//Check to see if the user has logged in, if not disable ability to post a car
+		if (Session["Username"] == null)
+		{
+			Response.Redirect("Login.aspx");
+		}
+
 		//Connect to the database and check to see if user already exists, if it does, compare the password
 		string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
 		SqlConnection conn = new SqlConnection(connectionString);

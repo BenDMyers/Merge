@@ -60,6 +60,7 @@
                 <div class="col-md-4"></div>
                 <div class="col-md-4">
                     <br />
+					<asp:Label ID="LogOutLabel" runat="server" Text=""></asp:Label><br /><br />
                     <p>Username*</p>
                     <asp:TextBox ID="Username" runat="server" CssClass="form-control"></asp:TextBox> <br />
                     <asp:RequiredFieldValidator ID="UsernameVal" ControlToValidate="Username" runat="server">Username is required</asp:RequiredFieldValidator> <br />

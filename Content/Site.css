@@ -125,6 +125,10 @@ textarea {
 }
 
 .avatar {
+	min-height: 24px;
+	max-height: 96px;
+	min-width: 24px;
+	max-width: 96px;
     border-radius: 6px;
 }
 
