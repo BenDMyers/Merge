@@ -9,4 +9,7 @@ post modal
 post repeater-ish thing
 see Alex and Ben
 database stuffs Kaylee-->
+
+    <asp:Panel ID="Panel" runat="server"></asp:Panel>
+
 </asp:Content>
