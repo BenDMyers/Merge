@@ -39,8 +39,35 @@ public partial class Register : System.Web.UI.Page
 				System.Diagnostics.Debug.WriteLine("There was a problem creating your profile. Error: " + ex.Message);
 			}
 		}
-		
-		RegisterUserData.Insert();
-		Response.Redirect("Login.aspx");
+
+        string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
+        SqlConnection con = new SqlConnection(connectionString);
+        con.Open();
+
+        SqlCommand usernamecmd = new SqlCommand("select * from users where username=@Name", con);
+        SqlCommand emailcmd = new SqlCommand("select * from users where useremail=@Email", con);
+        usernamecmd.Parameters.AddWithValue("@Name", Username.Text);
+        emailcmd.Parameters.AddWithValue("@Email", Email.Text);
+        SqlDataReader undr = usernamecmd.ExecuteReader();
+        var usernameTaken = undr.HasRows;
+        undr.Close();
+        SqlDataReader edr = emailcmd.ExecuteReader();
+        var emailTaken = edr.HasRows;
+        edr.Close();
+
+        if (emailTaken)
+        {
+            ErrorLabel.Text = "Email already registered, please login.";
+        }
+        else if (usernameTaken)
+        {
+            ErrorLabel.Text = "Username already taken.";
+        }
+        else
+        {
+            // Username is available
+            RegisterUserData.Insert();
+            Response.Redirect("Login.aspx");
+        }
 	}
 }
