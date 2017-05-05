@@ -10,7 +10,11 @@ public partial class Login : System.Web.UI.Page
 {
 	protected void Page_Load(object sender, EventArgs e)
 	{
-
+		if (Session["LogOut"] == "1")
+		{
+			LogOutLabel.Text = "Sucessfully logged out.";
+			Session["LogOut"] = null;
+		}
 	}
 
 	public void loginclick(object sender, EventArgs e) {

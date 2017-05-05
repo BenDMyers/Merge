@@ -67,6 +67,8 @@ public partial class SiteMaster : MasterPage
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        if (Session["Username"] == null)
+            Response.Redirect("Login.aspx");
         HiddenNameLabel.Text = (string)Session["Username"];
     }
 
@@ -87,10 +89,6 @@ public partial class SiteMaster : MasterPage
 				System.Diagnostics.Debug.WriteLine("Upload status: The file could not be uploaded. The following error occured: " + ex.Message);
 			}
 		}
-		else
-		{
-			
-		}
 
 		//Connect to the database and check to see if user already exists, if it does, compare the password
 		string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
@@ -104,7 +102,7 @@ public partial class SiteMaster : MasterPage
 		com.Parameters.AddWithValue("@timestamp", myDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff"));
 		com.Parameters.AddWithValue("@hascom", 0);
 		com.Parameters.AddWithValue("@userid", Int32.Parse(Session["UserId"].ToString()));
-		com.Parameters.AddWithValue("@picfile", PostPic.ToString());
+		com.Parameters.AddWithValue("@picfile", PostPic.FileName);
 		com.Parameters.AddWithValue("@codetext", WriteCodeBox.Text);
 
 		com.ExecuteNonQuery();

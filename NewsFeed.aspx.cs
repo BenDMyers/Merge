@@ -9,9 +9,8 @@ using System.Data.SqlClient;
 
 public partial class NewsFeed : System.Web.UI.Page
 {
-
-    // this is a shortcut for your connection string
-    static string DatabaseConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
+	// this is a shortcut for your connection string
+	static string DatabaseConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
 
 
     // simple container class for user info.
@@ -43,6 +42,12 @@ public partial class NewsFeed : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
+		//Check to see if the user has logged in, if not disable ability to post a car
+		if (Session["Username"] == null)
+		{
+			Response.Redirect("Login.aspx");
+		}
+
 		//Connect to the database and check to see if user already exists, if it does, compare the password
 		string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
 		SqlConnection conn = new SqlConnection(connectionString);
@@ -80,7 +85,6 @@ public partial class NewsFeed : System.Web.UI.Page
 
 			User user = new User(checkarray[13], checkarray[15]);
 			AddPost(Panel, user, checkarray[1], checkarray[8], checkarray[7]);
-
 		}
 		reader.Close();
 		conn.Close();
@@ -97,17 +101,21 @@ public partial class NewsFeed : System.Web.UI.Page
 
         // make the username and avatar container
         Panel userContainer = new Panel();
-        userContainer.CssClass = "user-info"; 
+        userContainer.CssClass = "user-info";
 
-        Image userAvatar = new Image();
-        userAvatar.CssClass = "avatar";
-        userAvatar.ImageUrl = user.avatar;
+		if (user.avatar != "NULL")
+		{
+			Image userAvatar = new Image();
+			userAvatar.CssClass = "avatar";
+			userAvatar.ImageUrl = "/pictures/avatars/" + user.avatar;
+			// and finally add them to the container
+			userContainer.Controls.Add(userAvatar);
+		}
 
         Label userText = new Label();
         userText.Text = user.username;
 
         // and finally add them to the container
-        userContainer.Controls.Add(userAvatar);
         userContainer.Controls.Add(userText);
 
         // and add the container to the outer block
@@ -125,7 +133,7 @@ public partial class NewsFeed : System.Web.UI.Page
         //and finally add the container to the outer block
         block.Controls.Add(textContainer);
 
-        if (codeSrc != null)
+        if (codeSrc != null && codeSrc != "")
         {
             //Literal code = new Literal();
             //code.Text = "<pre><code>" + "</code></pre>"; //ROFL HOW FAST CAN YOU SAY CODE INJECTION!
@@ -149,14 +157,14 @@ public partial class NewsFeed : System.Web.UI.Page
 
             block.Controls.Add(codePanel);
         }
-        if (imgSrc != null)
-        {
-            Panel imageContainer = new Panel();
+        if (imgSrc != null && imgSrc != "" && imgSrc != "System.Web.UI.WebControls.FileUpload")
+		{
+			Panel imageContainer = new Panel();
             imageContainer.CssClass = "content-container img-content";
 
             Image img = new Image();
             img.CssClass = "post-image";
-            img.ImageUrl = imgSrc;
+            img.ImageUrl = "~/pictures/postpics/" + user.username + "/" + imgSrc;
             imageContainer.Controls.Add(img);
 
             //and finally add the container to the outer block

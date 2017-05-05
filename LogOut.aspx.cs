@@ -4,13 +4,14 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Data;
-using System.Data.SqlClient;
 
-public partial class GroupList : System.Web.UI.Page
+public partial class LogOut : System.Web.UI.Page
 {
 	protected void Page_Load(object sender, EventArgs e)
 	{
-		
+		Session["LogOut"] = "1";
+		Session["Username"] = null;
+		Session["UserId"] = null;
+		Response.Redirect("Login.aspx");
 	}
 }
