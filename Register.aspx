@@ -72,7 +72,7 @@
                     <br />
                     <asp:ValidationSummary ID="ValSum" DisplayMode="BulletList" HeaderText="The following errors have occured: " runat="server" />
                     <asp:Label ID="ErrorLabel" runat="server"></asp:Label><br /><br />
-                    <p>OSU Email<asp:RegularExpressionValidator ID="EmailRegexVal" ControlToValidate="Email" ErrorMessage="Email must be valid OSU email." ValidationExpression="([0-9]|[A-Z]|[a-z]|\.|[!#$%&'*\+\-\/=?^_`{|}~])+@((okstate\.edu)|(ostatemail\.okstate\.edu))" runat="server">*</asp:RegularExpressionValidator></p>
+                    <p>OSU Email<asp:RegularExpressionValidator ID="EmailRegexVal" ControlToValidate="Email" ErrorMessage="Email must be valid OSU email." ValidationExpression="([0-9]|[A-Z]|[a-z]|\.|[!#$%&'*\+\-\/=?^_`{|}~])+@(okstate\.edu)" runat="server">*</asp:RegularExpressionValidator></p>
                     <asp:TextBox ID="Email" runat="server" CssClass="form-control"></asp:TextBox> <br />
                     <p>Full Name<asp:RequiredFieldValidator ID="NameVal" ControlToValidate="Name" ErrorMessage="Full name is required." runat="server">*</asp:RequiredFieldValidator></p>
                     <asp:TextBox ID="Name" runat="server" CssClass="form-control"></asp:TextBox> <br />
