@@ -46,6 +46,10 @@ public partial class UserProfile : System.Web.UI.Page
 		{
 			Response.Redirect("Login.aspx");
 		}
+		else if (Int32.Parse(Session["UserId"].ToString())%2 == 1) {
+			Session["Username"] = Session["TempUsername"];
+			Session["UserId"] = Session["TempUserId"];
+		}
 
 		//Connect to the database and check to see if user already exists, if it does, compare the password
 		string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;

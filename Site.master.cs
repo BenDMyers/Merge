@@ -90,24 +90,46 @@ public partial class SiteMaster : MasterPage
 			}
 		}
 
-		//Connect to the database and check to see if user already exists, if it does, compare the password
-		string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
-		SqlConnection conn = new SqlConnection(connectionString);
-		string query = "insert into postt (ptext, ptimestamp, phascom, puserid, ppicfile, pcode) values (@posttext, @timestamp, @hascom, @userid, @picfile, @codetext);";
-		SqlCommand com = new SqlCommand(query, conn);
-		conn.Open();
+		if (Int32.Parse(Session["UserId"].ToString())%2 == 0)
+		{
+			//Connect to the database and check to see if user already exists, if it does, compare the password
+			string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
+			SqlConnection conn = new SqlConnection(connectionString);
+			string query = "insert into postt (ptext, ptimestamp, phascom, puserid, ppicfile, pcode) values (@posttext, @timestamp, @hascom, @userid, @picfile, @codetext);";
+			SqlCommand com = new SqlCommand(query, conn);
+			conn.Open();
 
+			com.Parameters.AddWithValue("@posttext", WriteTextBox.Text);
+			com.Parameters.AddWithValue("@timestamp", myDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff"));
+			com.Parameters.AddWithValue("@hascom", 0);
+			com.Parameters.AddWithValue("@picfile", PostPic.FileName);
+			com.Parameters.AddWithValue("@codetext", WriteCodeBox.Text);
+			com.Parameters.AddWithValue("@userid", Int32.Parse(Session["UserId"].ToString()));
 
-		com.Parameters.AddWithValue("@posttext", WriteTextBox.Text);
-		com.Parameters.AddWithValue("@timestamp", myDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff"));
-		com.Parameters.AddWithValue("@hascom", 0);
-		com.Parameters.AddWithValue("@userid", Int32.Parse(Session["UserId"].ToString()));
-		com.Parameters.AddWithValue("@picfile", PostPic.FileName);
-		com.Parameters.AddWithValue("@codetext", WriteCodeBox.Text);
+			com.ExecuteNonQuery();
 
-		com.ExecuteNonQuery();
+			conn.Close();
+		}
+		else
+		{
+			//Connect to the database and check to see if user already exists, if it does, compare the password
+			string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
+			SqlConnection conn = new SqlConnection(connectionString);
+			string query = "insert into postt (ptext, ptimestamp, phascom, pgroupid, ppicfile, pcode) values (@posttext, @timestamp, @hascom, @groupid, @picfile, @codetext);";
+			SqlCommand com = new SqlCommand(query, conn);
+			conn.Open();
 
-		conn.Close();
+			com.Parameters.AddWithValue("@posttext", WriteTextBox.Text);
+			com.Parameters.AddWithValue("@timestamp", myDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff"));
+			com.Parameters.AddWithValue("@hascom", 0);
+			com.Parameters.AddWithValue("@picfile", PostPic.FileName);
+			com.Parameters.AddWithValue("@codetext", WriteCodeBox.Text);
+			com.Parameters.AddWithValue("@groupid", Int32.Parse(Session["GroupId"].ToString()));
+
+			com.ExecuteNonQuery();
+
+			conn.Close();
+		}
 
         WriteTextBox.Text = "";
         WriteCodeBox.Text = "";

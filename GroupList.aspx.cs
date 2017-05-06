@@ -42,10 +42,16 @@ public partial class GroupList : System.Web.UI.Page
 
 	protected void Page_Load(object sender, EventArgs e)
 	{
+		Session["GroupAdmin"] = "0";
 		//Check to see if the user has logged in, if not disable ability to post a car
 		if (Session["Username"] == null)
 		{
 			Response.Redirect("Login.aspx");
+		}
+		else if (Int32.Parse(Session["UserId"].ToString()) % 2 == 1)
+		{
+			Session["Username"] = Session["TempUsername"];
+			Session["UserId"] = Session["TempUserId"];
 		}
 
 		//Connect to the database and check to see if user already exists, if it does, compare the password
@@ -76,7 +82,12 @@ public partial class GroupList : System.Web.UI.Page
 			checkarray[12] = reader[12].ToString();     //groupavatar
 			checkarray[13] = reader[13].ToString();     //gabout
 
+			if (checkarray[2] == "True") {
+				Session["GroupAdmin"] = "1";
+			}
+
 			Session["GroupId"] = Int32.Parse(checkarray[10]);
+			Session["GroupName"] = checkarray[11];
 			Group group = new Group(checkarray[11], checkarray[12]);
 			AddPost(Panel, group);
 		}
