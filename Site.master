@@ -99,7 +99,7 @@
                         <li><a runat="server" href="~/GroupList">Groups</a></li>
                     </ul>
                     <div class="nav navbar-nav navbar-right">
-                        <asp:Button ID="LogOutToggler" CssClass="btn btn-danger navbar-btn btn-padding" OnClick="logoutclick" runat="server" Text="<span class="fa fa-sign-out"></span>Log Out" />
+                        <asp:Button ID="LogOutToggler" CssClass="btn btn-danger navbar-btn btn-padding" OnClick="logoutclick" runat="server" Text="<span class='fa fa-sign-out'></span>Log Out" />
                     </div>
                     <div class="nav navbar-nav navbar-right">
                         <button id="PostModalToggler" type="button" class="btn btn-primary navbar-btn" onclick="$('#PostModal').modal('toggle')"><span class="fa fa-file"></span> New Post</button>
@@ -115,10 +115,14 @@
         <!-- HEREIN LIES YE OLE CHAT BOXE -->
         <div id="chatBar" class="well">
             <ul class="fa-ul">
-                <li class="li-chatbox li-chatbox-folder">Users<ul id="usersList" class="fa-ul"></ul></li>
-                <li class="li-chatbox li-chatbox-folder">Groups<ul id="groupsList" class="fa-ul">
-                    <li class="li-chatbox li-chatbox-group"><a href="">Association_for_Computing_Machinery.grp</a></li>
-                    <li class="li-chatbox li-chatbox-group"><a href="">Video_Game_Developers_Club.grp</a></li></ul></li>
+                <li class="li-chatbox li-chatbox-folder">Users
+                    <ul id="usersList" class="fa-ul">
+                        <!-- To be filled by javascript -->
+                    </ul></li>
+                <li class="li-chatbox li-chatbox-folder">Groups
+                    <ul id="groupsList" class="fa-ul" runat="server">
+                        <!-- To be filled by C# -->
+                    </ul></li>
             </ul>
             <script type="text/javascript">
                 var currentOnlineUsers = [];
