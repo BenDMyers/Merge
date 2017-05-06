@@ -6,7 +6,7 @@ using Microsoft.AspNet.SignalR;
 
 public class PMHub : Hub
 {
-    private static List<UserDetail> ConnectedUsers = new List<UserDetail>();
+    public static List<UserDetail> ConnectedUsers = new List<UserDetail>();
 
     public void Connect(string userName)
     {
@@ -70,26 +70,5 @@ public class PMHub : Hub
     private UserDetail FindUserById(string id)
     {
         return ConnectedUsers.Find(x => x.GetID() == id);
-    }
-
-    internal class UserDetail
-    {
-        string ConnectionId;
-        string UserName;
-        public UserDetail(string id, string uname)
-        {
-            ConnectionId = id;
-            UserName = uname;
-        }
-
-        public string GetUserName()
-        {
-            return UserName;
-        }
-
-        public string GetID()
-        {
-            return ConnectionId;
-        }
     }
 }
