@@ -129,8 +129,20 @@ public partial class NewsFeed : System.Web.UI.Page
         return users;
     }
 
+    // merge the list of list of posts into a single list - aka flattening by one dimension.
+    private List<Post> flatten(List<List<Post>> ALLTHELISTS)
+    {
+        List<Post> finalList = new List<Post>();
 
+        foreach (List<Post> list in ALLTHELISTS)
+        {
+            finalList.AddRange(list);
+        }
 
+        return finalList;
+    }
+
+    /*
     // GAH DOES THIS EVEN WORK?!?!?!?!?!!
     private Post getNext(List<List<Post>> ALLTHELISTS)
     {
@@ -155,6 +167,7 @@ public partial class NewsFeed : System.Web.UI.Page
         }
         return recent;
     }
+    */
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -177,13 +190,20 @@ public partial class NewsFeed : System.Web.UI.Page
             }
         }
 
-
+        List<Post> posts = flatten(ALLTHEPOSTS);
+        posts.Sort();
+        foreach ( Post post in posts)
+        {
+            Panel.Controls.Add(post.control);
+        }
+        /*
         Post post = getNext(ALLTHEPOSTS);
         while (post != null)
         {
             Panel.Controls.Add(post.control);
             post = getNext(ALLTHEPOSTS);
         }
+        */
 	}
 
     private Post makePost(User user, String text, String imgSrc, String codeSrc, DateTime timestamp)
