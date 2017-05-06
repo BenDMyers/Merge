@@ -37,6 +37,8 @@ textarea {
     height: 100%;
     visibility: visible;
     padding-left: 0px;
+    margin-top: 0px;
+    top: 50px;
 }
 
 /* FOR A FOLDER BULLET POINT */
@@ -151,4 +153,17 @@ textarea {
 
 #HiddenNameLabel {
     visibility:hidden;
+}
+
+#chatEntry {
+    color: #000000;
+}
+
+.chatter {
+    font-weight: bold;
+    color: #ff9900;
+}
+
+#chatIncoming {
+    word-wrap: break-word;
 }

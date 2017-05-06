@@ -1,4 +1,4 @@
-﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="Site.master.cs" Inherits="SiteMaster" %>
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="Site.master.cs" Inherits="SiteMaster" Debug="true" %>
 
 <!DOCTYPE html>
 
@@ -99,9 +99,7 @@
                         <li><a runat="server" href="~/GroupList">Groups</a></li>
                     </ul>
                     <div class="nav navbar-nav navbar-right">
-                        <ul class="nav navbar-nav">
-                            <li><a runat="server" href="~/LogOut">Log Out</a></li>
-                        </ul>
+                           <button id="LogOutToggler" type="button" class="btn btn-primary navbar-btn" onclick="logoutclick"><span class="fa fa-file"></span>Log Out</button>
                     </div>
                     <div class="nav navbar-nav navbar-right">
                         <button id="PostModalToggler" type="button" class="btn btn-primary navbar-btn" onclick="$('#PostModal').modal('toggle')"><span class="fa fa-file"></span> New Post</button>
@@ -174,7 +172,7 @@
                             var messagingWith = $('#outgoingUser').text();
                             var myUserName = $('#HiddenNameLabel').text();
                             if (from == messagingWith || from == myUserName) {
-                                messageSpot.append("<strong>" + from + "</strong><p>" + contents + "</p>");
+                                messageSpot.append("<span id='chatter'>" + from + "</span><p>" + contents + "</p>");
                                 $('#chatIncoming').stop().animate({
                                     scrollTop: $('#chatIncoming')[0].scrollHeight
                                 }, 800);

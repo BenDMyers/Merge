@@ -7,7 +7,7 @@
         <div id="chatIncoming" style="overflow-y:auto;max-height:70vh;">
             <em>Please wait while your chat partner conencts....</em><br />
         </div>
-        <input id="chatEntry" style="width:70%" type="text" />
+        <input id="chatEntry" class="form-control" style="width:70%" type="text" />
         <script type="text/javascript">
             $(function () {
 

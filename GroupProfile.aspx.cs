@@ -13,7 +13,7 @@ using Google.Apis.Util.Store;
 
 public partial class GroupProfile : System.Web.UI.Page
 {
-    protected void Page_Load(object sender, EventArgs e)
+	protected void Page_Load(object sender, EventArgs e)
 	{
 
 	}
