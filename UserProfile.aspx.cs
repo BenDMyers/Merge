@@ -51,8 +51,8 @@ public partial class UserProfile : System.Web.UI.Page
 			Session["UserId"] = Session["TempUserId"];
 		}
 
-		//Connect to the database and check to see if user already exists, if it does, compare the password
-		string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
+        //Connect to the database and check to see if user already exists, if it does, compare the password
+        string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
 		SqlConnection conn = new SqlConnection(connectionString);
 		string query = "select TOP(20) * from postt p left join users u on u.userid = p.puserid where p.puserid = " + Session["UserId"] + " order by p.ptimestamp desc;";
 		SqlCommand cmd = new SqlCommand(query, conn);

@@ -5,7 +5,7 @@
     <div id="chatContainer">
         <label id="outgoingUser"></label>
         <div id="chatIncoming" style="overflow-y:auto;max-height:70vh;">
-            <span class="joinedchat">Please wait while your chat partner conencts....</span><br />
+            <span class="joinedchat">Please wait while your chat partner connects....</span><br />
         </div>
         <input id="chatEntry" class="form-control" style="width:70%" type="text" />
         <script type="text/javascript">
