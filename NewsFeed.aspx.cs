@@ -13,8 +13,9 @@ public partial class NewsFeed : System.Web.UI.Page
 	static string DatabaseConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
 
     string sqlDatetime = "M/d h:mm:ss tt";
-    
-           // WHY THIS NO PASRE??   "5/5 9:03:42 PM"
+    string outputTimestamp = "M/d h:mm:ss tt";
+
+    // WHY THIS NO PASRE??   "5/5 9:03:42 PM"
 
     // simple container class for user info.
     private class User
@@ -85,7 +86,9 @@ public partial class NewsFeed : System.Web.UI.Page
             checkarray[20] = reader[20].ToString();     //groupavatar
 
             User user = new User(checkarray[13], checkarray[15]);
-            posts.Add(makePost(user, checkarray[1], checkarray[8], checkarray[7], DateTime.ParseExact(checkarray[2], sqlDatetime, null)));
+            DateTime time = DateTime.ParseExact(checkarray[2], sqlDatetime, null);
+            time = DateTime.SpecifyKind(time, DateTimeKind.Local);
+            posts.Add(makePost(user, checkarray[1], checkarray[8], checkarray[7], time));
 
         }
         reader.Close();
@@ -172,6 +175,7 @@ public partial class NewsFeed : System.Web.UI.Page
         // finally, flatten all the lists into one list, and sort it.
         List<Post> posts = flatten(ALLTHEPOSTS);
         posts.Sort();
+        posts.Reverse();
         // then add them to the page!
         foreach ( Post post in posts)
         {
