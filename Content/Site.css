@@ -88,9 +88,12 @@ textarea {
     font-variant: small-caps;
 }
 
-/* Minor Tweaks for Orange Buttons */
-.btn-primary {
+/* Minor Tweaks for Orange and Red Buttons */
+.btn-primary, .btn-danger {
     color: #fff;
+}
+.btn-padding {
+    padding-left: 10px;
 }
 
 /* Fun with Modals */
@@ -166,6 +169,7 @@ textarea {
 }
 
 .joinedchat {
+    font-style: italic;
     color: rgba(191, 191, 191, 0.75);
 }
 

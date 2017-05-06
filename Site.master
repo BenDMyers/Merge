@@ -99,7 +99,7 @@
                         <li><a runat="server" href="~/GroupList">Groups</a></li>
                     </ul>
                     <div class="nav navbar-nav navbar-right">
-                           <button id="LogOutToggler" type="button" class="btn btn-primary navbar-btn" onclick="logoutclick"><span class="fa fa-file"></span>Log Out</button>
+                        <asp:Button ID="LogOutToggler" CssClass="btn btn-danger navbar-btn btn-padding" OnClick="logoutclick" runat="server" Text="<span class="fa fa-sign-out"></span>Log Out" />
                     </div>
                     <div class="nav navbar-nav navbar-right">
                         <button id="PostModalToggler" type="button" class="btn btn-primary navbar-btn" onclick="$('#PostModal').modal('toggle')"><span class="fa fa-file"></span> New Post</button>
@@ -129,7 +129,11 @@
                     $.connection.hub.start().done(function () {
                         pmchat.server.connect($("#HiddenNameLabel").text());
                         if (window.location.pathname.endsWith("Chat"))
+                        {
                             $.connection.pMHub.server.connectedToChat(window.location.href.split("=")[1])
+                            document.title = "Chat with " + window.location.href.split("=")[1] + " | Merge";
+                        }
+                            
                     });
 
                     pmchat.client.updateOnlineUsers = function (newUserName, justConnected) {
@@ -189,7 +193,7 @@
                         currentOnlineUsers.forEach(function (value, i, curArray) {
                             var wantsToChat = "";
                             if (whoWantsToChat[value] != null && whoWantsToChat[value]) {
-                                wantsToChat = "<span id='wantstochat'>(!)</span>";
+                                wantsToChat = "<span class='wantstochat'>(!)</span>";
                             }
                             usersList.append("<li class='li-chatbox li-chatbox-user'><a href='Chat?target=" + value + "'>" + value + ".usr " + wantsToChat + "</a></li>");
                         });
