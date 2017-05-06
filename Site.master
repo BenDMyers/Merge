@@ -134,6 +134,10 @@
                             $.connection.pMHub.server.connectedToChat(window.location.href.split("=")[1])
                             document.title = "Chat with " + window.location.href.split("=")[1] + " | Merge";
                         }
+                        else (window.location.pathname.endsWith("ChatGroup"))
+                        {
+                            $.connection.groupChatHub.server.connectToGroupChat(<%: Session["TempGroupChatName"] %>);
+                        }
                             
                     });
 
