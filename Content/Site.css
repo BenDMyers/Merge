@@ -92,8 +92,8 @@ textarea {
 .btn-primary, .btn-danger {
     color: #fff;
 }
-.btn-padding {
-    padding-left: 10px;
+.btn-margins {
+    margin-left: 10px;
 }
 
 /* Fun with Modals */
@@ -180,4 +180,9 @@ textarea {
 .wantstochat {
     font-size: small;
     color: #19ff65;
+}
+
+#outgoingUser {
+    font-size: xx-large;
+    text-transform: uppercase;
 }
