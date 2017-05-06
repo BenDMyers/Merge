@@ -16,8 +16,6 @@
                 var target = <%: Session["TempGroupChatName"] %>
                 $("#outgoingUser").text(target);
 
-                groupchat.server.connectToGroupChat(target);
-
                 $("#chatEntry").keydown(function (event) {
                     var groupchat = $.connection.groupChatHub;
                     if (event.keyCode == 13) {
