@@ -5,7 +5,7 @@
 <!--comments are bollocks
 lists of groups that users are members of
 database stuffs Kaylee-->
-
-	<asp:Panel ID="Panel" runat="server"></asp:Panel>
+	
+		<asp:HyperLink ID="GroupLink" runat="server" NavigateUrl="~/GroupProfile.aspx"><asp:Panel ID="Panel" runat="server"></asp:Panel></asp:HyperLink>
 
 </asp:Content>

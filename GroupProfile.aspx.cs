@@ -1,20 +1,166 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using System.Data.SqlClient;
 
 public partial class GroupProfile : System.Web.UI.Page
 {
-	protected void Page_Load(object sender, EventArgs e)
-	{
+	// this is a shortcut for your connection string
+	static string DatabaseConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
 
+
+	// simple container class for user info.
+	private class Group
+	{
+		public String groupname;
+		public String avatar;
+
+		public Group(String curgroupname, String curavatar)
+		{
+			groupname = curgroupname;   // lulz these names are terrible
+			avatar = curavatar;       // lulz these names are terrible
+		}
 	}
 
-    protected void CreateEventButton_Click(object sender, EventArgs e)
-    {
-        //events.insert();
-    }
+	private DataTable testSql()
+	{
+		// do stuff
+		using (SqlConnection conn = new SqlConnection(DatabaseConnectionString))
+		{
+			SqlCommand cmd = new SqlCommand("SELECT * FROM postt", conn);
+			cmd.Connection.Open();
+			DataTable TempTable = new DataTable();
+			TempTable.Load(cmd.ExecuteReader());
+			return TempTable;
+		}
+	}
+
+
+	protected void Page_Load(object sender, EventArgs e)
+	{
+		//Check to see if the user has logged in, if not disable ability to post a car
+		if (Session["Username"] == null)
+		{
+			Response.Redirect("Login.aspx");
+		}
+
+		//Connect to the database and check to see if user already exists, if it does, compare the password
+		string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
+		SqlConnection conn = new SqlConnection(connectionString);
+		string query = "select TOP(20) * from postt p left join users u on u.userid = p.puserid left join groups g on g.groupid = p.pgroupid where p.groupid = " + Session["GroupId"] + ";";
+		SqlCommand cmd = new SqlCommand(query, conn);
+
+		conn.Open();
+
+		//Actually execute the query and return the results
+		SqlDataReader reader = cmd.ExecuteReader();
+		string[] checkarray = new string[22];
+		while (reader.Read())
+		{
+			checkarray[0] = reader[0].ToString();     //postid
+			checkarray[1] = reader[1].ToString();     //ptext
+			checkarray[2] = reader[2].ToString();     //ptimestamp
+			checkarray[3] = reader[3].ToString();     //phascom
+			checkarray[4] = reader[4].ToString();     //commentid
+			checkarray[5] = reader[5].ToString();     //puserid
+			checkarray[6] = reader[6].ToString();     //pgroupid
+			checkarray[7] = reader[7].ToString();     //pcode
+			checkarray[8] = reader[8].ToString();     //ppicfile
+			checkarray[9] = reader[9].ToString();     //pedate
+			checkarray[10] = reader[10].ToString();     //petime
+			checkarray[11] = reader[11].ToString();     //peinfo
+			checkarray[12] = reader[12].ToString();     //userid
+			checkarray[13] = reader[13].ToString();     //username
+			checkarray[14] = reader[14].ToString();     //userrealname
+			checkarray[15] = reader[15].ToString();     //usergitname
+			checkarray[16] = reader[16].ToString();     //useravatar
+			checkarray[17] = reader[17].ToString();     //useremail
+			checkarray[18] = reader[18].ToString();     //userpassword
+			checkarray[19] = reader[19].ToString();     //groupid
+			checkarray[20] = reader[20].ToString();     //groupname
+			checkarray[21] = reader[21].ToString();     //groupavatar
+
+			Group group = new Group(checkarray[20], checkarray[21]);
+			AddPost(Panel, group, checkarray[2], checkarray[7], checkarray[8]);
+		}
+		reader.Close();
+		conn.Close();
+	}
+
+	private void AddPost(Panel panel, Group group, String text, String imgSrc, String codeSrc)
+	{
+		// layout of this code block should resemble the layout of the generated HTML!
+		// ( i.e. outer elements are created first, and added after - creation is open tag, adding is close tag
+		Panel post = new Panel();
+		post.CssClass = "post-container";
+		Panel block = new Panel();
+		block.CssClass = "post-block";
+
+		// make the username and avatar container
+		Panel userContainer = new Panel();
+		userContainer.CssClass = "user-info";
+
+		if (group.avatar != "NULL")
+		{
+			Image userAvatar = new Image();
+			userAvatar.CssClass = "avatar";
+			userAvatar.ImageUrl = "/pictures/avatars/" + group.avatar;
+			// and finally add them to the container
+			userContainer.Controls.Add(userAvatar);
+		}
+
+		Label groupText = new Label();
+		groupText.Text = group.groupname;
+
+		// and finally add them to the container
+		userContainer.Controls.Add(groupText);
+
+		// and add the container to the outer block
+		block.Controls.Add(userContainer);
+
+		if (codeSrc != null && codeSrc != "")
+		{
+			//Literal code = new Literal();
+			//code.Text = "<pre><code>" + "</code></pre>"; //ROFL HOW FAST CAN YOU SAY CODE INJECTION!
+
+			Panel codePanel = new Panel();
+			codePanel.CssClass = "content-container code-content";
+
+			// make the code element - this involves some special html tags that don't exist in asp
+			// so F**K ASP.NET and let's write literal HTML
+			Literal codePre = new Literal();
+			codePre.Text = "<pre><code>";
+			Label code = new Label();
+			code.Text = HttpUtility.HtmlEncode(codeSrc); // maybe not code injection? 
+			Literal codePost = new Literal();
+			codePost.Text = "</pre></code>";
+
+			// and add the code to the container
+			codePanel.Controls.Add(codePre);
+			codePanel.Controls.Add(code);
+			codePanel.Controls.Add(codePost);
+
+			block.Controls.Add(codePanel);
+		}
+		if (imgSrc != null && imgSrc != "" && imgSrc != "System.Web.UI.WebControls.FileUpload")
+		{
+			Panel imageContainer = new Panel();
+			imageContainer.CssClass = "content-container img-content";
+
+			Image img = new Image();
+			img.CssClass = "post-image";
+			img.ImageUrl = "~/pictures/postpics/" + imgSrc;
+			imageContainer.Controls.Add(img);
+
+			//and finally add the container to the outer block
+			block.Controls.Add(imageContainer);
+		}
+
+		post.Controls.Add(block);
+		panel.Controls.Add(post);
+	}
 }

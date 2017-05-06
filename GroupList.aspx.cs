@@ -76,6 +76,7 @@ public partial class GroupList : System.Web.UI.Page
 			checkarray[12] = reader[12].ToString();     //groupavatar
 			checkarray[13] = reader[13].ToString();     //gabout
 
+			Session["GroupId"] = Int32.Parse(checkarray[10]);
 			Group group = new Group(checkarray[11], checkarray[12]);
 			AddPost(Panel, group);
 		}
