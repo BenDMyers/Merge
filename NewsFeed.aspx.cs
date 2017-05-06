@@ -58,32 +58,33 @@ public partial class NewsFeed : System.Web.UI.Page
 
 		//Actually execute the query and return the results
 		SqlDataReader reader = cmd.ExecuteReader();
-		string[] checkarray = new string[21];
+		string[] checkarray = new string[22];
 		while (reader.Read())
 		{
-			checkarray[0] = reader[0].ToString();       //postid
-			checkarray[1] = reader[1].ToString();       //ptext
-			checkarray[2] = reader[2].ToString();       //ptimestamp
-			checkarray[3] = reader[3].ToString();       //phascom
-			checkarray[4] = reader[4].ToString();       //commentid
-			checkarray[5] = reader[5].ToString();       //puserid
-			checkarray[6] = reader[6].ToString();       //pgroupid
-			checkarray[7] = reader[7].ToString();       //pcode
-			checkarray[8] = reader[8].ToString();       //ppicfile
-			checkarray[9] = reader[9].ToString();       //pedate
+			checkarray[0] = reader[0].ToString();     //postid
+			checkarray[1] = reader[1].ToString();     //ptext
+			checkarray[2] = reader[2].ToString();     //ptimestamp
+			checkarray[3] = reader[3].ToString();     //phascom
+			checkarray[4] = reader[4].ToString();     //commentid
+			checkarray[5] = reader[5].ToString();     //puserid
+			checkarray[6] = reader[6].ToString();     //pgroupid
+			checkarray[7] = reader[7].ToString();     //pcode
+			checkarray[8] = reader[8].ToString();     //ppicfile
+			checkarray[9] = reader[9].ToString();     //pedate
 			checkarray[10] = reader[10].ToString();     //petime
 			checkarray[11] = reader[11].ToString();     //peinfo
 			checkarray[12] = reader[12].ToString();     //userid
 			checkarray[13] = reader[13].ToString();     //username
 			checkarray[14] = reader[14].ToString();     //userrealname
-			checkarray[15] = reader[15].ToString();     //useravatar
-			checkarray[16] = reader[16].ToString();     //useremail
-			checkarray[17] = reader[17].ToString();     //userpassword
-			checkarray[18] = reader[18].ToString();     //groupid
-			checkarray[19] = reader[19].ToString();     //groupname
-			checkarray[20] = reader[20].ToString();     //groupavatar
+			checkarray[15] = reader[15].ToString();     //usergitname
+			checkarray[16] = reader[16].ToString();     //useravatar
+			checkarray[17] = reader[17].ToString();     //useremail
+			checkarray[18] = reader[18].ToString();     //userpassword
+			checkarray[19] = reader[19].ToString();     //groupid
+			checkarray[20] = reader[20].ToString();     //groupname
+			checkarray[21] = reader[21].ToString();     //groupavatar
 
-			User user = new User(checkarray[13], checkarray[15]);
+			User user = new User(checkarray[13], checkarray[16]);
 			AddPost(Panel, user, checkarray[1], checkarray[8], checkarray[7]);
 		}
 		reader.Close();

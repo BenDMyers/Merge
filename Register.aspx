@@ -56,13 +56,14 @@
 		<asp:SqlDataSource ID="RegisterUserData" runat="server"
 			ProviderName = "System.Data.SqlClient"
 			ConnectionString = "<%$ ConnectionStrings:DBConnection %>"
-			InsertCommand="insert into users (userrealname, useravatar, useremail, username, userpassword) values (@name, @avatar, @email, @username, @password);"
+			InsertCommand="insert into users (userrealname, useravatar, useremail, username, userpassword, usergitname) values (@name, @avatar, @email, @username, @password, @git);"
 			>
 			<InsertParameters>
 				<asp:ControlParameter ControlID="Name" Name="name" PropertyName="Text" />
 				<asp:ControlParameter ControlID="Avatar" Name="avatar" PropertyName="FileName" />
 				<asp:ControlParameter ControlID="Email" Name="email" PropertyName="Text" />
 				<asp:ControlParameter ControlID="Username" Name="username" PropertyName="Text" />
+				<asp:ControlParameter ControlID="Git" Name="git" PropertyName="Text" />
 				<asp:ControlParameter ControlID="Password" Name="password" PropertyName="Text" />
 			</InsertParameters>
 		</asp:SqlDataSource>
@@ -78,6 +79,8 @@
                     <asp:TextBox ID="Name" runat="server" CssClass="form-control"></asp:TextBox> <br />
 					<p>Username<asp:RequiredFieldValidator ID="UsernameVal" ControlToValidate="Username" ErrorMessage="Username is required." runat="server">*</asp:RequiredFieldValidator></p>
                     <asp:TextBox ID="Username" runat="server" CssClass="form-control"></asp:TextBox> <br />
+					<p>GitHub Username<asp:RequiredFieldValidator ID="GitValidator" ControlToValidate="Git" ErrorMessage="GitHub username is required." runat="server">*</asp:RequiredFieldValidator></p>
+                    <asp:TextBox ID="Git" runat="server" CssClass="form-control"></asp:TextBox> <br />
                     <p>Password<asp:RequiredFieldValidator ID="PasswordVal" ControlToValidate="Password" ErrorMessage="Password is required." runat="server">*</asp:RequiredFieldValidator></p>
                     <asp:TextBox ID="Password" Text="Password" TextMode="Password" runat="server" CssClass="form-control"></asp:TextBox> <br />
                     <p>Re-enter Password<asp:RequiredFieldValidator ID="PasswordAgainVal" ControlToValidate="PasswordAgain" ErrorMessage="Verify your password." runat="server">*</asp:RequiredFieldValidator></p>

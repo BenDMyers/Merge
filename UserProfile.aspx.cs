@@ -57,7 +57,7 @@ public partial class UserProfile : System.Web.UI.Page
 
 		//Actually execute the query and return the results
 		SqlDataReader reader = cmd.ExecuteReader();
-		string[] checkarray = new string[21];
+		string[] checkarray = new string[19];
 		while (reader.Read())
 		{
 			checkarray[0] = reader[0].ToString();       //postid
@@ -76,8 +76,9 @@ public partial class UserProfile : System.Web.UI.Page
 			checkarray[13] = reader[13].ToString();     //username
 			checkarray[14] = reader[14].ToString();     //userrealname
 			checkarray[15] = reader[15].ToString();     //useravatar
-			checkarray[16] = reader[16].ToString();     //useremail
-			checkarray[17] = reader[17].ToString();     //userpassword
+			checkarray[16] = reader[16].ToString();     //useravatar
+			checkarray[17] = reader[17].ToString();     //useremail
+			checkarray[18] = reader[18].ToString();     //userpassword
 
 			User user = new User(checkarray[13], checkarray[15]);
 			AddPost(Panel, user, checkarray[1], checkarray[8], checkarray[7]);
