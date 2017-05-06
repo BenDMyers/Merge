@@ -164,7 +164,7 @@ public partial class NewsFeed : System.Web.UI.Page
 
             Image img = new Image();
             img.CssClass = "post-image";
-            img.ImageUrl = "~/pictures/postpics/" + user.username + "/" + imgSrc;
+            img.ImageUrl = "~/pictures/postpics/" + imgSrc;
             imageContainer.Controls.Add(img);
 
             //and finally add the container to the outer block
