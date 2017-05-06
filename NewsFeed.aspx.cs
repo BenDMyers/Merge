@@ -141,69 +141,31 @@ public partial class NewsFeed : System.Web.UI.Page
 
         return finalList;
     }
-
-    /*
-    // GAH DOES THIS EVEN WORK?!?!?!?!?!!
-    private Post getNext(List<List<Post>> ALLTHELISTS)
-    {
-        List<Post> x = null;
-        Post recent = null;
-        // loop through all the posts, finding the most recent one...
-        for( int i=0; i< ALLTHELISTS.Count; i++)        
-        {
-            List<Post> list = ALLTHELISTS[i];
-            if (list.Count > 0)
-            {
-                if (recent == null || recent.after(list[0]))
-                {
-                    x = list;
-                    recent = list[0];
-                }
-            }
-        }
-        if (x != null)
-        {
-            x.RemoveAt(0); // poof
-        }
-        return recent;
-    }
-    */
+    
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        List<List<Post>> ALLTHEPOSTS = new List<List<Post>>();
-        List<Post> userPosts = getPosts();
-        ALLTHEPOSTS.Add(userPosts);
-        List<User> users = allUsers();
+        List<List<Post>> ALLTHEPOSTS = new List<List<Post>>(); // place to put all our lists
+        List<Post> userPosts = getPosts(); // get user posts from database
+        ALLTHEPOSTS.Add(userPosts); // add the user psot list to the listy list
+
+        List<User> users = allUsers(); // get all the users - we will then fetch each of their git feeds.
         foreach (User user in users) {
             if (user.gitname != null && user.gitname != "NULL" && user.gitname != "")
             {
-                bug("user has gitname!");
-                bug(user.username);
-                bug(user.gitname);
-                List<Post> githubPosts = GithubPosts.gitPosts(user.gitname);
+                List<Post> githubPosts = GithubPosts.gitPosts(user.gitname); // if they have a github name, get their feed as a seperate list
                 ALLTHEPOSTS.Add(githubPosts);
-            } else
-            {
-                bug("user no has gitname");
-                bug(user.username);
             }
         }
 
+        // finally, flatten all the lists into one list, and sort it.
         List<Post> posts = flatten(ALLTHEPOSTS);
         posts.Sort();
+        // then add them to the page!
         foreach ( Post post in posts)
         {
             Panel.Controls.Add(post.control);
         }
-        /*
-        Post post = getNext(ALLTHEPOSTS);
-        while (post != null)
-        {
-            Panel.Controls.Add(post.control);
-            post = getNext(ALLTHEPOSTS);
-        }
-        */
 	}
 
     private Post makePost(User user, String text, String imgSrc, String codeSrc, DateTime timestamp)
@@ -285,16 +247,5 @@ public partial class NewsFeed : System.Web.UI.Page
 
         post.Controls.Add(block);
         return new Post(post, timestamp) ;
-    }
-
-
-    private void bug(String thing)
-    {
-        Panel container = new Panel();
-        Label text = new Label();
-        text.Text = thing;
-        container.Controls.Add(text);
-        debugr.Controls.Add(container);
-
     }
 }

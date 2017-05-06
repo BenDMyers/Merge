@@ -11,7 +11,9 @@ using RestSharp.Authenticators;
 public class GithubPosts
 {
 
+    public static string githubDatetime = "yyyy-MM-dd'T'HH:mm:ss'Z'"; //format of github event timestamps
 
+    // some classes to match the heirarchy of the github JSON response for events
     private class Repo
     {
         public String name { get; set; }
@@ -27,6 +29,8 @@ public class GithubPosts
         public String ref_type { get; set; }
 
     }
+
+    // basic class that contains all the information of an event from github - fields **must match the names in the JSON response object**
     private class Event
     {
         public string type { get; set; }
@@ -36,7 +40,7 @@ public class GithubPosts
         public Repo repo { get; set; }
         public String created_at { get; set; }
 
-
+        // implement some getters for basic info
         public DateTime getTimestamp()
         {
             return DateTime.ParseExact(this.created_at, githubDatetime, null);
@@ -52,6 +56,7 @@ public class GithubPosts
         }
     }
 
+    // the superclass for other github event post types
     private abstract class EventPost
     {
         public abstract Control generateInner(Event evt);
@@ -66,28 +71,6 @@ public class GithubPosts
             post.CssClass = "post-container";
             Panel block = new Panel();
             block.CssClass = "post-block";
-
-            /*
-            // make the username and avatar container
-            Panel userContainer = new Panel();
-            userContainer.CssClass = "user-info";
-
-            Image userAvatar = new Image();
-            userAvatar.CssClass = "avatar";
-            userAvatar.ImageUrl = user.avatar;
-
-            Label userText = new Label();
-            userText.Text = user.username;
-
-
-            // and finally add them to the container
-            userContainer.Controls.Add(userAvatar);
-            userContainer.Controls.Add(userText);
-
-            // and add the container to the outer block
-            block.Controls.Add(userContainer);
-            */
-
 
             // add the inner container
             Panel gitContainer = new Panel();
@@ -105,6 +88,7 @@ public class GithubPosts
 
     }
 
+    // simple helper class for github posts of the form [username "did something to" repository-name]
     private class ActionEventPost : EventPost
     {
         private String action;
@@ -113,7 +97,8 @@ public class GithubPosts
         {
             this.action = action;
         }
-
+        
+        // generate the post content - this gets put insode containers later.
         public override Control generateInner(Event evt)
         {
             Panel container = new Panel();
@@ -127,7 +112,7 @@ public class GithubPosts
     }
 
 
-    // we need logic to decide what was created... soooo
+    // we need logic to decide what was created... soooo this class exists.
     private class CreateEventPost : EventPost
     {
         public override Control generateInner(Event evt)
@@ -154,15 +139,12 @@ public class GithubPosts
         }
     }
 
+    // this holds the generators for all the github event types. initially empty :(
     private static Dictionary<String, EventPost> eventPostFactories = new Dictionary<String, EventPost>();
-    //events["PushEvent"] = new EventPost();
-
-
-    public static string githubDatetime = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
     public static List<Post> gitPosts(String githubUsername)
     {
-        // define the post relationship
+        // define the post relationship between event types and their generators
         eventPostFactories["PushEvent"] = new ActionEventPost("pushed to");
         eventPostFactories["CreateEvent"] = new ActionEventPost("created a new repository,");
 
