@@ -37,6 +37,8 @@ textarea {
     height: 100%;
     visibility: visible;
     padding-left: 0px;
+    margin-top: 0px;
+    top: 50px;
 }
 
 /* FOR A FOLDER BULLET POINT */
@@ -86,9 +88,12 @@ textarea {
     font-variant: small-caps;
 }
 
-/* Minor Tweaks for Orange Buttons */
-.btn-primary {
+/* Minor Tweaks for Orange and Red Buttons */
+.btn-primary, .btn-danger {
     color: #fff;
+}
+.btn-padding {
+    padding-left: 10px;
 }
 
 /* Fun with Modals */
@@ -151,4 +156,28 @@ textarea {
 
 #HiddenNameLabel {
     visibility:hidden;
+}
+
+#chatEntry {
+    color: #000000;
+    max-width: none;
+}
+
+.chatter {
+    font-weight: bold;
+    color: #ff9900;
+}
+
+.joinedchat {
+    font-style: italic;
+    color: rgba(191, 191, 191, 0.75);
+}
+
+#chatIncoming {
+    word-wrap: break-word;
+}
+
+.wantstochat {
+    font-size: small;
+    color: #19ff65;
 }

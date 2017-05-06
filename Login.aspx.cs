@@ -10,7 +10,8 @@ public partial class Login : System.Web.UI.Page
 {
 	protected void Page_Load(object sender, EventArgs e)
 	{
-		if (Session["LogOut"] == "1")
+        if ((string)Session["Username"] != null) Response.Redirect("NewsFeed.aspx");
+		if ((string)Session["LogOut"] == "1")
 		{
 			LogOutLabel.Text = "Sucessfully logged out.";
 			Session["LogOut"] = null;

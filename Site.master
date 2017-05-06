@@ -1,4 +1,4 @@
-﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="Site.master.cs" Inherits="SiteMaster" %>
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="Site.master.cs" Inherits="SiteMaster" Debug="true" %>
 
 <!DOCTYPE html>
 
@@ -99,7 +99,7 @@
                         <li><a runat="server" href="~/GroupList">Groups</a></li>
                     </ul>
                     <div class="nav navbar-nav navbar-right">
-                           <button id="LogOutToggler" type="button" class="btn btn-primary navbar-btn" onclick="logoutclick"><span class="fa fa-file"></span>Log Out</button>
+                        <asp:Button ID="LogOutToggler" CssClass="btn btn-danger navbar-btn btn-padding" OnClick="logoutclick" runat="server" Text="<span class='fa fa-sign-out'></span>Log Out" />
                     </div>
                     <div class="nav navbar-nav navbar-right">
                         <button id="PostModalToggler" type="button" class="btn btn-primary navbar-btn" onclick="$('#PostModal').modal('toggle')"><span class="fa fa-file"></span> New Post</button>
@@ -115,10 +115,14 @@
         <!-- HEREIN LIES YE OLE CHAT BOXE -->
         <div id="chatBar" class="well">
             <ul class="fa-ul">
-                <li class="li-chatbox li-chatbox-folder">Users<ul id="usersList" class="fa-ul"></ul></li>
-                <li class="li-chatbox li-chatbox-folder">Groups<ul id="groupsList" class="fa-ul">
-                    <li class="li-chatbox li-chatbox-group"><a href="">Association_for_Computing_Machinery.grp</a></li>
-                    <li class="li-chatbox li-chatbox-group"><a href="">Video_Game_Developers_Club.grp</a></li></ul></li>
+                <li class="li-chatbox li-chatbox-folder">Users
+                    <ul id="usersList" class="fa-ul">
+                        <!-- To be filled by javascript -->
+                    </ul></li>
+                <li class="li-chatbox li-chatbox-folder">Groups
+                    <ul id="groupsList" class="fa-ul" runat="server">
+                        <!-- To be filled by C# -->
+                    </ul></li>
             </ul>
             <script type="text/javascript">
                 var currentOnlineUsers = [];
@@ -129,7 +133,11 @@
                     $.connection.hub.start().done(function () {
                         pmchat.server.connect($("#HiddenNameLabel").text());
                         if (window.location.pathname.endsWith("Chat"))
+                        {
                             $.connection.pMHub.server.connectedToChat(window.location.href.split("=")[1])
+                            document.title = "Chat with " + window.location.href.split("=")[1] + " | Merge";
+                        }
+                            
                     });
 
                     pmchat.client.updateOnlineUsers = function (newUserName, justConnected) {
@@ -157,7 +165,7 @@
                         if (messageSpot.length != 0) {
                             var messagingWith = $('#outgoingUser').text();
                             if (from == messagingWith) {
-                                pmchat.server.send(from, "<em>Joined the chat.</em>");
+                                pmchat.server.send(from, "<span class='joinedchat'>Joined the chat.</span>");
                                 return;
                             }
                         }
@@ -172,13 +180,15 @@
                             var messagingWith = $('#outgoingUser').text();
                             var myUserName = $('#HiddenNameLabel').text();
                             if (from == messagingWith || from == myUserName) {
-                                messageSpot.append("<strong>" + from + "</strong><p>" + contents + "</p>");
+                                messageSpot.append("<span id='chatter'>" + from + "</span><p>" + contents + "</p>");
                                 $('#chatIncoming').stop().animate({
                                     scrollTop: $('#chatIncoming')[0].scrollHeight
                                 }, 800);
                                 return;
                             }
                         }
+                        whoWantsToChat[from] = true;
+                        updateChatBar();
                     }
 
                     function updateChatBar() {
@@ -187,7 +197,7 @@
                         currentOnlineUsers.forEach(function (value, i, curArray) {
                             var wantsToChat = "";
                             if (whoWantsToChat[value] != null && whoWantsToChat[value]) {
-                                wantsToChat = "(!)";
+                                wantsToChat = "<span class='wantstochat'>(!)</span>";
                             }
                             usersList.append("<li class='li-chatbox li-chatbox-user'><a href='Chat?target=" + value + "'>" + value + ".usr " + wantsToChat + "</a></li>");
                         });
