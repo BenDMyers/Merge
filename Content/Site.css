@@ -1,4 +1,6 @@
-﻿/* Move down content because we have a fixed navbar that is 50px tall */
+﻿/* SITE-WIDE AND DEFAULTS*/
+
+/* Move down content because we have a fixed navbar that is 50px tall */
 body {
     padding-top: 50px;
     padding-bottom: 20px;
@@ -19,6 +21,16 @@ textarea {
     max-width: 280px;
 }
 
+/* The small caps used, especially in the logo */
+.site-brand {
+    font-family: 'Roboto Mono', monospace;
+    font-variant: small-caps;
+}
+
+
+
+/* MOBILE-FIRST RESPONSIVE DESIGN */
+
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {
     .jumbotron {
@@ -29,6 +41,17 @@ textarea {
         padding-left:200px;
     }
 }
+
+/* Get rid of Ye Ole Chat Boxe on smaller screens */
+@media screen and (max-width: 767px) {
+    #chatBar {
+        visibility: hidden;
+    }
+}
+
+
+
+/* CHATBAR THINGS */
 
 #chatBar {
     position: fixed;
@@ -41,7 +64,7 @@ textarea {
     top: 50px;
 }
 
-/* FOR A FOLDER BULLET POINT */
+/* folder bullet */
 .li-chatbox-folder:before {
     font-family: 'FontAwesome';
     content: '\f07c';
@@ -49,7 +72,7 @@ textarea {
     color: #ffff77;
 }
 
-/* FOR A USER BULLET POINT */
+/* user bullet */
 .li-chatbox-user:before {
     font-family: 'FontAwesome';
     content: '\f2bc';
@@ -57,7 +80,7 @@ textarea {
     color: #f2f2f2;
 }
 
-/* FOR A GROUP BULLET POINT */
+/* group bullet */
 .li-chatbox-group:before {
     font-family: 'FontAwesome';
     content: '\f233';
@@ -65,6 +88,7 @@ textarea {
     color: #f2f2f2;
 }
 
+/* chatbox */
 .li-chatbox a {
     color: #bfbfbf;
 }
@@ -75,52 +99,92 @@ textarea {
     text-decoration: underline;
 }
 
-/* Get rid of Ye Ole Chat Boxe on smaller screens */
-@media screen and (max-width: 767px) {
-    #chatBar {
-        visibility: hidden;
-    }
+.wantstochat {
+    font-size: small;
+    color: #19ff65;
 }
 
-/* Logo/Branding Stuff */
-.site-brand {
-    font-family: 'Roboto Mono', monospace;
-    font-variant: small-caps;
+
+/* CHAT FUNCTIONALITY */
+
+#HiddenNameLabel {
+    visibility: hidden;
 }
 
-/* Minor Tweaks for Orange and Red Buttons */
+#chatEntry {
+    color: #000000;
+    max-width: none;
+}
+
+.chatter {
+    /* The usernames of the chat interlocutors */
+    font-weight: bold;
+    color: #ff9900;
+}
+
+#outgoingUser {
+    /* Header for one's fellow chatter*/
+    font-size: xx-large;
+    text-transform: uppercase;
+}
+
+.joinedchat {
+    /* Poorly named, but this refers to all chat announcements*/
+    font-style: italic;
+    color: rgba(191, 191, 191, 0.75);
+}
+
+#chatIncoming {
+    /* Also poorly named, but this is the entire chat panel */
+    /* Extra long words should wrap to the next line */
+    word-wrap: break-word;
+}
+
+
+
+/* MODALS AND OTHER FUN WITH BUTTONS*/
+
+/* minor tweaks for post and log out buttons */
 .btn-primary, .btn-danger {
     color: #fff;
 }
 .btn-margins {
     margin-left: 10px;
 }
+.btn-danger {
+    background-color: #404040;
+}
 
-/* Fun with Modals */
 .modal {
     color: #191919;
 }
 
 #WriteTextBox {
+    /* Targets the text component box of the posting modal */
     max-width: none;
     margin-left: 0px;
     margin-right: 0px;
 }
 
 #WriteCodeBox {
+    /* Targets the code component box of the posting modal */
     max-width: none;
     margin-left: 0px;
     margin-right: 0px;
     margin-bottom: 0px;
 }
 
-#CodePreviewPanel {
+/*#CodePreviewPanel {
     max-width: none;
     margin-left: 0px;
     margin-right: 0px;
     margin-top: 0px;
     padding: 10px 10px 10px 10px;
-}
+}*/
+
+
+
+/* POSTS IN FEEDS */
 
 .post-container {
     background-color: #555555;
@@ -138,51 +202,28 @@ textarea {
 }
 
 .user-info {
+    /* The user info attached to each post */
     font-size: 300%;
     font-variant: small-caps;
     font-weight: bold;
 }
 
 .post-block>.text-content {
+    /* The text component of each post */
     font-size: 125%;
     padding: 10px 10px 10px 10px;
 }
 
 .img-content, .post-image {
+    /* The image component of posts */
     width: 100%;
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
 }
 
-#HiddenNameLabel {
-    visibility:hidden;
-}
-
-#chatEntry {
-    color: #000000;
-    max-width: none;
-}
-
-.chatter {
-    font-weight: bold;
-    color: #ff9900;
-}
-
-.joinedchat {
+/* Formatting for GitHub posts that appear in feed */
+.git-content {
     font-style: italic;
-    color: rgba(191, 191, 191, 0.75);
-}
-
-#chatIncoming {
-    word-wrap: break-word;
-}
-
-.wantstochat {
-    font-size: small;
-    color: #19ff65;
-}
-
-#outgoingUser {
-    font-size: xx-large;
-    text-transform: uppercase;
+    padding: 10px 10px 10px 10px;
+    color: rgba(255, 255, 255, 0.75);
 }
