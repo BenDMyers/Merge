@@ -179,6 +179,8 @@
                                 return;
                             }
                         }
+                        whoWantsToChat[from] = true;
+                        updateChatBar();
                     }
 
                     function updateChatBar() {
