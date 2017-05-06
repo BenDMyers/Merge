@@ -157,6 +157,7 @@ textarea {
 
 #chatEntry {
     color: #000000;
+    max-width: none;
 }
 
 .chatter {
@@ -164,6 +165,15 @@ textarea {
     color: #ff9900;
 }
 
+.joinedchat {
+    color: rgba(191, 191, 191, 0.75);
+}
+
 #chatIncoming {
     word-wrap: break-word;
+}
+
+.wantstochat {
+    font-size: small;
+    color: #19ff65;
 }

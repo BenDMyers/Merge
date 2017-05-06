@@ -157,7 +157,7 @@
                         if (messageSpot.length != 0) {
                             var messagingWith = $('#outgoingUser').text();
                             if (from == messagingWith) {
-                                pmchat.server.send(from, "<em>Joined the chat.</em>");
+                                pmchat.server.send(from, "<span class='joinedchat'>Joined the chat.</span>");
                                 return;
                             }
                         }
@@ -187,7 +187,7 @@
                         currentOnlineUsers.forEach(function (value, i, curArray) {
                             var wantsToChat = "";
                             if (whoWantsToChat[value] != null && whoWantsToChat[value]) {
-                                wantsToChat = "(!)";
+                                wantsToChat = "<span id='wantstochat'>(!)</span>";
                             }
                             usersList.append("<li class='li-chatbox li-chatbox-user'><a href='Chat?target=" + value + "'>" + value + ".usr " + wantsToChat + "</a></li>");
                         });
