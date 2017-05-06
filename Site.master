@@ -174,7 +174,7 @@
                             var messagingWith = $('#outgoingUser').text();
                             var myUserName = $('#HiddenNameLabel').text();
                             if (from == messagingWith || from == myUserName) {
-                                messageSpot.append("<strong>" + from + "</strong><p>" + contents + "</p>");
+                                messageSpot.append("<span id='chatter'>" + from + "</span><p>" + contents + "</p>");
                                 $('#chatIncoming').stop().animate({
                                     scrollTop: $('#chatIncoming')[0].scrollHeight
                                 }, 800);

@@ -154,3 +154,16 @@ textarea {
 #HiddenNameLabel {
     visibility:hidden;
 }
+
+#chatEntry {
+    color: #000000;
+}
+
+.chatter {
+    font-weight: bold;
+    color: #ff9900;
+}
+
+#chatIncoming {
+    word-wrap: break-word;
+}
