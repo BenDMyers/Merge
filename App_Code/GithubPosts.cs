@@ -83,6 +83,35 @@ public class GithubPosts
             block.Controls.Add(gitContainer);
 
             post.Controls.Add(block);
+
+
+
+            Panel footer = new Panel();
+            footer.CssClass = "post-footer";
+
+            // add timestamp
+            Label timestampLabel = new Label();
+            timestampLabel.CssClass = "timestamp-label";
+            timestampLabel.Text = evt.getTimestamp().ToString();
+            footer.Controls.Add(timestampLabel);
+
+            /*
+            //add the load comment control
+            Button loadComments = new Button();
+            loadComments.CssClass = "load-comments-button";
+            loadComments.Text = "load comments";
+            footer.Controls.Add(loadComments);
+
+
+            //add the load comment control
+            Button replyButton = new Button();
+            replyButton.CssClass = "reply-button";
+            replyButton.Text = "load comments";
+            footer.Controls.Add(replyButton);
+            */
+
+            post.Controls.Add(footer);
+
             return post;
         }
 

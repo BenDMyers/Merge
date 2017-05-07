@@ -25,11 +25,6 @@ public class Post : IComparable<Post>
     {
         this.control = control;
         this.timestamp = timestamp;
-        // this is a hack
-        Label timestampLabel = new Label();
-        timestampLabel.CssClass = "timestamp-label";
-        timestampLabel.Text = this.timestamp.ToString();
-        control.Controls.Add(timestampLabel);
     }
     
 }
