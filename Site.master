@@ -111,7 +111,7 @@
         <asp:Label ID="HiddenNameLabel" runat="server"></asp:Label>
         <!-- HEREIN LIES YE OLE CHAT BOXE -->
         <div id="chatBar" class="well">
-            <ul class="fa-ul">
+            <ul class="fa-ul"> <!-- fa-ul class enables Font Awesome bullet points -->
                 <li class="li-chatbox li-chatbox-folder">Users
                     <ul id="usersList" class="fa-ul">
                         <!-- To be filled by javascript -->
@@ -133,6 +133,11 @@
                         {
                             $.connection.pMHub.server.connectedToChat(window.location.href.split("=")[1])
                             document.title = "Chat with " + window.location.href.split("=")[1] + " | Merge";
+                        }
+                        else (window.location.pathname.endsWith("ChatGroup"))
+                        {
+                            $.connection.groupChatHub.server.connectToGroupChat(<%: Session["TempGroupChatName"] %>);
+                            document.title = "Chat with " + <%: Session["TempGroupChatName"] %> + " | Merge";
                         }
                             
                     });

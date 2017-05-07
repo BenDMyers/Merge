@@ -1,26 +1,26 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeFile="Chat.aspx.cs" Inherits="Chat" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeFile="ChatGroup.aspx.cs" Inherits="ChatGroup" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" Runat="Server">
 
     <div id="chatContainer">
         <label id="outgoingUser"></label>
-        <div id="chatIncoming" style="overflow-y:auto;max-height:70vh;">
-            <span class="joinedchat">Please wait while your chat partner connects....</span><br />
+        <div id="chatIncoming" style="overflow-y:auto;height:70vh;">
+            <span class="joinedchat">Please wait while we connect you to the group chat...</span><br />
         </div>
         <input id="chatEntry" class="form-control" style="width:70%" type="text" />
         <script type="text/javascript">
             $(function () {
 
-                var parseForUserName = window.location.href;
-                var parsed = parseForUserName.split("=");
-                var target = parsed[1];
+                var groupchat = $.connection.groupChatHub;
+
+                var target = <%: Session["TempGroupChatName"] %>
                 $("#outgoingUser").text(target);
 
                 $("#chatEntry").keydown(function (event) {
-                    var pmchat = $.connection.pMHub;
+                    var groupchat = $.connection.groupChatHub;
                     if (event.keyCode == 13) {
                         if ($(this).val() == null || $(this).val() == "") return false;
-                        pmchat.server.send($("#outgoingUser").text(), $(this).val());
+                        groupchat.server.sendGroupMessage($(this).val());
                         $('#chatIncoming').stop().animate({
                             scrollTop: $('#chatIncoming')[0].scrollHeight
                         }, 800);
@@ -32,8 +32,5 @@
         </script>
     </div>
 
-<!--comments are bollocks
-to-do:
-chat stuff
-see Jacob-->
 </asp:Content>
+

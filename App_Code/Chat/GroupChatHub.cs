@@ -14,7 +14,7 @@ public class GroupChatHub : Hub
         if (user == null) return;
         user.SetGroup(group);
         await Groups.Add(Context.ConnectionId, group);
-        Clients.Group(group).sendMessage(userName, "<span class='joinedchat'>Has joined the channel.</span>");
+        Clients.Group(group).sendMessage(userName, "<span class='joinedchat'>Has joined the chat.</span>");
     }
 
     public override Task OnDisconnected()
