@@ -1,4 +1,4 @@
-﻿<%@ Page Title="News Feed" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeFile="NewsFeed.aspx.cs" Inherits="NewsFeed" %>
+﻿<%@ Page Title="News Feed" Language="C#" MaintainScrollPositionOnPostback="true" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeFile="NewsFeed.aspx.cs" Inherits="NewsFeed" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" Runat="Server">
 <!--comments are bollocks

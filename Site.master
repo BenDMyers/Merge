@@ -76,6 +76,8 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Discard</button>
                         <asp:Button ID="PostButton" Text="Post" OnClick="postClick" CssClass="btn btn-primary" runat="server" />
+                        <asp:HiddenField ID="HiddenThing" runat="server" Value=""/>
+                    
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
@@ -111,15 +113,15 @@
         <asp:Label ID="HiddenNameLabel" runat="server"></asp:Label>
         <!-- HEREIN LIES YE OLE CHAT BOXE -->
         <div id="chatBar" class="well">
-            <ul class="fa-ul"> <!-- fa-ul class enables Font Awesome bullet points -->
+            <ul class="fa-ul">
                 <li class="li-chatbox li-chatbox-folder">Users
                     <ul id="usersList" class="fa-ul">
                         <!-- To be filled by javascript -->
                     </ul></li>
                 <li class="li-chatbox li-chatbox-folder">Groups
-                    <ul id="groupsList" class="fa-ul" runat="server">
                         <!-- To be filled by C# -->
-                    </ul></li>
+                    <asp:BulletedList ID="GroupList" CssClass="fa-ul" DisplayMode="HyperLink" runat="server">
+                    </asp:BulletedList></li>
             </ul>
             <script type="text/javascript">
                 var currentOnlineUsers = [];
@@ -134,10 +136,9 @@
                             $.connection.pMHub.server.connectedToChat(window.location.href.split("=")[1])
                             document.title = "Chat with " + window.location.href.split("=")[1] + " | Merge";
                         }
-                        else (window.location.pathname.endsWith("ChatGroup"))
+                        else if (window.location.pathname.endsWith("ChatGroup"))
                         {
-                            $.connection.groupChatHub.server.connectToGroupChat(<%: Session["TempGroupChatName"] %>);
-                            document.title = "Chat with " + <%: Session["TempGroupChatName"] %> + " | Merge";
+                            $.connection.groupChatHub.server.connectToGroupChat($("#HiddenNameLabel").text(), window.location.href.split("=")[1]);
                         }
                             
                     });
