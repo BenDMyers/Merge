@@ -67,7 +67,7 @@ public partial class UserProfile : System.Web.UI.Page
         string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
         SqlConnection conn = new SqlConnection(connectionString);
 
-        string userInfoQuery = "select * from users where userid = " + 
+        //string userInfoQuery = "select * from users where userid = " + 
 
 
 
