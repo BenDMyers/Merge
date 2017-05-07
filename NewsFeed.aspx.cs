@@ -148,8 +148,9 @@ public partial class NewsFeed : System.Web.UI.Page
     }
 
 
-    // so, the whole page reloads, and then a modal pops up.....
-    // that is a terrible UX. so TO JAVASCRIPT WE GOOOOOO
+    // so, using just ASP the whole page reloads, and then a modal pops up.....
+    // that is a terrible UX. so TO JAVASCRIPT WE GOOOOOO!!!
+    // ^ javascript saved our day here.
     public void onReply(object sender, EventArgs evt)
     {
         Page.ClientScript.RegisterStartupScript(this.GetType(), "derpyderp", "$('#PostModal').modal('toggle')", true);
@@ -161,21 +162,6 @@ public partial class NewsFeed : System.Web.UI.Page
     {
         int postId = Int32.Parse( (sender as Button).Attributes["postid"] );
         List<Post> comments = getComments(postId);
-        /*
-        List<Post> comments = new List<Post>();
-
-        Label lbl1 = new Label();
-        lbl1.Text = "post 1";
-        comments.Add(new Post(lbl1, DateTime.Now));
-
-        Label lbl2 = new Label();
-        lbl2.Text = "post 2";
-        comments.Add(new Post(lbl2, DateTime.Now));
-
-        Label lbl3 = new Label();
-        lbl3.Text = "post 3";
-        comments.Add(new Post(lbl3, DateTime.Now));
-        */
 
         // find a post with the matching postID in the DOM...... !!!!!!!!!!! FML! WHY C#! WHY!!!!
         Control Post = Panel.FindControl("post" + postId);
@@ -220,6 +206,7 @@ public partial class NewsFeed : System.Web.UI.Page
         Button replyButton = new Button();
         replyButton.CssClass = "reply-button";
         replyButton.Text = "reply";
+        // this sneaky bit of javascript opens a modal window to reply to a particular post. wooooooo
         replyButton.OnClientClick = "$('#PostModal').modal('toggle'); $('#PostButton').attr('replyPost', " + postID + "); document.getElementById('HiddenThing').value=" + postID + "; return false;";
         footer.Controls.Add(replyButton);
 
