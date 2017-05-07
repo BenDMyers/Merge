@@ -98,6 +98,9 @@ public partial class GroupProfile : System.Web.UI.Page
 		{
 			Session["TempUsername"] = Session["Username"];
 			Session["TempUserId"] = Session["UserId"];
+			Session["UserId"] = Session["GroupId"];
+			Session["Username"] = Session["GroupName"];
+
 			Group group = new Group(checkarray[20], checkarray[21]);
 			AddPost(Panel, group, checkarray[1], checkarray[7], checkarray[8]);
 		}

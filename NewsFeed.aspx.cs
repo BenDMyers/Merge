@@ -179,7 +179,7 @@ public partial class NewsFeed : System.Web.UI.Page
         // then add them to the page!
         foreach ( Post post in posts)
         {
-            Panel.Controls.Add(post.control);
+            NewsFeedPanel.Controls.Add(post.control);
         }
 	}
 
