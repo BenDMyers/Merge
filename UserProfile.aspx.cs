@@ -46,15 +46,33 @@ public partial class UserProfile : System.Web.UI.Page
 		{
 			Response.Redirect("Login.aspx");
 		}
-		else if (Int32.Parse(Session["UserId"].ToString())%2 == 1) {
+		if (Int32.Parse(Session["UserId"].ToString()) % 2 != 0)
+		{
 			Session["Username"] = Session["TempUsername"];
 			Session["UserId"] = Session["TempUserId"];
 		}
 
-		//Connect to the database and check to see if user already exists, if it does, compare the password
-		string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
-		SqlConnection conn = new SqlConnection(connectionString);
-		string query = "select TOP(20) * from postt p left join users u on u.userid = p.puserid where p.puserid = " + Session["UserId"] + " order by p.ptimestamp desc;";
+        // Get queried user, default to viewer
+        string queriedUser;
+        if(Request.QueryString[""] != null)
+        {
+            queriedUser = Request.QueryString[""];
+        }
+        else
+        {
+            queriedUser = Session["Username"].ToString();
+        }
+
+        // Get queried user info
+        string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
+        SqlConnection conn = new SqlConnection(connectionString);
+
+        string userInfoQuery = "select * from users where userid = " + 
+
+
+
+        // Fetch posts
+        string query = "select TOP(20) * from postt p left join users u on u.userid = p.puserid where p.puserid = " + queriedUser + " order by p.ptimestamp desc;";
 		SqlCommand cmd = new SqlCommand(query, conn);
 
 		conn.Open();

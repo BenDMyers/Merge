@@ -18,11 +18,13 @@ public partial class GroupList : System.Web.UI.Page
 	{
 		public String groupname;
 		public String avatar;
+		public int id;
 
-		public Group(String curgroupname, String curavatar)
+		public Group(String curgroupname, String curavatar, int curid)
 		{
 			groupname = curgroupname;   // lulz these names are terrible
 			avatar = curavatar;       // lulz these names are terrible
+			id = curid;
 		}
 	}
 
@@ -48,10 +50,10 @@ public partial class GroupList : System.Web.UI.Page
 		{
 			Response.Redirect("Login.aspx");
 		}
-		else if (Int32.Parse(Session["UserId"].ToString()) % 2 == 1)
+		if (Int32.Parse(Session["UserId"].ToString())%2 != 0)
 		{
-			Session["Username"] = Session["TempUsername"];
-			Session["UserId"] = Session["TempUserId"];
+			Session["TempUsername"] = Session["Username"];
+			Session["TempUserId"] = Session["UserId"];
 		}
 
 		//Connect to the database and check to see if user already exists, if it does, compare the password
@@ -85,11 +87,9 @@ public partial class GroupList : System.Web.UI.Page
 			if (checkarray[2] == "True") {
 				Session["GroupAdmin"] = "1";
 			}
-
-			Session["GroupId"] = Int32.Parse(checkarray[10]);
-			Session["GroupName"] = checkarray[11];
-			Group group = new Group(checkarray[11], checkarray[12]);
-			AddPost(Panel, group);
+			
+			Group group = new Group(checkarray[11], checkarray[12], Int32.Parse(checkarray[10]));
+			AddPost(GroupListPanel, group);
 		}
 		reader.Close();
 		conn.Close();
@@ -117,8 +117,9 @@ public partial class GroupList : System.Web.UI.Page
 			userContainer.Controls.Add(userAvatar);
 		}
 
-		Label groupText = new Label();
+		HyperLink groupText = new HyperLink();
 		groupText.Text = group.groupname;
+		groupText.NavigateUrl = "~/GroupProfile.aspx?groupid=" + group.id;
 
 		// and finally add them to the container
 		userContainer.Controls.Add(groupText);

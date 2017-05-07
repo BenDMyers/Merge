@@ -12,9 +12,10 @@ public partial class NewsFeed : System.Web.UI.Page
 	// this is a shortcut for your connection string
 	static string DatabaseConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
 
-    string sqlDatetime = "M/d/yyyy h:mm:ss tt";
-    
-           // WHY THIS NO PASRE??   "5/5 9:03:42 PM"
+    string sqlDatetime = "M/d h:mm:ss tt";
+    string outputTimestamp = "M/d h:mm:ss tt";
+
+    // WHY THIS NO PASRE??   "5/5 9:03:42 PM"
 
     // simple container class for user info.
     private class User
@@ -85,7 +86,9 @@ public partial class NewsFeed : System.Web.UI.Page
             checkarray[20] = reader[20].ToString();     //groupavatar
 
             User user = new User(checkarray[13], checkarray[15]);
-            posts.Add(makePost(user, checkarray[1], checkarray[8], checkarray[7], DateTime.ParseExact(checkarray[2], sqlDatetime, null)));
+            DateTime time = DateTime.ParseExact(checkarray[2], sqlDatetime, null);
+            time = DateTime.SpecifyKind(time, DateTimeKind.Local);
+            posts.Add(makePost(user, checkarray[1], checkarray[8], checkarray[7], time));
 
         }
         reader.Close();
@@ -144,16 +147,16 @@ public partial class NewsFeed : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-	//Check to see if the user has logged in, if not disable ability to post a car
-	if (Session["Username"] == null)
-	{
-		Response.Redirect("Login.aspx");
-	}
-	else if (Int32.Parse(Session["UserId"].ToString()) % 2 == 1)
-	{
-		Session["Username"] = Session["TempUsername"];
-		Session["UserId"] = Session["TempUserId"];
-	}
+		//Check to see if the user has logged in, if not disable ability to post a car
+		if (Session["Username"] == null)
+		{
+			Response.Redirect("Login.aspx");
+		}
+		if (Int32.Parse(Session["UserId"].ToString()) % 2 != 0)
+		{
+			Session["Username"] = Session["TempUsername"];
+			Session["UserId"] = Session["TempUserId"];
+		}
 
 
         List<List<Post>> ALLTHEPOSTS = new List<List<Post>>(); // place to put all our lists
@@ -172,6 +175,7 @@ public partial class NewsFeed : System.Web.UI.Page
         // finally, flatten all the lists into one list, and sort it.
         List<Post> posts = flatten(ALLTHEPOSTS);
         posts.Sort();
+        posts.Reverse();
         // then add them to the page!
         foreach ( Post post in posts)
         {

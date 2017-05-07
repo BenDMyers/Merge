@@ -6,12 +6,12 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using RestSharp;
 using RestSharp.Authenticators;
-
+using System.Globalization;
 
 public class GithubPosts
 {
 
-    public static string githubDatetime = "yyyy-MM-dd'T'HH:mm:ss'Z'"; //format of github event timestamps
+    public static string githubDatetime = "yyyy-MM-dd'T'HH:mm:ss"; //format of github event timestamps
 
     // some classes to match the heirarchy of the github JSON response for events
     private class Repo
@@ -43,7 +43,7 @@ public class GithubPosts
         // implement some getters for basic info
         public DateTime getTimestamp()
         {
-            return DateTime.ParseExact(this.created_at, githubDatetime, null);
+            return DateTime.Parse(this.created_at, null, DateTimeStyles.RoundtripKind);
         }
         public String getUsername()
         {
