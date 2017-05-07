@@ -11,4 +11,10 @@ public partial class _Default : System.Web.UI.Page
     {
         if ((string)Session["Username"] != null) Response.Redirect("NewsFeed.aspx");
     }
+
+    protected void SignUpButton_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("Register.aspx");
+    }
+
 }

@@ -47,6 +47,18 @@
                     </div>
                 </div>
             </div>
+            
+            <center>
+                <h1>The Best of Both Worlds</h1>
+                <h5>Introducing Merge - the social media for programmers.</h5> <br />
+                <a href ="Register.aspx"><asp:Button ID="SignUpButton" Text="Sign Up Now!" CssClass="btn btn-primary" OnClick ="SignUpButton_Click" runat="server"/> </a> <br /> <br />
+                <p><em>Already a member? <a href="Login.aspx">Sign in!</a></em></p> <br /> <br /> <br />
+                <h3>Chronological Github Integration</h3> <br /> <br />
+                <h3>Post Pictures and Code</h3> <br /> <br />
+                <h3>Connect With Your On-Campus Clubs and Groups</h3>
+                <h3>Chat With Friends and Co-Workers</h3> <br /> <br />
+                <h3>Merge your Worlds Today!</h3>
+            </center>
 
             <footer class="site-brand" style="text-align: center;">
                 <p>&copy; <%: DateTime.Now.Year %> Merge</p>
