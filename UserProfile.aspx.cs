@@ -46,7 +46,8 @@ public partial class UserProfile : System.Web.UI.Page
 		{
 			Response.Redirect("Login.aspx");
 		}
-		else if (Int32.Parse(Session["UserId"].ToString())%2 == 1) {
+		if (Int32.Parse(Session["UserId"].ToString()) % 2 != 0)
+		{
 			Session["Username"] = Session["TempUsername"];
 			Session["UserId"] = Session["TempUserId"];
 		}
