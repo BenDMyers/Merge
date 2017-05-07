@@ -57,6 +57,7 @@ public partial class GroupProfile : System.Web.UI.Page
 	protected void Page_Load(object sender, EventArgs e)
 	{
 		int tempGroup = Int32.Parse(Request.QueryString["groupid"]);
+		string tempGName = Request.QueryString["groupname"];
 		//Connect to the database and check to see if user already exists, if it does, compare the password
 		string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
 		SqlConnection conn = new SqlConnection(connectionString);
@@ -94,12 +95,12 @@ public partial class GroupProfile : System.Web.UI.Page
 			checkarray[21] = reader[21].ToString();     //groupavatar
 		}
 		//Check to see if the user is a group admin
-		if (Session["GroupAdmin"].ToString() == "1")
+		if (Int32.Parse(Session["GroupAdmin"].ToString()) == 1)
 		{
 			Session["TempUsername"] = Session["Username"];
 			Session["TempUserId"] = Session["UserId"];
-			Session["UserId"] = Session["GroupId"];
-			Session["Username"] = Session["GroupName"];
+			Session["UserId"] = tempGroup;
+			Session["Username"] = tempGName;
 
 			Group group = new Group(checkarray[20], checkarray[21]);
 			AddPost(Panel, group, checkarray[1], checkarray[7], checkarray[8]);

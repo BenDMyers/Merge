@@ -15,7 +15,7 @@ public partial class NewsFeed : System.Web.UI.Page
     string sqlDatetime = "M/d h:mm:ss tt";
     string outputTimestamp = "M/d h:mm:ss tt";
 
-    // WHY THIS NO PASRE??   "5/5 9:03:42 PM"
+    // WHY THIS NO PARSE??   "5/5 9:03:42 PM"
 
 
     private DataTable testSql()

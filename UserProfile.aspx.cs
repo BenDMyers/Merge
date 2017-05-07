@@ -60,7 +60,7 @@ public partial class UserProfile : System.Web.UI.Page
         }
         else
         {
-            queriedUser = Session["Username"].ToString();
+            queriedUser = Session["UserId"].ToString();
         }
 
         // Get queried user info
@@ -72,7 +72,7 @@ public partial class UserProfile : System.Web.UI.Page
 
 
         // Fetch posts
-        string query = "select TOP(20) * from postt p left join users u on u.userid = p.puserid where p.puserid = " + queriedUser + " order by p.ptimestamp desc;";
+        string query = "select TOP(20) * from postt p left join users u on u.userid = p.puserid where p.puserid = " + Int32.Parse(queriedUser) + " order by p.ptimestamp desc;";
 		SqlCommand cmd = new SqlCommand(query, conn);
 
 		conn.Open();
