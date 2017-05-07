@@ -153,6 +153,10 @@ textarea {
 }
 .btn-danger {
     background-color: #404040;
+    border-color: #404040;
+}
+.btn-danger:hover, btn-danger:focus {
+    background-color: #303030;
 }
 
 .modal {
