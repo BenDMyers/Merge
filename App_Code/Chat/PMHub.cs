@@ -59,7 +59,7 @@ public class PMHub : Hub
         UserDetail messageSender = FindUserById(Context.ConnectionId);
         if (messageTarget == null) return;
         Clients.Client(messageTarget.GetID()).receiveChatRequest(messageSender.GetUserName());
-        Clients.Client(messageTarget.GetID()).sendMessage(messageSender.GetUserName(), "<em>Joined the chat.</em>");
+        Clients.Client(messageTarget.GetID()).sendMessage(messageSender.GetUserName(), "<span class='joinedchat'>Joined the chat.</span>");
     }
 
     private UserDetail FindUserByUserName(string userName)

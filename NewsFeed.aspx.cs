@@ -286,16 +286,16 @@ public partial class NewsFeed : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-	//Check to see if the user has logged in, if not disable ability to post a car
-	if (Session["Username"] == null)
-	{
-		Response.Redirect("Login.aspx");
-	}
-	else if (Int32.Parse(Session["UserId"].ToString()) % 2 == 1)
-	{
-		Session["Username"] = Session["TempUsername"];
-		Session["UserId"] = Session["TempUserId"];
-	}
+		//Check to see if the user has logged in, if not disable ability to post a car
+		if (Session["Username"] == null)
+		{
+			Response.Redirect("Login.aspx");
+		}
+		if (Int32.Parse(Session["UserId"].ToString()) % 2 != 0)
+		{
+			Session["Username"] = Session["TempUsername"];
+			Session["UserId"] = Session["TempUserId"];
+		}
 
 
         List<List<Post>> ALLTHEPOSTS = new List<List<Post>>(); // place to put all our lists

@@ -13,6 +13,7 @@ public partial class SiteMaster : MasterPage
     private const string AntiXsrfTokenKey = "__AntiXsrfToken";
     private const string AntiXsrfUserNameKey = "__AntiXsrfUserName";
     private string _antiXsrfTokenValue;
+    private string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
 
     protected void Page_Init(object sender, EventArgs e)
     {
@@ -63,13 +64,38 @@ public partial class SiteMaster : MasterPage
                 throw new InvalidOperationException("Validation of Anti-XSRF token failed.");
             }
         }
+
+        // If they aren't logged in, redirect
+
+        if (Session["Username"] == null)
+            Response.Redirect("Login.aspx");
     }
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (Session["Username"] == null)
-            Response.Redirect("Login.aspx");
         HiddenNameLabel.Text = (string)Session["Username"];
+
+        // Here we populate the group chat list
+        SqlConnection conn = new SqlConnection(connectionString);
+        string query = "select g.groupname,g.groupid from member m left join users u on u.userid = m.muserid left join groups g on g.groupid = m.mgroupid where m.muserid = " + Session["UserId"] + ";";
+
+        SqlCommand getGroups = new SqlCommand(query, conn);
+        conn.Open();
+
+        SqlDataReader dr = getGroups.ExecuteReader();
+
+        if (dr.HasRows)
+        {
+            while (dr.Read())
+            {
+                ListItem GroupItem = new ListItem();
+                GroupItem.Value = "ChatGroup.aspx?group=" + dr["groupid"];
+                GroupItem.Text = dr["groupname"].ToString();
+                GroupList.Items.Add(GroupItem);
+            }
+        }
+
+        conn.Close();
     }
 
 	public void postClick(object sender, EventArgs e)
@@ -92,9 +118,6 @@ public partial class SiteMaster : MasterPage
 			}
 		}
 
-
-
-        
         if (Int32.Parse(Session["UserId"].ToString())%2 == 0)
 		{
             String replyPost = HiddenThing.Value;
@@ -150,7 +173,6 @@ public partial class SiteMaster : MasterPage
 		else
 		{
 			//Connect to the database and check to see if user already exists, if it does, compare the password
-			string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
 			SqlConnection conn = new SqlConnection(connectionString);
 			string query = "insert into postt (ptext, ptimestamp, phascom, pgroupid, ppicfile, pcode) values (@posttext, @timestamp, @hascom, @groupid, @picfile, @codetext);";
 			SqlCommand com = new SqlCommand(query, conn);
