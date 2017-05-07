@@ -47,18 +47,48 @@
                     </div>
                 </div>
             </div>
-            
+            <div class="container" id="SignUp">
             <center>
                 <h1>The Best of Both Worlds</h1>
                 <h5>Introducing Merge - the social media for programmers.</h5> <br />
                 <a href ="Register.aspx"><asp:Button ID="SignUpButton" Text="Sign Up Now!" CssClass="btn btn-primary" OnClick ="SignUpButton_Click" runat="server"/> </a> <br /> <br />
                 <p><em>Already a member? <a href="Login.aspx">Sign in!</a></em></p> <br /> <br /> <br />
-                <h3>Chronological Github Integration</h3> <br /> <br />
-                <h3>Post Pictures and Code</h3> <br /> <br />
-                <h3>Connect With Your On-Campus Clubs and Groups</h3>
-                <h3>Chat With Friends and Co-Workers</h3> <br /> <br />
-                <h3>Merge your Worlds Today!</h3>
             </center>
+            </div>
+            <div class="container" id="features">
+                <div class="clearfix" id="GithubDescription"> 
+                    <img alt="GithubPic" height="150" width="150" src="https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png" style="display: inline-table" />
+                    <div class="text" style="display: inline-block">
+                        <h3>Chronological Github Integration</h3>
+                        <p>Never miss a push with Github notifications showing up in your newsfeed.</p>
+                    </div>
+                </div> 
+                <div class="clearfix" id="PicturesNCode">
+                    <div class="text" style="display: inline-block ">
+                        <h3>Post Pictures and Code</h3>
+                        <p>Show your code, display, and comments all in one post!</p>
+                    </div>
+                    <img alt="PicturesNCodePic" height="150" width="150" src="http://media.istockphoto.com/photos/coding-picture-id519161626?k=6&m=519161626&s=612x612&w=0&h=vtPo_EoYkP6EmbWIlZ7bpPF9tJbmP40W7mjKPOdQC5w="display: inline-table" />
+                </div>
+                <div class="clearfix" id="ClubsnGroups">
+                    <img alt="GroupsPic" height="150" width="150" src="https://avatars3.githubusercontent.com/u/21269750?v=3&s=280style=" style="display: inline-table" />
+                    <div class="text" style="display: inline-block">
+                        <h3>Connect With Your On-Campus Clubs and Groups</h3>
+                        <p>Sign up your club and communicate, post code, and chat with your members.</p>
+                    </div>
+                </div>
+                <div class="clearfix" id="ChatFeature">
+                    <div class="text" style="display: inline-block">
+                        <h3>Chat With Friends and Co-Workers</h3> 
+                        <p>Merge allows you to chat with any user </p>
+                    </div>
+                    <img alt="ChatPic" height="150" width="150" src="https://ak9.picdn.net/shutterstock/videos/6685271/thumb/1.jpg" style="display: inline-table"
+                </div>
+                <center>
+                    <h1>Merge your Worlds Today!</h1>
+                </center>
+            </div>
+        </div>
 
             <footer class="site-brand" style="text-align: center;">
                 <p>&copy; <%: DateTime.Now.Year %> Merge</p>
