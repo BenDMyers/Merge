@@ -164,12 +164,12 @@ public partial class NewsFeed : System.Web.UI.Page
         List<Post> comments = getComments(postId);
 
         // find a post with the matching postID in the DOM...... !!!!!!!!!!! FML! WHY C#! WHY!!!!
-        Control Post = Panel.FindControl("post" + postId);
-        int i = Panel.Controls.IndexOf(Post) + 1; // then find that element in the list of controls, so we can add stuff after it.
+        Control Post = NewsFeedPanel.FindControl("post" + postId);
+        int i = NewsFeedPanel.Controls.IndexOf(Post) + 1; // then find that element in the list of controls, so we can add stuff after it.
         
         foreach ( Post post in comments)
         {
-            Panel.Controls.AddAt(i, post.control);
+            NewsFeedPanel.Controls.AddAt(i, post.control);
             i++;
         }
  
@@ -318,7 +318,7 @@ public partial class NewsFeed : System.Web.UI.Page
         // then add them to the page!
         foreach ( Post post in posts)
         {
-            Panel.Controls.Add(post.control);
+            NewsFeedPanel.Controls.Add(post.control);
         }
 	}
 
