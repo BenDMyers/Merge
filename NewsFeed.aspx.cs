@@ -12,7 +12,7 @@ public partial class NewsFeed : System.Web.UI.Page
 	// this is a shortcut for your connection string
 	static string DatabaseConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
 
-    string sqlDatetime = "M/d h:mm:ss tt";
+    string sqlDatetime = "M/d/yyyy h:mm:ss tt";
     
            // WHY THIS NO PASRE??   "5/5 9:03:42 PM"
 

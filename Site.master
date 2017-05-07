@@ -117,9 +117,9 @@
                         <!-- To be filled by javascript -->
                     </ul></li>
                 <li class="li-chatbox li-chatbox-folder">Groups
-                    <ul id="groupsList" class="fa-ul" runat="server">
                         <!-- To be filled by C# -->
-                    </ul></li>
+                    <asp:BulletedList ID="GroupList" CssClass="fa-ul" DisplayMode="HyperLink" runat="server">
+                    </asp:BulletedList></li>
             </ul>
             <script type="text/javascript">
                 var currentOnlineUsers = [];
@@ -134,9 +134,9 @@
                             $.connection.pMHub.server.connectedToChat(window.location.href.split("=")[1])
                             document.title = "Chat with " + window.location.href.split("=")[1] + " | Merge";
                         }
-                        else (window.location.pathname.endsWith("ChatGroup"))
+                        else if (window.location.pathname.endsWith("ChatGroup"))
                         {
-                            $.connection.groupChatHub.server.connectToGroupChat(<%: Session["TempGroupChatName"] %>);
+                            $.connection.groupChatHub.server.connectToGroupChat($("#HiddenNameLabel").text(), window.location.href.split("=")[1]);
                         }
                             
                     });
