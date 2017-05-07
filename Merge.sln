@@ -7,21 +7,21 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Merge", ".", "{6B7AA5CE-CE7
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5.2"
 		Debug.AspNetCompiler.VirtualPath = "/localhost_55426"
-		Debug.AspNetCompiler.PhysicalPath = "..\Merge\"
+		Debug.AspNetCompiler.PhysicalPath = ".\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_55426\"
 		Debug.AspNetCompiler.Updateable = "true"
 		Debug.AspNetCompiler.ForceOverwrite = "true"
 		Debug.AspNetCompiler.FixedNames = "false"
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.VirtualPath = "/localhost_55426"
-		Release.AspNetCompiler.PhysicalPath = "..\Merge\"
+		Release.AspNetCompiler.PhysicalPath = ".\"
 		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_55426\"
 		Release.AspNetCompiler.Updateable = "true"
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "55426"
-		SlnRelativePath = "..\Merge\"
+		SlnRelativePath = ".\"
 	EndProjectSection
 EndProject
 Global
