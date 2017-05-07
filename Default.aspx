@@ -78,6 +78,7 @@
                     </div>
                 </div>
                 <div class="clearfix" id="ChatFeature">
+                    <%--bleh--%>
                     <div class="text" style="display: inline-block">
                         <h3>Chat With Friends and Co-Workers</h3> 
                         <p>Merge allows you to chat with any user </p>
