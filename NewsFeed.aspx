@@ -10,7 +10,7 @@ see Alex and Ben
 database stuffs Kaylee-->
 
 
-    <asp:Panel ID="Panel" runat="server"></asp:Panel>
+    <asp:Panel ID="NewsFeedPanel" runat="server"></asp:Panel>
 
     <br /><br />
 </asp:Content>

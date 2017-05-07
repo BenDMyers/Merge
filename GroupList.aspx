@@ -6,6 +6,6 @@
 lists of groups that users are members of
 database stuffs Kaylee-->
 	
-		<asp:HyperLink ID="GroupLink" runat="server" NavigateUrl="~/GroupProfile.aspx"><asp:Panel ID="Panel" runat="server"></asp:Panel></asp:HyperLink>
+		<asp:Panel ID="GroupListPanel" runat="server"></asp:Panel>
 
 </asp:Content>

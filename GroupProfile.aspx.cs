@@ -44,7 +44,8 @@ public partial class GroupProfile : System.Web.UI.Page
 		// do stuff
 		using (SqlConnection conn = new SqlConnection(DatabaseConnectionString))
 		{
-			SqlCommand cmd = new SqlCommand("SELECT * FROM postt", conn);
+			int tempGroup = Int32.Parse(Request.QueryString["groupid"]);
+			SqlCommand cmd = new SqlCommand("SELECT * FROM postt where pgroupid = " + tempGroup + ";", conn);
 			cmd.Connection.Open();
 			DataTable TempTable = new DataTable();
 			TempTable.Load(cmd.ExecuteReader());
@@ -55,102 +56,61 @@ public partial class GroupProfile : System.Web.UI.Page
 
 	protected void Page_Load(object sender, EventArgs e)
 	{
+		int tempGroup = Int32.Parse(Request.QueryString["groupid"]);
+		//Connect to the database and check to see if user already exists, if it does, compare the password
+		string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
+		SqlConnection conn = new SqlConnection(connectionString);
+		string query = "select TOP(20) * from postt p left join users u on u.userid = p.puserid left join groups g on g.groupid = p.pgroupid where p.pgroupid = " + tempGroup + ";";
+		SqlCommand cmd = new SqlCommand(query, conn);
+
+		conn.Open();
+
+		//Actually execute the query and return the results
+		SqlDataReader reader = cmd.ExecuteReader();
+		string[] checkarray = new string[22];
+		while (reader.Read())
+		{
+			checkarray[0] = reader[0].ToString();       //postid
+			checkarray[1] = reader[1].ToString();       //ptext
+			checkarray[2] = reader[2].ToString();       //ptimestamp
+			checkarray[3] = reader[3].ToString();       //phascom
+			checkarray[4] = reader[4].ToString();       //commentid
+			checkarray[5] = reader[5].ToString();       //puserid
+			checkarray[6] = reader[6].ToString();       //pgroupid
+			checkarray[7] = reader[7].ToString();       //pcode
+			checkarray[8] = reader[8].ToString();       //ppicfile
+			checkarray[9] = reader[9].ToString();       //pedate
+			checkarray[10] = reader[10].ToString();     //petime
+			checkarray[11] = reader[11].ToString();     //peinfo
+			checkarray[12] = reader[12].ToString();     //userid
+			checkarray[13] = reader[13].ToString();     //username
+			checkarray[14] = reader[14].ToString();     //userrealname
+			checkarray[15] = reader[15].ToString();     //usergitname
+			checkarray[16] = reader[16].ToString();     //useravatar
+			checkarray[17] = reader[17].ToString();     //useremail
+			checkarray[18] = reader[18].ToString();     //userpassword
+			checkarray[19] = reader[19].ToString();     //groupid
+			checkarray[20] = reader[20].ToString();     //groupname
+			checkarray[21] = reader[21].ToString();     //groupavatar
+		}
 		//Check to see if the user is a group admin
 		if (Session["GroupAdmin"].ToString() == "1")
 		{
 			Session["TempUsername"] = Session["Username"];
 			Session["TempUserId"] = Session["UserId"];
-			Session["Username"] = Session["GroupName"];
-			Session["UserId"] = Session["GroupId"];
-
-			//Connect to the database and check to see if user already exists, if it does, compare the password
-			string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
-			SqlConnection conn = new SqlConnection(connectionString);
-			string query = "select TOP(20) * from postt p left join users u on u.userid = p.puserid left join groups g on g.groupid = p.pgroupid where p.pgroupid = " + Session["UserId"] + ";";
-			SqlCommand cmd = new SqlCommand(query, conn);
-
-			conn.Open();
-
-			//Actually execute the query and return the results
-			SqlDataReader reader = cmd.ExecuteReader();
-			string[] checkarray = new string[22];
-			while (reader.Read())
-			{
-				checkarray[0] = reader[0].ToString();       //postid
-				checkarray[1] = reader[1].ToString();       //ptext
-				checkarray[2] = reader[2].ToString();       //ptimestamp
-				checkarray[3] = reader[3].ToString();       //phascom
-				checkarray[4] = reader[4].ToString();       //commentid
-				checkarray[5] = reader[5].ToString();       //puserid
-				checkarray[6] = reader[6].ToString();       //pgroupid
-				checkarray[7] = reader[7].ToString();       //pcode
-				checkarray[8] = reader[8].ToString();       //ppicfile
-				checkarray[9] = reader[9].ToString();       //pedate
-				checkarray[10] = reader[10].ToString();     //petime
-				checkarray[11] = reader[11].ToString();     //peinfo
-				checkarray[12] = reader[12].ToString();     //userid
-				checkarray[13] = reader[13].ToString();     //username
-				checkarray[14] = reader[14].ToString();     //userrealname
-				checkarray[15] = reader[15].ToString();     //usergitname
-				checkarray[16] = reader[16].ToString();     //useravatar
-				checkarray[17] = reader[17].ToString();     //useremail
-				checkarray[18] = reader[18].ToString();     //userpassword
-				checkarray[19] = reader[19].ToString();     //groupid
-				checkarray[20] = reader[20].ToString();     //groupname
-				checkarray[21] = reader[21].ToString();     //groupavatar
-
-				Group group = new Group(checkarray[20], checkarray[21]);
-				AddPost(Panel, group, checkarray[2], checkarray[7], checkarray[8]);
-			}
-			reader.Close();
-			conn.Close();
+			Group group = new Group(checkarray[20], checkarray[21]);
+			AddPost(Panel, group, checkarray[1], checkarray[7], checkarray[8]);
 		}
 		else
 		{
-			//Connect to the database and check to see if user already exists, if it does, compare the password
-			string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
-			SqlConnection conn = new SqlConnection(connectionString);
-			string query = "select TOP(20) * from postt p left join users u on u.userid = p.puserid left join groups g on g.groupid = p.pgroupid where p.pgroupid = " + Session["UserId"] + ";";
-			SqlCommand cmd = new SqlCommand(query, conn);
-
-			conn.Open();
-
-			//Actually execute the query and return the results
-			SqlDataReader reader = cmd.ExecuteReader();
-			string[] checkarray = new string[22];
-			while (reader.Read())
-			{
-				checkarray[0] = reader[0].ToString();       //postid
-				checkarray[1] = reader[1].ToString();       //ptext
-				checkarray[2] = reader[2].ToString();       //ptimestamp
-				checkarray[3] = reader[3].ToString();       //phascom
-				checkarray[4] = reader[4].ToString();       //commentid
-				checkarray[5] = reader[5].ToString();       //puserid
-				checkarray[6] = reader[6].ToString();       //pgroupid
-				checkarray[7] = reader[7].ToString();       //pcode
-				checkarray[8] = reader[8].ToString();       //ppicfile
-				checkarray[9] = reader[9].ToString();       //pedate
-				checkarray[10] = reader[10].ToString();     //petime
-				checkarray[11] = reader[11].ToString();     //peinfo
-				checkarray[12] = reader[12].ToString();     //userid
-				checkarray[13] = reader[13].ToString();     //username
-				checkarray[14] = reader[14].ToString();     //userrealname
-				checkarray[15] = reader[15].ToString();     //usergitname
-				checkarray[16] = reader[16].ToString();     //useravatar
-				checkarray[17] = reader[17].ToString();     //useremail
-				checkarray[18] = reader[18].ToString();     //userpassword
-				checkarray[19] = reader[19].ToString();     //groupid
-				checkarray[20] = reader[20].ToString();     //groupname
-				checkarray[21] = reader[21].ToString();     //groupavatar
-
-				Group group = new Group(checkarray[20], checkarray[21]);
-				User user = new User(checkarray[13], checkarray[16]);
-				AddPost(Panel, user, group, checkarray[2], checkarray[7], checkarray[8]);
-			}
-			reader.Close();
-			conn.Close();
+			Group group = new Group(checkarray[20], checkarray[21]);
+			User user = new User(checkarray[13], checkarray[16]);
+			AddPost(Panel, user, group, checkarray[1], checkarray[7], checkarray[8]);
 		}
+		reader.Close();
+		conn.Close();
 	}
+
 	private void AddPost(Panel panel, User user, Group group, String text, String imgSrc, String codeSrc)
 	{
 		// layout of this code block should resemble the layout of the generated HTML!
@@ -254,6 +214,17 @@ public partial class GroupProfile : System.Web.UI.Page
 
 		// and add the container to the outer block
 		block.Controls.Add(userContainer);
+
+		// add the text container
+		Panel textContainer = new Panel();
+		textContainer.CssClass = "content-container text-content";
+
+		Label textLabel = new Label();
+		textLabel.Text = text;
+		textContainer.Controls.Add(textLabel);
+
+		//and finally add the container to the outer block
+		block.Controls.Add(textContainer);
 
 		if (codeSrc != null && codeSrc != "")
 		{

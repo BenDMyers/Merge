@@ -47,7 +47,7 @@ public partial class NewsFeed : System.Web.UI.Page
 		{
 			Response.Redirect("Login.aspx");
 		}
-		else if (Int32.Parse(Session["UserId"].ToString()) % 2 == 1)
+		if (Int32.Parse(Session["UserId"].ToString()) % 2 != 0)
 		{
 			Session["Username"] = Session["TempUsername"];
 			Session["UserId"] = Session["TempUserId"];
@@ -90,7 +90,7 @@ public partial class NewsFeed : System.Web.UI.Page
 			checkarray[21] = reader[21].ToString();     //groupavatar
 
 			User user = new User(checkarray[13], checkarray[16]);
-			AddPost(Panel, user, checkarray[1], checkarray[8], checkarray[7]);
+			AddPost(NewsFeedPanel, user, checkarray[1], checkarray[8], checkarray[7]);
 		}
 		reader.Close();
 		conn.Close();
