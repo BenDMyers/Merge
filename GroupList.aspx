@@ -1,4 +1,4 @@
-﻿<%@ Page Title="GroupList" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeFile="GroupList.aspx.cs" Inherits="GroupList" %>
+﻿<%@ Page Title="Group List" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeFile="GroupList.aspx.cs" Inherits="GroupList" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" Runat="Server">
 

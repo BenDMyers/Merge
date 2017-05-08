@@ -73,8 +73,17 @@ public partial class SiteMaster : MasterPage
 
     protected void Page_Load(object sender, EventArgs e)
     {
-		ProfileLink.NavigateUrl = "~/UserProfile.aspx?userid=" + Int32.Parse(Session["UserId"].ToString()) + "&username=" + Session["Username"].ToString() + "&admin=1";
+		if (Int32.Parse(Session["UserId"].ToString()) % 2 != 0)
+		{
+			Session["Username"] = Session["TempUsername"];
+			Session["UserId"] = Session["TempUserId"];
+			ProfileLink.NavigateUrl = "~/UserProfile.aspx?userid=" + Int32.Parse(Session["UserId"].ToString()) + "&username=" + Session["Username"].ToString() + "&admin=1";
 
+		}
+		else
+		{
+			ProfileLink.NavigateUrl = "~/UserProfile.aspx?userid=" + Int32.Parse(Session["UserId"].ToString()) + "&username=" + Session["Username"].ToString() + "&admin=1";
+		}
 
 		HiddenNameLabel.Text = (string)Session["Username"];
 

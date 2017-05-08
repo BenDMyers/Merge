@@ -164,6 +164,9 @@ textarea {
 /* MODALS AND OTHER FUN WITH BUTTONS*/
 
 /* minor tweaks for post and log out buttons */
+.btn {
+    transition: all .2s ease-in;
+}
 .btn-primary, .btn-danger, btn-info {
     color: #fff;
 }
@@ -230,8 +233,8 @@ textarea {
 	max-height: 96px;
 	min-width: 24px;
 	max-width: 96px;
-    border-radius: 6px;
-    margin: 5px;
+    border-radius: 20px;
+    margin: 10px;
 }
 
 .user-info {
@@ -241,7 +244,7 @@ textarea {
     font-weight: bold;
 }
 
-.post-block>.text-content {
+.text-content {
     /* The text component of each post */
     font-size: 125%;
     padding: 10px 10px 10px 10px;
@@ -255,12 +258,15 @@ textarea {
 }
 
 .timestamp-label {
-    margin: 5px;
+    margin: 10px;
+    color: rgba(255, 255, 255, 0.5);
 }
 .load-comments-button {
-    margin: 5px;
+    margin: 10px;
 }
-.reply-button 
+.reply-button {
+    margin: 10px;
+}
 
 /* Formatting for GitHub posts that appear in feed */
 .git-content {
@@ -271,7 +277,7 @@ textarea {
 
 
 /* PROFILE HEADERS */
-#ProfilePanel {
+#ProfilePanel, .info-panel {
     background-color: #666666;
     margin-top: 20px;
     margin-bottom: 20px;
@@ -281,21 +287,34 @@ textarea {
     min-height: 100%;
     max-width: 33%;
     border-radius: 20px;
-    display: inline;
-}
-.info-sidepanel {
-    display: inline;
+    float: left;
+    margin-right: 20px;
 }
 .info-realname {
-    font-size: xx-large;
+    font-size: 500%;
     text-transform: uppercase;
 }
+.info-username, .info-git-logo, .info-about {
+    display: block;
+    font-size: x-large;
+}
+
 .info-username, .info-git-logo, .info-gitname, .info-about {
     color: rgba(242, 242, 242, 0.75);
 }
+.info-sidepanel {
+    padding-left: 20px;
+    /*vertical-align: middle;*/
+    padding-top: 20px;
+    word-wrap: normal;
+}
 .info-username {
     font-variant: small-caps;
+    font-size: xx-large;
 }
-.info-gitname a {
-    color: rgba(226, 226, 226, 0.75);
+.float-clear {
+    clear: both;
+}
+.info-gitname {
+    font-size: larger;
 }

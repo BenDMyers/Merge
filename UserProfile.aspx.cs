@@ -54,17 +54,18 @@ public partial class UserProfile : System.Web.UI.Page
         avatarImg.ImageUrl = user.avatar;
         avatarImg.CssClass = "info-biopic";
         ProfilePanel.Controls.Add(avatarImg);
+        ProfilePanel.CssClass = "info-panel";
 
         Panel info = new Panel();
         info.CssClass = "info-sidepanel";
 
         Label nameLabel = new Label();
-        nameLabel.Text = name;
+        nameLabel.Text = name + "\n";
         nameLabel.CssClass = "info-realname";
         info.Controls.Add(nameLabel);
 
         Label usernameLabel = new Label();
-        usernameLabel.Text = username;
+        usernameLabel.Text = username + "\n";
         usernameLabel.CssClass = "info-username";
         info.Controls.Add(usernameLabel);
 
@@ -75,9 +76,13 @@ public partial class UserProfile : System.Web.UI.Page
         info.Controls.Add(gitLogo);
 
         Label aboutLabel = new Label();
-        aboutLabel.Text = gitname;
+        aboutLabel.Text = " " + gitname + "\n";
         aboutLabel.CssClass = "info-gitname";
         info.Controls.Add(aboutLabel);
+
+        Panel floatClear = new Panel();
+        floatClear.CssClass = "float-clear";
+        info.Controls.Add(floatClear);
 
         ProfilePanel.Controls.Add(info);
     }
@@ -236,8 +241,8 @@ public partial class UserProfile : System.Web.UI.Page
 		{
 			//add the load comment control
 			Button loadComments = new Button();
-			loadComments.CssClass = "load-comments-button";
-			loadComments.Text = "load comments";
+			loadComments.CssClass = "load-comments-button btn btn-info";
+			loadComments.Text = "Load Comments";
 			loadComments.Attributes["postid"] = postID.ToString();
 			loadComments.Click += new EventHandler(this.loadComments);
 			footer.Controls.Add(loadComments);
@@ -246,8 +251,8 @@ public partial class UserProfile : System.Web.UI.Page
 
 		//add the load comment control
 		Button replyButton = new Button();
-		replyButton.CssClass = "reply-button";
-		replyButton.Text = "reply";
+		replyButton.CssClass = "reply-button btn btn-primary";
+		replyButton.Text = "Reply";
 		// this sneaky bit of javascript opens a modal window to reply to a particular post. wooooooo
 		replyButton.OnClientClick = "$('#PostModal').modal('toggle'); $('#PostButton').attr('replyPost', " + postID + "); document.getElementById('HiddenThing').value=" + postID + "; return false;";
 		footer.Controls.Add(replyButton);
@@ -346,8 +351,9 @@ public partial class UserProfile : System.Web.UI.Page
 			Page.ClientScript.RegisterStartupScript(this.GetType(), "notgroupadmin", "$('#PostModalToggler').hide()", true);
 		}
 
-        makeProfilePanel(Int32.Parse((string)Session["UserId"]));
+		int tempUserID = Int32.Parse(Request.QueryString["userid"]);
 
+		makeProfilePanel(tempUserID);
 
         List<List<Post>> ALLTHEPOSTS = new List<List<Post>>(); // place to put all our lists
 		List<Post> userPosts = getPosts(); // get user posts from database
@@ -366,12 +372,12 @@ public partial class UserProfile : System.Web.UI.Page
 		{
 			List<Post> githubPosts = GithubPosts.gitPosts(user.gitname); // if they have a github name, get their feed as a seperate list
 			ALLTHEPOSTS.Add(githubPosts);
-			if (githubPosts.Count <= 0)
-			{
-				Post error = new Post(GithubPosts.errorPost("woops. no events for this user"), DateTime.UtcNow);
+			//if (githubPosts.Count <= 0)
+			//{
+				//Post error = new Post(GithubPosts.errorPost("woops. no events for this user"), DateTime.UtcNow);
 				// we couldn't get git info... soooooo
-				githubPosts.Add(error);
-			}
+				//githubPosts.Add(error);
+			//}
 		}
 		
 

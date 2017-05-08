@@ -41,7 +41,7 @@ public partial class GroupProfile : System.Web.UI.Page
         // name these properties!
         string name = checkarray[1];
         string avatar = checkarray[2];
-        string about = checkarray[4];
+        string about = checkarray[3];
 
         //we're going to build a User object to let it take care of server file paths for our avatar.
         // in the future, maybe User would do something more useful, idk.
@@ -56,6 +56,7 @@ public partial class GroupProfile : System.Web.UI.Page
         avatarImg.ImageUrl = user.avatar;
         avatarImg.CssClass = "info-biopic";
         InfoPanel.Controls.Add(avatarImg);
+        InfoPanel.CssClass = "info-panel";
 
         Panel info = new Panel();
         info.CssClass = "info-sidepanel";
@@ -69,6 +70,10 @@ public partial class GroupProfile : System.Web.UI.Page
         aboutLabel.Text = about;
         aboutLabel.CssClass = "info-about";
         info.Controls.Add(aboutLabel);
+
+        Panel floatClear = new Panel();
+        floatClear.CssClass = "float-clear";
+        info.Controls.Add(floatClear);
 
         InfoPanel.Controls.Add(info);
 
@@ -222,7 +227,7 @@ public partial class GroupProfile : System.Web.UI.Page
 		{
 			//add the load comment control
 			Button loadComments = new Button();
-			loadComments.CssClass = "load-comments-button";
+			loadComments.CssClass = "load-comments-button btn btn-info";
 			loadComments.Text = "load comments";
 			loadComments.Attributes["postid"] = postID.ToString();
 			loadComments.Click += new EventHandler(this.loadComments);
@@ -232,8 +237,8 @@ public partial class GroupProfile : System.Web.UI.Page
 
 		//add the load comment control
 		Button replyButton = new Button();
-		replyButton.CssClass = "reply-button";
-		replyButton.Text = "reply";
+		replyButton.CssClass = "reply-button btn btn-primary";
+		replyButton.Text = "Reply";
 		// this sneaky bit of javascript opens a modal window to reply to a particular post. wooooooo
 		replyButton.OnClientClick = "$('#PostModal').modal('toggle'); $('#PostButton').attr('replyPost', " + postID + "); document.getElementById('HiddenThing').value=" + postID + "; return false;";
 		footer.Controls.Add(replyButton);
