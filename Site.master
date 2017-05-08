@@ -99,7 +99,7 @@
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li id="navbar-feed"><a runat="server" href="~/NewsFeed">Feed</a></li>
-                        <li id="navbar-profile"><a runat="server" href="~/UserProfile">Profile</a></li>
+                        <li id="navbar-profile"><asp:HyperLink ID="ProfileLink" runat="server">Profile</asp:HyperLink></li>
                         <li id="navbar-groups"><a runat="server" href="~/GroupList">Groups</a></li>
                     </ul>
                     <div class="nav navbar-nav navbar-right">

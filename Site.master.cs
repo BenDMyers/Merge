@@ -73,7 +73,10 @@ public partial class SiteMaster : MasterPage
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        HiddenNameLabel.Text = (string)Session["Username"];
+		ProfileLink.NavigateUrl = "~/UserProfile.aspx?userid=" + Int32.Parse(Session["UserId"].ToString()) + "&username=" + Session["Username"].ToString() + "&admin=1";
+
+
+		HiddenNameLabel.Text = (string)Session["Username"];
 
         // Here we populate the group chat list
         SqlConnection conn = new SqlConnection(connectionString);
@@ -91,7 +94,7 @@ public partial class SiteMaster : MasterPage
                 ListItem GroupItem = new ListItem();
                 GroupItem.Attributes.Add("class", "li-chatbox li-chatbox-group");
                 GroupItem.Value = "ChatGroup.aspx?group=" + dr["groupid"];
-                GroupItem.Text = dr["groupname"].ToString();
+                GroupItem.Text = dr["groupname"].ToString().Replace(" ", "_" + "\n") + ".grp";
                 GroupList.Items.Add(GroupItem);
             }
         }
