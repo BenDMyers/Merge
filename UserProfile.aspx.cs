@@ -75,7 +75,7 @@ public partial class UserProfile : System.Web.UI.Page
         info.Controls.Add(gitLogo);
 
         Label aboutLabel = new Label();
-        aboutLabel.Text = gitname;
+        aboutLabel.Text = " " + gitname;
         aboutLabel.CssClass = "info-gitname";
         info.Controls.Add(aboutLabel);
 
