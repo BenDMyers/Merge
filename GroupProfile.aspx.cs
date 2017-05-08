@@ -195,7 +195,7 @@ public partial class GroupProfile : System.Web.UI.Page
 	// that is a terrible UX. so TO JAVASCRIPT WE GOOOOOO
 	public void loadComments(object sender, EventArgs evt)
 	{
-		int postId = Int32.Parse((sender as Button).Attributes["postid"]);
+		int postId = Int32.Parse((sender as LinkButton).Attributes["postid"]);
 		List<Post> comments = getComments(postId);
 
 		// find a post with the matching postID in the DOM...... !!!!!!!!!!! FML! WHY C#! WHY!!!!
@@ -228,9 +228,9 @@ public partial class GroupProfile : System.Web.UI.Page
 		if (hasComments)
 		{
 			//add the load comment control
-			Button loadComments = new Button();
+			LinkButton loadComments = new LinkButton();
 			loadComments.CssClass = "load-comments-button btn btn-info";
-			loadComments.Text = "load comments";
+			loadComments.Text = "<span style='font-weight: bold; letter-spacing: -4px;'>//</span> Load Comments";
 			loadComments.Attributes["postid"] = postID.ToString();
 			loadComments.Click += new EventHandler(this.loadComments);
 			footer.Controls.Add(loadComments);
@@ -240,9 +240,9 @@ public partial class GroupProfile : System.Web.UI.Page
         //add the load comment control
         if (!isComment)
         {
-            Button replyButton = new Button();
+            LinkButton replyButton = new LinkButton();
             replyButton.CssClass = "reply-button btn btn-primary";
-            replyButton.Text = "Reply";
+            replyButton.Text = "<span class='fa fa-reply'></span> Reply";
             // this sneaky bit of javascript opens a modal window to reply to a particular post. wooooooo
             replyButton.OnClientClick = "$('#PostModal').modal('toggle'); $('#PostButton').attr('replyPost', " + postID + "); document.getElementById('HiddenThing').value=" + postID + "; return false;";
             footer.Controls.Add(replyButton);
