@@ -11,20 +11,71 @@ public partial class UserProfile : System.Web.UI.Page
 {
 	// this is a shortcut for your connection string
 	static string DatabaseConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
+    
+    private void makeProfilePanel(int uid)
+    {
+        //Connect to the database and check to see if user already exists, if it does, compare the password
+        string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
+        SqlConnection conn = new SqlConnection(connectionString);
+        string query = "select * from users where userid = " + uid + ";";
+        SqlCommand cmd = new SqlCommand(query, conn);
 
+        conn.Open();
 
-	// simple container class for user info.
-	private class User
-	{
-		public String username;
-		public String avatar;
+        //Actually execute the query and return the results
+        SqlDataReader reader = cmd.ExecuteReader();
+        string[] checkarray = new string[10];
 
-		public User(String curusername, String curavatar)
-		{
-			username = curusername;   // lulz these names are terrible
-			avatar = curavatar;       // lulz these names are terrible
-		}
-	}
+        List<Post> posts = new List<Post>();
+        reader.Read();
+        checkarray[0]    = reader[0].ToString();     //userid
+        string username  = reader[1].ToString();     //username
+        string name      = reader[2].ToString();     //userrealname
+        string gitname   = reader[3].ToString();     //usergitname
+        string avatar    = reader[4].ToString();     //useravatar
+        checkarray[5]    = reader[5].ToString();     //useremail
+        checkarray[6]    = reader[6].ToString();     //userpassword
+
+        //we're going to build a User object to let it take care of server file paths for our avatar.
+        // in the future, maybe User would do something more useful, idk.
+        User user = new User(name, avatar, uid);
+
+        reader.Close();
+        conn.Close();
+
+        // now build a sweet panel!
+        Image avatarImg = new Image();
+        avatarImg.ImageUrl = user.avatar;
+        avatarImg.CssClass = "info-biopic";
+        InfoPanel.Controls.Add(avatarImg);
+
+        Panel info = new Panel();
+        info.CssClass = "info-sidepanel";
+
+        Label nameLabel = new Label();
+        nameLabel.Text = name;
+        nameLabel.CssClass = "info-realname";
+        info.Controls.Add(nameLabel);
+
+        Label usernameLabel = new Label();
+        usernameLabel.Text = username;
+        usernameLabel.CssClass = "info-username";
+        info.Controls.Add(usernameLabel);
+
+        // we need this to add this to the page - so we use a Label which *should* render as a simple span
+        // <span class="fa fa-github/>
+        Label gitLogo = new Label();
+        gitLogo.CssClass = "fa fa-github info-git-logo";
+        info.Controls.Add(gitLogo);
+
+        Label aboutLabel = new Label();
+        aboutLabel.Text = gitname;
+        aboutLabel.CssClass = "info-gitname";
+        info.Controls.Add(aboutLabel);
+
+        InfoPanel.Controls.Add(info);
+
+    }
 
 	protected void Page_Load(object sender, EventArgs e)
 	{
@@ -49,6 +100,8 @@ public partial class UserProfile : System.Web.UI.Page
         {
             queriedUser = Session["UserId"].ToString();
         }
+
+        makeProfilePanel(Int32.Parse(queriedUser));
 
         // Get queried user info
         string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
@@ -87,7 +140,7 @@ public partial class UserProfile : System.Web.UI.Page
 			checkarray[17] = reader[17].ToString();     //useremail
 			checkarray[18] = reader[18].ToString();     //userpassword
 
-			User user = new User(checkarray[13], checkarray[15]);
+			User user = new User(checkarray[13], checkarray[15], Int32.Parse(queriedUser));
 			AddPost(Panel, user, checkarray[1], checkarray[8], checkarray[7]);
 		}
 		reader.Close();
