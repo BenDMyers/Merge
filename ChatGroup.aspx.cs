@@ -28,6 +28,11 @@ public partial class ChatGroup : System.Web.UI.Page
         {
             Response.Redirect("NewsFeed.aspx");
         }
+        else
+        {
+            dr.Read();
+            outgoingUser.InnerText = dr["groupname"].ToString();
+        }
 
         conn.Close();
     }
