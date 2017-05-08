@@ -231,6 +231,7 @@ textarea {
 	min-width: 24px;
 	max-width: 96px;
     border-radius: 6px;
+    margin: 5px;
 }
 
 .user-info {
@@ -252,6 +253,14 @@ textarea {
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
 }
+
+.timestamp-label {
+    margin: 5px;
+}
+.load-comments-button {
+    margin: 5px;
+}
+.reply-button 
 
 /* Formatting for GitHub posts that appear in feed */
 .git-content {
@@ -281,7 +290,7 @@ textarea {
     font-size: xx-large;
     text-transform: uppercase;
 }
-.info-username, .info-git-logo, .info-gitname {
+.info-username, .info-git-logo, .info-gitname, .info-about {
     color: rgba(242, 242, 242, 0.75);
 }
 .info-username {
