@@ -383,21 +383,21 @@ public partial class NewsFeed : System.Web.UI.Page
         ALLTHEPOSTS.Add(userPosts); // add the user psot list to the listy list
 
         List<User> users = allUsers(); // get all the users - we will then fetch each of their git feeds.
-        if (users.Count <=0 ) {
-            Post error = new Post(GithubPosts.errorPost("woops. no github users"), DateTime.UtcNow);
-            userPosts.Add(error);
-        }
+        //if (users.Count <=0 ) {
+            //Post error = new Post(GithubPosts.errorPost("woops. no github users"), DateTime.UtcNow);
+            //userPosts.Add(error);
+        //}
         foreach (User user in users) {
             if (user.gitname != null && user.gitname != "NULL" && user.gitname != "")
             {
                 List<Post> githubPosts = GithubPosts.gitPosts(user.gitname); // if they have a github name, get their feed as a seperate list
                 ALLTHEPOSTS.Add(githubPosts);
-                if (githubPosts.Count <=0 )
-                {
-                    Post error = new Post(GithubPosts.errorPost("woops. no events for this user"), DateTime.UtcNow);
+                //if (githubPosts.Count <=0 )
+                //{
+                    //Post error = new Post(GithubPosts.errorPost("woops. no events for this user"), DateTime.UtcNow);
                     // we couldn't get git info... soooooo
-                    githubPosts.Add(error);
-                }
+                    //githubPosts.Add(error);
+                //}
             }
         }
 

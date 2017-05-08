@@ -372,12 +372,12 @@ public partial class UserProfile : System.Web.UI.Page
 		{
 			List<Post> githubPosts = GithubPosts.gitPosts(user.gitname); // if they have a github name, get their feed as a seperate list
 			ALLTHEPOSTS.Add(githubPosts);
-			if (githubPosts.Count <= 0)
-			{
-				Post error = new Post(GithubPosts.errorPost("woops. no events for this user"), DateTime.UtcNow);
+			//if (githubPosts.Count <= 0)
+			//{
+				//Post error = new Post(GithubPosts.errorPost("woops. no events for this user"), DateTime.UtcNow);
 				// we couldn't get git info... soooooo
-				githubPosts.Add(error);
-			}
+				//githubPosts.Add(error);
+			//}
 		}
 		
 
