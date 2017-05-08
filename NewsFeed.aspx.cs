@@ -9,10 +9,12 @@ using System.Data.SqlClient;
 
 public partial class NewsFeed : System.Web.UI.Page
 {
-	// this is a shortcut for your connection string
-	static string DatabaseConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
+    // this is a shortcut for your connection string
+    static string DatabaseConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
 
-    string sqlDatetime = "M/d h:mm:ss tt";
+    //string sqlDatetime = "M/d h:mm:ss tt";
+
+    List<String> sqlDatetimeFormats = new List<string>(new String[]{"M/d/yyyy h:mm:ss tt", "M/d h:mm:ss tt"});
     string outputTimestamp = "M/d h:mm:ss tt";
 
     // WHY THIS NO PARSE??   "5/5 9:03:42 PM"
@@ -29,6 +31,27 @@ public partial class NewsFeed : System.Web.UI.Page
             TempTable.Load(cmd.ExecuteReader());
             return TempTable;
         }
+    }
+
+    private DateTime parseSqlDate(String date)
+    {
+        foreach( String format in sqlDatetimeFormats)
+        {
+            try
+            {
+                DateTime time = DateTime.ParseExact(date, format, null);
+                // now...... make it into a certain timezone!
+                var myTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time");
+                DateTime currentDateTime = TimeZoneInfo.ConvertTimeFromUtc(time, myTimeZone);
+
+                // we could also do some datetime timezone stuffs to convert everythin into UTC.
+                return currentDateTime;
+            } catch ( System.FormatException e)
+            {
+                // eh, this isn't the right format.. we'll try the next one.
+            }
+        }
+        return DateTime.Now; // couldn't find a datetime format that worked... sooo why not user now?
     }
 
 
@@ -74,8 +97,7 @@ public partial class NewsFeed : System.Web.UI.Page
 
             int id = Int32.Parse(checkarray[0]);
             User user = new User(checkarray[13], checkarray[15]);
-            DateTime time = DateTime.ParseExact(checkarray[2], sqlDatetime, null);
-            time = DateTime.SpecifyKind(time, DateTimeKind.Local);
+            DateTime time = parseSqlDate(checkarray[2]);
             bool hasComments = bool.Parse(checkarray[3]);
             Control post = addFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, false), time, id, hasComments);
             post.ID = "post" + id;
@@ -134,8 +156,7 @@ public partial class NewsFeed : System.Web.UI.Page
 
             int id = Int32.Parse(checkarray[0]);
             User user = new User(checkarray[13], checkarray[15]);
-            DateTime time = DateTime.ParseExact(checkarray[2], sqlDatetime, null);
-            time = DateTime.SpecifyKind(time, DateTimeKind.Local);
+            DateTime time = parseSqlDate(checkarray[2]);
             Control post = addCommentFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, true), time, id);
             
 

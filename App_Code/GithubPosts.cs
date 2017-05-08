@@ -43,7 +43,13 @@ public class GithubPosts
         // implement some getters for basic info
         public DateTime getTimestamp()
         {
-            return DateTime.Parse(this.created_at, null, DateTimeStyles.RoundtripKind);
+            DateTime utcTime =  DateTime.Parse(this.created_at, null, DateTimeStyles.RoundtripKind);
+            // now...... make it into a certain timezone!
+            var myTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time");
+            DateTime currentDateTime = TimeZoneInfo.ConvertTimeFromUtc(utcTime, myTimeZone);
+
+            // we could also do some datetime timezone stuffs to convert everythin into UTC.
+            return currentDateTime;
         }
         public String getUsername()
         {
