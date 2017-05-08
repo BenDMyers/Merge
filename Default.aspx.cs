@@ -15,6 +15,11 @@ public partial class _Default : System.Web.UI.Page
     protected void SignUpButton_Click(object sender, EventArgs e)
     {
         Response.Redirect("Register.aspx");
-    }
+	}
+
+	protected void contactclick(object sender, EventArgs e)
+	{
+		Response.Redirect("Contact.aspx");
+	}
 
 }

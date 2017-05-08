@@ -46,6 +46,10 @@
                 <div class="container">
                     <div class="navbar-header">
                         <a class="navbar-brand site-brand" runat="server" href="~/">Merge</a>
+						
+                    <div class="nav navbar-nav navbar-right">
+                        <asp:LinkButton ID="Contact" CssClass="btn btn-primary navbar-btn btn-margins" OnClick="contactclick" runat="server" Text="Contact Us" />
+                    </div>
                     </div>
                  </div>
             </div>
@@ -56,7 +60,6 @@
                 <a href ="Register.aspx"><asp:Button ID="SignUpButton" Text="Merge Your Worlds Today!" CssClass="btn btn-primary" OnClick ="SignUpButton_Click" runat="server"/> </a> <br /> <br />
                 <p><em>Already a member? <a href="Login.aspx">Sign in!</a></em></p> <br /> <br /> <br />
                 </div>
-            
             </div>
             <div class="container" id="features">                
 					<div class="clearfix" id="GithubDescription" style="border-bottom-style: solid; border-bottom-width: 1px; margin-top: 300px"> 
@@ -98,8 +101,6 @@
                 <br /> <br />
               
         </div>
-        
-
             <footer class="site-brand" style="text-align: center;">
                 <p>&copy; <%: DateTime.Now.Year %> Merge</p>
                 <p>the computer science &quot;social&quot; network</p>
