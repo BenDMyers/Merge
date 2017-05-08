@@ -141,7 +141,7 @@ textarea {
     color: #ff9900;
 }
 
-#outgoingUser {
+#outgoingUser, .chat-header {
     /* Header for one's fellow chatter*/
     font-size: xx-large;
     text-transform: uppercase;
