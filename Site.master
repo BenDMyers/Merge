@@ -48,6 +48,7 @@
         <script src ="/signalr/hubs"></script>
 
         <script src="/Scripts/modal.js"></script>
+        <script src="/Scripts/navbar-recolor.js"></script>
 
         <!-- POSTING MODAL -->
         <div class="modal fade" id="PostModal" tabindex="-1" role="dialog" itemid="PostModal">
@@ -97,9 +98,9 @@
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li><a runat="server" href="~/NewsFeed">Feed</a></li>
-                        <li><a runat="server" href="~/UserProfile">Profile</a></li>
-                        <li><a runat="server" href="~/GroupList">Groups</a></li>
+                        <li id="navbar-feed"><a runat="server" href="~/NewsFeed">Feed</a></li>
+                        <li id="navbar-profile"><a runat="server" href="~/UserProfile">Profile</a></li>
+                        <li id="navbar-groups"><a runat="server" href="~/GroupList">Groups</a></li>
                     </ul>
                     <div class="nav navbar-nav navbar-right">
                         <asp:LinkButton ID="LogOutToggler" CssClass="btn btn-danger navbar-btn btn-margins" OnClick="logoutclick" runat="server" Text="<span class='fa fa-sign-out'></span> Log Out" />
@@ -208,6 +209,9 @@
                 })
             </script>
         </div>
+
+        <!-- SHOW/HIDE CHATBAR ON COMMAND -->
+        <input type="button" id="chatToggle" class="btn fa-input btn-default" style="color: #191919;" onclick="$('#chatBar').toggle()" value="&#xf086;">
         <div class="container body-content">
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>
@@ -221,4 +225,3 @@
     </form>
 </body>
 </html>
-na
