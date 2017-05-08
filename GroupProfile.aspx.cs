@@ -71,6 +71,10 @@ public partial class GroupProfile : System.Web.UI.Page
         aboutLabel.CssClass = "info-about";
         info.Controls.Add(aboutLabel);
 
+        Panel floatClear = new Panel();
+        floatClear.CssClass = "float-clear";
+        info.Controls.Add(floatClear);
+
         InfoPanel.Controls.Add(info);
 
     }

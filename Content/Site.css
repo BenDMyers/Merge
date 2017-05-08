@@ -233,8 +233,8 @@ textarea {
 	max-height: 96px;
 	min-width: 24px;
 	max-width: 96px;
-    border-radius: 6px;
-    margin: 5px;
+    border-radius: 20px;
+    margin: 10px;
 }
 
 .user-info {
@@ -259,6 +259,7 @@ textarea {
 
 .timestamp-label {
     margin: 10px;
+    color: rgba(255, 255, 255, 0.5);
 }
 .load-comments-button {
     margin: 10px;
@@ -287,18 +288,33 @@ textarea {
     max-width: 33%;
     border-radius: 20px;
     float: left;
+    margin-right: 20px;
 }
-/*.info-sidepanel {
-    display: inline;
-}*/
 .info-realname {
-    font-size: xx-large;
+    font-size: 500%;
     text-transform: uppercase;
 }
+.info-username, .info-git-logo, .info-about {
+    display: block;
+    font-size: x-large;
+}
+
 .info-username, .info-git-logo, .info-gitname, .info-about {
     color: rgba(242, 242, 242, 0.75);
-    font-size: larger;
+}
+.info-sidepanel {
+    padding-left: 20px;
+    /*vertical-align: middle;*/
+    padding-top: 20px;
+    word-wrap: normal;
 }
 .info-username {
     font-variant: small-caps;
+    font-size: xx-large;
+}
+.float-clear {
+    clear: both;
+}
+.info-gitname {
+    font-size: larger;
 }
