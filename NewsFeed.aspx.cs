@@ -16,43 +16,7 @@ public partial class NewsFeed : System.Web.UI.Page
 
     List<String> sqlDatetimeFormats = new List<string>(new String[]{"M/d/yyyy h:mm:ss tt", "M/d h:mm:ss tt"});
     string outputTimestamp = "M/d h:mm:ss tt";
-
-    // WHY THIS NO PARSE??   "5/5 9:03:42 PM"
-
-
-    private DataTable testSql()
-    {
-        // do stuff
-        using (SqlConnection conn = new SqlConnection(DatabaseConnectionString))
-        {
-            SqlCommand cmd = new SqlCommand("SELECT * FROM POSTT", conn);
-            cmd.Connection.Open();
-            DataTable TempTable = new DataTable();
-            TempTable.Load(cmd.ExecuteReader());
-            return TempTable;
-        }
-    }
-
-    private DateTime parseSqlDate(String date)
-    {
-        foreach( String format in sqlDatetimeFormats)
-        {
-            try
-            {
-                DateTime time = DateTime.ParseExact(date, format, null);
-                // now...... make it into a certain timezone!
-                var myTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time");
-                DateTime currentDateTime = TimeZoneInfo.ConvertTimeFromUtc(time, myTimeZone);
-
-                // we could also do some datetime timezone stuffs to convert everythin into UTC.
-                return currentDateTime;
-            } catch ( System.FormatException e)
-            {
-                // eh, this isn't the right format.. we'll try the next one.
-            }
-        }
-        return DateTime.Now; // couldn't find a datetime format that worked... sooo why not user now?
-    }
+        
 
 
     private List<Post> getPosts()
@@ -96,7 +60,7 @@ public partial class NewsFeed : System.Web.UI.Page
 			checkarray[21] = reader[21].ToString();     //groupavatar
 
 			int id = Int32.Parse(checkarray[0]);
-			DateTime time = parseSqlDate(checkarray[2]);
+			DateTime time = SqlDateHelper.parseSqlDate(checkarray[2]);
 			bool hasComments = bool.Parse(checkarray[3]);
 
 			//Check to see if the user is a group admin
@@ -166,8 +130,8 @@ public partial class NewsFeed : System.Web.UI.Page
 			checkarray[21] = reader[21].ToString();     //groupavatar
 
 			int id = Int32.Parse(checkarray[0]);
-			DateTime time = parseSqlDate(checkarray[2]);
-			bool hasComments = bool.Parse(checkarray[3]);
+            DateTime time = SqlDateHelper.parseSqlDate(checkarray[2]);
+            bool hasComments = bool.Parse(checkarray[3]);
 
 			//Check to see if posr is from group else user
 			if (checkarray[13] == "NULL")

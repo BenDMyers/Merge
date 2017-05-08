@@ -12,11 +12,10 @@ public partial class GroupProfile : System.Web.UI.Page
 	// this is a shortcut for your connection string
 	static string DatabaseConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
 
-	string sqlDatetime = "M/d h:mm:ss tt";
-	string outputTimestamp = "M/d h:mm:ss tt";
+    string outputTimestamp = "M/d h:mm:ss tt";
 
 	// WHY THIS NO PARSE??   "5/5 9:03:42 PM"
-
+    
 	private List<Post> getPosts()
 	{
 		int tempGroupID = Int32.Parse(Request.QueryString["groupid"]);
@@ -55,10 +54,8 @@ public partial class GroupProfile : System.Web.UI.Page
 
 
 			int id = Int32.Parse(checkarray[0]);
-			DateTime time = DateTime.ParseExact(checkarray[2], sqlDatetime, null);
-			time = DateTime.SpecifyKind(time, DateTimeKind.Local);
-			bool hasComments = bool.Parse(checkarray[3]);
-			
+            DateTime time = SqlDateHelper.parseSqlDate(checkarray[2]);
+            bool hasComments = bool.Parse(checkarray[3]);			
 			User user = new User(tempGroupName, checkarray[20], tempGroupID);
 			Control post = addFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, false), time, id, hasComments);
 			post.ID = "post" + id;
@@ -115,10 +112,8 @@ public partial class GroupProfile : System.Web.UI.Page
 			checkarray[21] = reader[21].ToString();     //groupavatar
 
 			int id = Int32.Parse(checkarray[0]);
-			DateTime time = DateTime.ParseExact(checkarray[2], sqlDatetime, null);
-			time = DateTime.SpecifyKind(time, DateTimeKind.Local);
-			bool hasComments = bool.Parse(checkarray[3]);
-
+            DateTime time = SqlDateHelper.parseSqlDate(checkarray[2]);
+            bool hasComments = bool.Parse(checkarray[3]);
 			User user = new User(tempGroupName, checkarray[20], tempGroupID);
 			Control post = addFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, false), time, id, hasComments);
 			post.ID = "post" + id;
