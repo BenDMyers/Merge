@@ -15,6 +15,60 @@ public partial class GroupProfile : System.Web.UI.Page
     string outputTimestamp = "M/d h:mm:ss tt";
 
 	// WHY THIS NO PARSE??   "5/5 9:03:42 PM"
+
+    private void makeProfilePanel()
+    {
+        int gid = 1;
+        //Connect to the database and check to see if user already exists, if it does, compare the password
+        string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
+        SqlConnection conn = new SqlConnection(connectionString);
+        string query = "select * from groups where p.groupid = " + gid + ";";
+        SqlCommand cmd = new SqlCommand(query, conn);
+
+        conn.Open();
+
+        //Actually execute the query and return the results
+        SqlDataReader reader = cmd.ExecuteReader();
+        string[] checkarray = new string[10];
+
+        List<Post> posts = new List<Post>();
+        reader.Read();
+        checkarray[0] = reader[0].ToString();     //groupid
+        checkarray[1] = reader[1].ToString();     //groupname
+        checkarray[2] = reader[2].ToString();     //groupavatar
+        checkarray[3] = reader[3].ToString();     //gabout
+
+        // name these properties!
+        string name = checkarray[1];
+        string avatar = checkarray[2];
+        string about = checkarray[4];
+
+
+
+        reader.Close();
+        conn.Close();
+
+        // now build a sweet panel!
+        Image avatarImg = new Image();
+        avatarImg.ImageUrl = avatar;
+
+        Panel info = new Panel();
+
+        Label nameLabel = new Label();
+        nameLabel.Text = name;
+        nameLabel.CssClass = "profile-name";
+        info.Controls.Add(nameLabel);
+
+        Label aboutLabel = new Label();
+        aboutLabel.Text = about;
+        aboutLabel.CssClass = "profile-about";
+        info.Controls.Add(aboutLabel);
+
+
+
+
+
+    }
     
 	private List<Post> getPosts()
 	{
