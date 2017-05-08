@@ -98,15 +98,12 @@ public partial class GroupList : System.Web.UI.Page
 		// make the username and avatar container
 		Panel userContainer = new Panel();
 		userContainer.CssClass = "user-info";
-
-		if (group.avatar != "NULL")
-		{
-			Image userAvatar = new Image();
-			userAvatar.CssClass = "avatar";
-			userAvatar.ImageUrl = "/pictures/avatars/" + group.avatar;
-			// and finally add them to the container
-			userContainer.Controls.Add(userAvatar);
-		}
+		
+		Image userAvatar = new Image();
+		userAvatar.CssClass = "avatar";
+		userAvatar.ImageUrl = "/pictures/avatars/" + group.avatar;
+		// and finally add them to the container
+		userContainer.Controls.Add(userAvatar);
 
 		HyperLink groupText = new HyperLink();
 		groupText.Text = group.groupname;

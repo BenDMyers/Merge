@@ -31,7 +31,7 @@ public partial class NewsFeed : System.Web.UI.Page
 
         //Actually execute the query and return the results
         SqlDataReader reader = cmd.ExecuteReader();
-        string[] checkarray = new string[22];
+        string[] checkarray = new string[23];
 
         List<Post> posts = new List<Post>();
         while (reader.Read())
@@ -58,6 +58,7 @@ public partial class NewsFeed : System.Web.UI.Page
 			checkarray[19] = reader[19].ToString();     //groupid
 			checkarray[20] = reader[20].ToString();     //groupname
 			checkarray[21] = reader[21].ToString();     //groupavatar
+			checkarray[22] = reader[22].ToString();     //gabout
 
 			int id = Int32.Parse(checkarray[0]);
 			DateTime time = SqlDateHelper.parseSqlDate(checkarray[2]);
@@ -87,7 +88,6 @@ public partial class NewsFeed : System.Web.UI.Page
         return posts;
     }
 
-
     private List<Post> getComments(int postId)
     {
 
@@ -101,7 +101,7 @@ public partial class NewsFeed : System.Web.UI.Page
 
         //Actually execute the query and return the results
         SqlDataReader reader = cmd.ExecuteReader();
-        string[] checkarray = new string[22];
+        string[] checkarray = new string[23];
 
         List<Post> posts = new List<Post>();
         while (reader.Read())
@@ -128,6 +128,7 @@ public partial class NewsFeed : System.Web.UI.Page
 			checkarray[19] = reader[19].ToString();     //groupid
 			checkarray[20] = reader[20].ToString();     //groupname
 			checkarray[21] = reader[21].ToString();     //groupavatar
+			checkarray[22] = reader[22].ToString();     //gabout
 
 			int id = Int32.Parse(checkarray[0]);
             DateTime time = SqlDateHelper.parseSqlDate(checkarray[2]);
