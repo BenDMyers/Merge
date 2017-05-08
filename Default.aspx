@@ -37,6 +37,8 @@
                 <%--Site Scripts--%>
             </Scripts>
         </asp:ScriptManager>
+		<div id="BackgroundPic" style="background-position: center; left: 0; background-image: url('pictures/DefaultBackground.jpg'); "> 
+
         <div class="container">
 
             <!-- NAVBAR -->
@@ -56,8 +58,8 @@
                 </div>
             
             </div>
-            <div class="container" id="features">
-                <div class="clearfix" id="GithubDescription" style="border-bottom-style: solid; border-bottom-width: 1px; margin-top: 300px"> 
+            <div class="container" id="features">                
+					<div class="clearfix" id="GithubDescription" style="border-bottom-style: solid; border-bottom-width: 1px; margin-top: 300px"> 
                     <img alt="GithubPic" src="https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png" style="display: inline-block; text-align: left; width: 20vw; height: 15vw; position: relative" />
                     <div class="text" style="display: inline-block; text-align: left;">
                         <h3>Chronological Github Integration</h3>
@@ -95,7 +97,6 @@
         
                 <br /> <br />
               
-            </div>
         </div>
         
 
@@ -105,6 +106,7 @@
                 <p><a href="https://github.com/o080o">Alex Durville</a> | <a href="https://www.linkedin.com/in/kayleehartmanokstate/">Kaylee Hartman</a> | <a href="https://github.com/BenDMyers">Ben Myers</a> | <a href="https://github.com/Dadadah">Jacob Schlecht</a> | <a href="https://github.com/starkeyandhutch">Drew Starkey</a></p>
             </footer>
         </div>
+		</div>
     </form>
 </body>
 </html>
