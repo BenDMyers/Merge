@@ -170,7 +170,7 @@ public partial class NewsFeed : System.Web.UI.Page
     // that is a terrible UX. so TO JAVASCRIPT WE GOOOOOO
     public void loadComments(object sender, EventArgs evt)
     {
-        int postId = Int32.Parse( (sender as Button).Attributes["postid"] );
+        int postId = Int32.Parse( (sender as LinkButton).Attributes["postid"] );
         List<Post> comments = getComments(postId);
 
         // find a post with the matching postID in the DOM...... !!!!!!!!!!! FML! WHY C#! WHY!!!!
@@ -204,8 +204,8 @@ public partial class NewsFeed : System.Web.UI.Page
         {
             //add the load comment control
             LinkButton loadComments = new LinkButton();
-            loadComments.CssClass = "load-comments-button btn";
-            loadComments.Text = "<span style='font-weight: bold; font-size: smaller;'>//</span> Load Comments";
+            loadComments.CssClass = "load-comments-button btn btn-info";
+            loadComments.Text = "<span style='font-weight: bold; letter-spacing: -4px;'>//</span> Load Comments";
             loadComments.Attributes["postid"] = postID.ToString();
             loadComments.Click += new EventHandler(this.loadComments);
             footer.Controls.Add(loadComments);

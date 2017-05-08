@@ -27,6 +27,18 @@ textarea {
     font-variant: small-caps;
 }
 
+.fa-input {
+    font-family: FontAwesome, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+/* Navbar recolors link of current page */
+.current-page a {
+    color: #ff9900 !important;
+}
+.current-page a:hover {
+    color: #cc7a00 !important;
+}
+
 
 
 /* MOBILE-FIRST RESPONSIVE DESIGN */
@@ -54,6 +66,7 @@ textarea {
 /* CHATBAR THINGS */
 
 #chatBar {
+    display: none;
     position: fixed;
     left: 0px;
     width: 200px;
@@ -62,6 +75,12 @@ textarea {
     padding-left: 0px;
     margin-top: 0px;
     top: 50px;
+}
+
+#chatToggle {
+    position: fixed;
+    bottom: 5px;
+    left: 5px;
 }
 
 /* folder bullet */
@@ -145,7 +164,7 @@ textarea {
 /* MODALS AND OTHER FUN WITH BUTTONS*/
 
 /* minor tweaks for post and log out buttons */
-.btn-primary, .btn-danger {
+.btn-primary, .btn-danger, btn-info {
     color: #fff;
 }
 .btn-margins {
@@ -157,6 +176,15 @@ textarea {
 }
 .btn-danger:hover, btn-danger:focus {
     background-color: #303030;
+}
+.btn-info {
+    background-color: #808080;
+    border-color: #808080;
+}
+.btn-info:hover, btn-info:focus {
+    background-color: #707070;
+    color: #fff;
+    border-color: #707070;
 }
 
 .modal {
