@@ -48,7 +48,6 @@ public partial class GroupProfile : System.Web.UI.Page
         User user = new User(name, avatar, gid, tempGroupAdmin);
         this.Title = user.username;
 
-
         reader.Close();
         conn.Close();
 

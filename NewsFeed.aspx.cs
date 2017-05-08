@@ -90,11 +90,22 @@ public partial class NewsFeed : System.Web.UI.Page
 			}
 			else
 			{
-				User user = new User(checkarray[10], checkarray[13], Int32.Parse(checkarray[9]), zero);
-				Control post = addFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, false), time, id, hasComments);
-				post.ID = "post" + id;
-				post.ClientIDMode = System.Web.UI.ClientIDMode.Static; // this supposedly makes client ID's the same as ASP ID's
-				posts.Add(new Post(post, time));
+				if (Int32.Parse(checkarray[9]) == Int32.Parse(Session["UserId"].ToString()))
+				{
+					User user = new User(checkarray[10], checkarray[13], Int32.Parse(checkarray[9]), one);
+					Control post = addFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, false), time, id, hasComments);
+					post.ID = "post" + id;
+					post.ClientIDMode = System.Web.UI.ClientIDMode.Static; // this supposedly makes client ID's the same as ASP ID's
+					posts.Add(new Post(post, time));
+				}
+				else
+				{
+					User user = new User(checkarray[10], checkarray[13], Int32.Parse(checkarray[9]), zero);
+					Control post = addFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, false), time, id, hasComments);
+					post.ID = "post" + id;
+					post.ClientIDMode = System.Web.UI.ClientIDMode.Static; // this supposedly makes client ID's the same as ASP ID's
+					posts.Add(new Post(post, time));
+				}
 			}
 
 		}
@@ -177,11 +188,22 @@ public partial class NewsFeed : System.Web.UI.Page
 			}
 			else
 			{
-				User user = new User(checkarray[10], checkarray[13], Int32.Parse(checkarray[9]), zero);
-				Control post = addFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, false), time, id, hasComments);
-				post.ID = "post" + id;
-				post.ClientIDMode = System.Web.UI.ClientIDMode.Static; // this supposedly makes client ID's the same as ASP ID's
-				posts.Add(new Post(post, time));
+				if (Int32.Parse(checkarray[9]) == Int32.Parse(Session["UserId"].ToString()))
+				{
+					User user = new User(checkarray[10], checkarray[13], Int32.Parse(checkarray[9]), one);
+					Control post = addFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, false), time, id, hasComments);
+					post.ID = "post" + id;
+					post.ClientIDMode = System.Web.UI.ClientIDMode.Static; // this supposedly makes client ID's the same as ASP ID's
+					posts.Add(new Post(post, time));
+				}
+				else
+				{
+					User user = new User(checkarray[10], checkarray[13], Int32.Parse(checkarray[9]), zero);
+					Control post = addFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, false), time, id, hasComments);
+					post.ID = "post" + id;
+					post.ClientIDMode = System.Web.UI.ClientIDMode.Static; // this supposedly makes client ID's the same as ASP ID's
+					posts.Add(new Post(post, time));
+				}
 			}
 		}
 		reader.Close();

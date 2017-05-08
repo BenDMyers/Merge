@@ -73,7 +73,10 @@ public partial class SiteMaster : MasterPage
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        HiddenNameLabel.Text = (string)Session["Username"];
+		ProfileLink.NavigateUrl = "~/UserProfile.aspx?userid=" + Int32.Parse(Session["UserId"].ToString()) + "&username=" + Session["Username"].ToString() + "&admin=1";
+
+
+		HiddenNameLabel.Text = (string)Session["Username"];
 
         // Here we populate the group chat list
         SqlConnection conn = new SqlConnection(connectionString);
