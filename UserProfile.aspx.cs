@@ -12,40 +12,99 @@ public partial class UserProfile : System.Web.UI.Page
 	// this is a shortcut for your connection string
 	static string DatabaseConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
 
-	//string sqlDatetime = "M/d h:mm:ss tt";
-
-	List<String> sqlDatetimeFormats = new List<string>(new String[] { "M/d/yyyy h:mm:ss tt", "M/d h:mm:ss tt" });
 	string outputTimestamp = "M/d h:mm:ss tt";
 
+	// WHY THIS NO PARSE??   "5/5 9:03:42 PM"
 
-
-	private List<Post> getPosts()
+	private void makeProfilePanel(int gid)
 	{
+		int tempGroupAdmin = Int32.Parse(Request.QueryString["groupadmin"]);
 		//Connect to the database and check to see if user already exists, if it does, compare the password
 		string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
 		SqlConnection conn = new SqlConnection(connectionString);
-		string query = "select TOP(20) * from postt p left join users u on u.userid = p.puserid left join groups g on g.groupid = p.pgroupid where p.commentid IS NULL order by p.postid desc;";
+		string query = "select * from groups where groupid = " + gid + ";";
 		SqlCommand cmd = new SqlCommand(query, conn);
 
 		conn.Open();
 
 		//Actually execute the query and return the results
 		SqlDataReader reader = cmd.ExecuteReader();
-		string[] checkarray = new string[23];
+		string[] checkarray = new string[10];
+
+		List<Post> posts = new List<Post>();
+		reader.Read();
+		checkarray[0] = reader[0].ToString();     //groupid
+		checkarray[1] = reader[1].ToString();     //groupname
+		checkarray[2] = reader[2].ToString();     //groupavatar
+		checkarray[3] = reader[3].ToString();     //gabout
+
+		// name these properties!
+		string name = checkarray[1];
+		string avatar = checkarray[2];
+		string about = checkarray[4];
+
+		//we're going to build a User object to let it take care of server file paths for our avatar.
+		// in the future, maybe User would do something more useful, idk.
+		User user = new User(name, avatar, gid, tempGroupAdmin);
+
+
+		reader.Close();
+		conn.Close();
+
+		// now build a sweet panel!
+		Image avatarImg = new Image();
+		avatarImg.ImageUrl = user.avatar;
+		avatarImg.CssClass = "info-biopic";
+		ProfilePanel.Controls.Add(avatarImg);
+
+		Panel info = new Panel();
+		info.CssClass = "info-sidepanel";
+
+		Label nameLabel = new Label();
+		nameLabel.Text = name;
+		nameLabel.CssClass = "info-realname";
+		info.Controls.Add(nameLabel);
+
+		Label aboutLabel = new Label();
+		aboutLabel.Text = about;
+		aboutLabel.CssClass = "info-about";
+		info.Controls.Add(aboutLabel);
+
+		ProfilePanel.Controls.Add(info);
+
+	}
+
+	private List<Post> getPosts()
+	{
+		int tempUserID = Int32.Parse(Request.QueryString["userid"]);
+		string tempUserName = Request.QueryString["username"];
+		int tempAdmin = Int32.Parse(Request.QueryString["admin"]);
+
+		//Connect to the database and check to see if user already exists, if it does, compare the password
+		string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
+		SqlConnection conn = new SqlConnection(connectionString);
+		string query = "select TOP(20) * from postt p join users u on u.userid = p.puserid where p.commentid IS NULL and p.puserid = " + tempUserID + ";";
+		SqlCommand cmd = new SqlCommand(query, conn);
+
+		conn.Open();
+
+		//Actually execute the query and return the results
+		SqlDataReader reader = cmd.ExecuteReader();
+		string[] checkarray = new string[19];
 
 		List<Post> posts = new List<Post>();
 		while (reader.Read())
 		{
-			checkarray[0] = reader[0].ToString();     //postid
-			checkarray[1] = reader[1].ToString();     //ptext
-			checkarray[2] = reader[2].ToString();     //ptimestamp
-			checkarray[3] = reader[3].ToString();     //phascom
-			checkarray[4] = reader[4].ToString();     //commentid
-			checkarray[5] = reader[5].ToString();     //puserid
-			checkarray[6] = reader[6].ToString();     //pgroupid
-			checkarray[7] = reader[7].ToString();     //pcode
-			checkarray[8] = reader[8].ToString();     //ppicfile
-			checkarray[9] = reader[9].ToString();     //pedate
+			checkarray[0] = reader[0].ToString();       //postid
+			checkarray[1] = reader[1].ToString();       //ptext
+			checkarray[2] = reader[2].ToString();       //ptimestamp
+			checkarray[3] = reader[3].ToString();       //phascom
+			checkarray[4] = reader[4].ToString();       //commentid
+			checkarray[5] = reader[5].ToString();       //puserid
+			checkarray[6] = reader[6].ToString();       //pgroupid
+			checkarray[7] = reader[7].ToString();       //pcode
+			checkarray[8] = reader[8].ToString();       //ppicfile
+			checkarray[9] = reader[9].ToString();       //pedate
 			checkarray[10] = reader[10].ToString();     //petime
 			checkarray[11] = reader[11].ToString();     //peinfo
 			checkarray[12] = reader[12].ToString();     //userid
@@ -55,46 +114,33 @@ public partial class UserProfile : System.Web.UI.Page
 			checkarray[16] = reader[16].ToString();     //useravatar
 			checkarray[17] = reader[17].ToString();     //useremail
 			checkarray[18] = reader[18].ToString();     //userpassword
-			checkarray[19] = reader[19].ToString();     //groupid
-			checkarray[20] = reader[20].ToString();     //groupname
-			checkarray[21] = reader[21].ToString();     //groupavatar
-			checkarray[22] = reader[22].ToString();     //gabout
 
 			int id = Int32.Parse(checkarray[0]);
 			DateTime time = SqlDateHelper.parseSqlDate(checkarray[2]);
 			bool hasComments = bool.Parse(checkarray[3]);
-
-			//Check to see if the user is a group admin
-			if (checkarray[13] == "")
-			{
-				User user = new User(checkarray[20], checkarray[21], Int32.Parse(checkarray[19]));
-				Control post = addFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, false), time, id, hasComments);
-				post.ID = "post" + id;
-				post.ClientIDMode = System.Web.UI.ClientIDMode.Static; // this supposedly makes client ID's the same as ASP ID's
-				posts.Add(new Post(post, time));
-			}
-			else
-			{
-				User user = new User(checkarray[13], checkarray[16], Int32.Parse(checkarray[12]));
-				Control post = addFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, false), time, id, hasComments);
-				post.ID = "post" + id;
-				post.ClientIDMode = System.Web.UI.ClientIDMode.Static; // this supposedly makes client ID's the same as ASP ID's
-				posts.Add(new Post(post, time));
-			}
-
+			string avatar = checkarray[16]; // these are all group posts, so don't need to test if its a user, and the nubmering is different in the response
+			User user = new User(tempUserName, avatar, tempUserID, tempAdmin);
+			Control post = addFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, false), time, id, hasComments);
+			post.ID = "post" + id;
+			post.ClientIDMode = System.Web.UI.ClientIDMode.Static; // this supposedly makes client ID's the same as ASP ID's
+			posts.Add(new Post(post, time));
 		}
 		reader.Close();
 		conn.Close();
 		return posts;
 	}
 
+
 	private List<Post> getComments(int postId)
 	{
+		int tempUserID = Int32.Parse(Request.QueryString["userid"]);
+		string tempUserName = Request.QueryString["username"];
+		int tempAdmin = Int32.Parse(Request.QueryString["admin"]);
 
 		//Connect to the database and check to see if user already exists, if it does, compare the password
 		string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
 		SqlConnection conn = new SqlConnection(connectionString);
-		string query = "select TOP(20) * from postt p left join users u on u.userid = p.puserid left join groups g on g.groupid = p.pgroupid where p.commentid = " + Int32.Parse(postId.ToString()) + " order by p.postid desc;";
+		string query = "select TOP(20) * from postt p join users u on u.userid = p.puserid where p.puserid = " + tempUserID + " and p.commentid = " + postId.ToString() + ";";
 		SqlCommand cmd = new SqlCommand(query, conn);
 
 		conn.Open();
@@ -133,24 +179,20 @@ public partial class UserProfile : System.Web.UI.Page
 			int id = Int32.Parse(checkarray[0]);
 			DateTime time = SqlDateHelper.parseSqlDate(checkarray[2]);
 			bool hasComments = bool.Parse(checkarray[3]);
-
-			//Check to see if posr is from group else user
-			if (checkarray[13] == "NULL")
+			string avatar;
+			if (id % 2 == 0)
 			{
-				User user = new User(checkarray[20], checkarray[21], Int32.Parse(checkarray[19]));
-				Control post = addFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, false), time, id, hasComments);
-				post.ID = "post" + id;
-				post.ClientIDMode = System.Web.UI.ClientIDMode.Static; // this supposedly makes client ID's the same as ASP ID's
-				posts.Add(new Post(post, time));
+				avatar = checkarray[16];
 			}
 			else
 			{
-				User user = new User(checkarray[13], checkarray[16], Int32.Parse(checkarray[12]));
-				Control post = addFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, false), time, id, hasComments);
-				post.ID = "post" + id;
-				post.ClientIDMode = System.Web.UI.ClientIDMode.Static; // this supposedly makes client ID's the same as ASP ID's
-				posts.Add(new Post(post, time));
+				avatar = checkarray[21];
 			}
+			User user = new User(tempUserName, avatar, tempUserID, tempAdmin);
+			Control post = addFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, false), time, id, hasComments);
+			post.ID = "post" + id;
+			post.ClientIDMode = System.Web.UI.ClientIDMode.Static; // this supposedly makes client ID's the same as ASP ID's
+			posts.Add(new Post(post, time));
 		}
 		reader.Close();
 		conn.Close();
@@ -203,9 +245,9 @@ public partial class UserProfile : System.Web.UI.Page
 		if (hasComments)
 		{
 			//add the load comment control
-			LinkButton loadComments = new LinkButton();
-			loadComments.CssClass = "load-comments-button btn";
-			loadComments.Text = "<span style='font-weight: bold; font-size: smaller;'>//</span> Load Comments";
+			Button loadComments = new Button();
+			loadComments.CssClass = "load-comments-button";
+			loadComments.Text = "load comments";
 			loadComments.Attributes["postid"] = postID.ToString();
 			loadComments.Click += new EventHandler(this.loadComments);
 			footer.Controls.Add(loadComments);
@@ -213,9 +255,9 @@ public partial class UserProfile : System.Web.UI.Page
 
 
 		//add the load comment control
-		LinkButton replyButton = new LinkButton();
-		replyButton.CssClass = "reply-button btn btn-primary";
-		replyButton.Text = "<span class='fa fa-reply'></span> Reply";
+		Button replyButton = new Button();
+		replyButton.CssClass = "reply-button";
+		replyButton.Text = "reply";
 		// this sneaky bit of javascript opens a modal window to reply to a particular post. wooooooo
 		replyButton.OnClientClick = "$('#PostModal').modal('toggle'); $('#PostButton').attr('replyPost', " + postID + "); document.getElementById('HiddenThing').value=" + postID + "; return false;";
 		footer.Controls.Add(replyButton);
@@ -263,6 +305,7 @@ public partial class UserProfile : System.Web.UI.Page
 
 		while (reader.Read())
 		{
+			int tempGroupAdmin = Int32.Parse(Request.QueryString["admin"]);
 			checkarray[0] = reader[0].ToString(); //userid
 			checkarray[1] = reader[1].ToString(); //username
 			checkarray[2] = reader[2].ToString(); //userrealname
@@ -271,7 +314,7 @@ public partial class UserProfile : System.Web.UI.Page
 			checkarray[5] = reader[5].ToString(); //useremail
 												  //checkarray[9] = reader[9].ToString(); //userpassword
 
-			User user = new User(checkarray[1], checkarray[4], Int32.Parse(checkarray[0]));
+			User user = new User(checkarray[1], checkarray[4], Int32.Parse(checkarray[0]), tempGroupAdmin);
 			user.gitname = checkarray[3];
 			users.Add(user);
 		}
@@ -293,7 +336,6 @@ public partial class UserProfile : System.Web.UI.Page
 		return finalList;
 	}
 
-
 	protected void Page_Load(object sender, EventArgs e)
 	{
 		//Check to see if the user has logged in, if not disable ability to post a car
@@ -307,6 +349,14 @@ public partial class UserProfile : System.Web.UI.Page
 			Session["UserId"] = Session["TempUserId"];
 		}
 
+		int tempAdmin = Int32.Parse(Request.QueryString["admin"]);
+
+		//Check to see if the user is a group admin
+		if (tempAdmin != 1)
+		{
+			// hides the post button on the navbar
+			Page.ClientScript.RegisterStartupScript(this.GetType(), "notgroupadmin", "$('#PostModalToggler').hide()", true);
+		}
 
 		List<List<Post>> ALLTHEPOSTS = new List<List<Post>>(); // place to put all our lists
 		List<Post> userPosts = getPosts(); // get user posts from database

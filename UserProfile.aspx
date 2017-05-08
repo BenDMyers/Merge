@@ -10,7 +10,7 @@ post repeater-ish thing
 see Alex and Ben
 database stuffs Kaylee-->
 
-    <asp:Panel ID="InfoPanel" runat="server"></asp:Panel>
+    <asp:Panel ID="ProfilePanel" runat="server"></asp:Panel>
     <asp:Panel ID="UserPostPanel" runat="server"></asp:Panel>
 
 </asp:Content>

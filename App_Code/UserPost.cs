@@ -47,12 +47,22 @@ public class UserPost
         // and finally add them to the container
         userContainer.Controls.Add(userAvatar);
 
-		HyperLink userText = new HyperLink();
-		userText.Text = user.username;
-		userText.NavigateUrl = "~/GroupProfile.aspx?userid=" + user.userid + "&username=" + user.username;
-
-		// and finally add them to the container
-		userContainer.Controls.Add(userText);
+		if (user.userid % 2 != 0)
+		{
+			HyperLink userText = new HyperLink();
+			userText.Text = user.username;
+			userText.NavigateUrl = "~/GroupProfile.aspx?groupid=" + user.userid + "&groupname=" + user.username + "&admin=" + user.admin;
+			// and finally add them to the container
+			userContainer.Controls.Add(userText);
+		}
+		else
+		{
+			HyperLink userText = new HyperLink();
+			userText.Text = user.username;
+			userText.NavigateUrl = "~/UserProfile.aspx?userid=" + user.userid + "&username=" + user.username + "&admin=" + user.admin;
+			// and finally add them to the container
+			userContainer.Controls.Add(userText);
+		}
 
         // and add the container to the outer block
         block.Controls.Add(userContainer);
