@@ -58,8 +58,8 @@
             </div>
             <div class="container" id="features">
                 <div class="clearfix" id="GithubDescription" style="border-bottom-style: solid; border-bottom-width: 1px; margin-top: 300px"> 
-                    <img alt="GithubPic" src="https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png" style="display: inline-block; text-align: left; width: 13vw; height: 15vw; position: relative" />
-                    <div class="text" style="display: inline-block; width: 66vw; text-align: left;">
+                    <img alt="GithubPic" src="https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png" style="display: inline-block; text-align: left; width: 20vw; height: 15vw; position: relative" />
+                    <div class="text" style="display: inline-block; text-align: left;">
                         <h3>Chronological Github Integration</h3>
                         <p>Never miss a push with Github notifications showing up in your newsfeed.</p>
                     </div>
@@ -67,17 +67,17 @@
                 </div> 
                 <br /> <br />
                 <div class="clearfix" id="PicturesNCode" style="text-align: right; border-bottom-style: solid; border-bottom-width: 1px;">
-                    <div class="text" style="display: inline-block; text-align: right; width: 66vw;">
+                    <div class="text" style="display: inline-block; text-align: right;">
                         <h3>Post Pictures and Code</h3>
                         <p>Show your code, display, and comments all in one post!</p>
                     </div>
-                    <img alt="PicturesNCodePic" src="http://media.istockphoto.com/photos/coding-picture-id519161626?k=6&m=519161626&s=612x612&w=0&h=vtPo_EoYkP6EmbWIlZ7bpPF9tJbmP40W7mjKPOdQC5w=" style="width: 13vw; height: 15vw; display: inline-block" />
+                    <img alt="PicturesNCodePic" src="http://media.istockphoto.com/photos/coding-picture-id519161626?k=6&m=519161626&s=612x612&w=0&h=vtPo_EoYkP6EmbWIlZ7bpPF9tJbmP40W7mjKPOdQC5w=" style="width: 20vw; height: 15vw; display: inline-block" />
                     <br /> <br /> <br />
                 </div>
                 <br /> <br /> 
                 <div class="clearfix" id="ClubsnGroups" style="border-bottom-style: solid; border-bottom-width: 1px">
-                    <img alt="GroupsPic" src="https://avatars3.githubusercontent.com/u/21269750?v=3&s=280style=" style="display: inline-block; width: 13vw; height: 15vw;" />
-                    <div class="text" style="display: inline-block; text-align: left; width: 66vw;">
+                    <img alt="GroupsPic" src="https://avatars3.githubusercontent.com/u/21269750?v=3&s=280style=" style="display: inline-block; width: 20vw; height: 15vw;" />
+                    <div class="text" style="display: inline-block; text-align: left;">
                         <h3>Connect With Your On-Campus Clubs and Groups</h3>
                         <p>Sign up your club and communicate, post code, and chat with your members.</p>
                     </div>
@@ -85,11 +85,11 @@
                 </div>
                 <br /> <br />
                 <div class="clearfix" id="ChatFeature" style="text-align: right; border-bottom-style: solid; border-bottom-width: 1px;">
-                    <div class="text" style="display: inline-block; text-align: right; width: 66vw;">
+                    <div class="text" style="display: inline-block; text-align: right;">
                         <h3>Chat With Friends and Co-Workers</h3> 
                         <p>Merge allows you to chat with any user </p>
                     </div>
-                    <img alt="ChatPic" src="https://ak9.picdn.net/shutterstock/videos/6685271/thumb/1.jpg" style="display: inline-block; width: 13vw; height: 15vw;" />
+                    <img alt="ChatPic" src="https://ak9.picdn.net/shutterstock/videos/6685271/thumb/1.jpg" style="display: inline-block; width: 20vw; height: 15vw;" />
                 <br /> <br /> <br />
                 </div>
         
