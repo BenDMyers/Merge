@@ -89,6 +89,7 @@ public partial class SiteMaster : MasterPage
             while (dr.Read())
             {
                 ListItem GroupItem = new ListItem();
+                GroupItem.Attributes.Add("class", "li-chatbox li-chatbox-group");
                 GroupItem.Value = "ChatGroup.aspx?group=" + dr["groupid"];
                 GroupItem.Text = dr["groupname"].ToString();
                 GroupList.Items.Add(GroupItem);
