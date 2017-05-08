@@ -231,6 +231,7 @@ textarea {
 	min-width: 24px;
 	max-width: 96px;
     border-radius: 6px;
+    margin: 5px;
 }
 
 .user-info {
@@ -251,6 +252,13 @@ textarea {
     width: 100%;
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
+}
+
+.timestamp-label {
+    margin: 5px;
+}
+.load-comments-button {
+    margin: 5px;
 }
 
 /* Formatting for GitHub posts that appear in feed */
