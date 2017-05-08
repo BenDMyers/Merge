@@ -83,6 +83,10 @@ public partial class UserProfile : System.Web.UI.Page
 
     }
 
+
+
+
+
 	private List<Post> getPosts()
 	{
 		int tempUserID = Int32.Parse(Request.QueryString["userid"]);
@@ -99,7 +103,7 @@ public partial class UserProfile : System.Web.UI.Page
 
 		//Actually execute the query and return the results
 		SqlDataReader reader = cmd.ExecuteReader();
-		string[] checkarray = new string[19];
+		string[] checkarray = new string[16];
 
 		List<Post> posts = new List<Post>();
 		while (reader.Read())
@@ -124,7 +128,7 @@ public partial class UserProfile : System.Web.UI.Page
 			int id = Int32.Parse(checkarray[0]);
 			DateTime time = SqlDateHelper.parseSqlDate(checkarray[2]);
 			bool hasComments = bool.Parse(checkarray[3]);
-			string avatar = checkarray[16]; // these are all group posts, so don't need to test if its a user, and the nubmering is different in the response
+			string avatar = checkarray[13]; // these are all group posts, so don't need to test if its a user, and the nubmering is different in the response
 			User user = new User(tempUserName, avatar, tempUserID, tempAdmin);
 			Control post = addFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, false), time, id, hasComments);
 			post.ID = "post" + id;
@@ -278,12 +282,12 @@ public partial class UserProfile : System.Web.UI.Page
 	}
 
 
-	private List<User> allUsers()
+	private User getUser(int uid)
 	{
 		//Connect to the database and check to see if user already exists, if it does, compare the password
 		string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
 		SqlConnection conn = new SqlConnection(connectionString);
-		string query = "select * from users";
+		string query = "select * from users where userid=" + uid + ";";
 		SqlCommand cmd = new SqlCommand(query, conn);
 
 		conn.Open();
@@ -293,9 +297,7 @@ public partial class UserProfile : System.Web.UI.Page
 		string[] checkarray = new string[7]; // GAHKLJSHDFLKJHDSGKLJDSF I HATE ASP I HATE ASP I HATE ASP I HATE ASP I HATE ASP I HATE ASP I HATE ASP I HATE ASP I HATE ASP
 
 		List<User> users = new List<User>();
-
-		while (reader.Read())
-		{
+        reader.Read();
 			int tempGroupAdmin = Int32.Parse(Request.QueryString["admin"]);
 			checkarray[0] = reader[0].ToString(); //userid
 			checkarray[1] = reader[1].ToString(); //username
@@ -308,10 +310,10 @@ public partial class UserProfile : System.Web.UI.Page
 			User user = new User(checkarray[1], checkarray[4], Int32.Parse(checkarray[0]), tempGroupAdmin);
 			user.gitname = checkarray[3];
 			users.Add(user);
-		}
+
 		reader.Close();
 		conn.Close();
-		return users;
+		return user;
 	}
 
 	// merge the list of list of posts into a single list - aka flattening by one dimension.
@@ -353,26 +355,27 @@ public partial class UserProfile : System.Web.UI.Page
 		List<Post> userPosts = getPosts(); // get user posts from database
 		ALLTHEPOSTS.Add(userPosts); // add the user psot list to the listy list
 
-		List<User> users = allUsers(); // get all the users - we will then fetch each of their git feeds.
-		if (users.Count <= 0)
+        //List<User> users = allUsers(); // get all the users - we will then fetch each of their git feeds.
+        //if (users.Count <= 0)
+        //{
+        //	Post error = new Post(GithubPosts.errorPost("woops. no github users"), DateTime.UtcNow);
+        //	userPosts.Add(error);
+        //}
+        //foreach (User user in users)
+        //{
+        User user = getUser(0);
+		if (user.gitname != null && user.gitname != "NULL" && user.gitname != "")
 		{
-			Post error = new Post(GithubPosts.errorPost("woops. no github users"), DateTime.UtcNow);
-			userPosts.Add(error);
-		}
-		foreach (User user in users)
-		{
-			if (user.gitname != null && user.gitname != "NULL" && user.gitname != "")
+			List<Post> githubPosts = GithubPosts.gitPosts(user.gitname); // if they have a github name, get their feed as a seperate list
+			ALLTHEPOSTS.Add(githubPosts);
+			if (githubPosts.Count <= 0)
 			{
-				List<Post> githubPosts = GithubPosts.gitPosts(user.gitname); // if they have a github name, get their feed as a seperate list
-				ALLTHEPOSTS.Add(githubPosts);
-				if (githubPosts.Count <= 0)
-				{
-					Post error = new Post(GithubPosts.errorPost("woops. no events for this user"), DateTime.UtcNow);
-					// we couldn't get git info... soooooo
-					githubPosts.Add(error);
-				}
+				Post error = new Post(GithubPosts.errorPost("woops. no events for this user"), DateTime.UtcNow);
+				// we couldn't get git info... soooooo
+				githubPosts.Add(error);
 			}
 		}
+		
 
 		// finally, flatten all the lists into one list, and sort it.
 		List<Post> posts = flatten(ALLTHEPOSTS);
