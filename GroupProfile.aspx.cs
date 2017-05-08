@@ -12,75 +12,92 @@ public partial class GroupProfile : System.Web.UI.Page
 	// this is a shortcut for your connection string
 	static string DatabaseConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
 
+    string outputTimestamp = "M/d h:mm:ss tt";
 
-	// simple container class for user info.
-	private class Group
+	// WHY THIS NO PARSE??   "5/5 9:03:42 PM"
+    
+	private List<Post> getPosts()
 	{
-		public String groupname;
-		public String avatar;
+		int tempGroupID = Int32.Parse(Request.QueryString["groupid"]);
+		string tempGroupName = Request.QueryString["groupname"];
 
-		public Group(String curgroupname, String curavatar)
-		{
-			groupname = curgroupname;   // lulz these names are terrible
-			avatar = curavatar;       // lulz these names are terrible
-		}
-	}
-	
-	// simple container class for user info.
-	private class User
-	{
-		public String username;
-		public String avatar;
-
-		public User(String curusername, String curavatar)
-		{
-			username = curusername;   // lulz these names are terrible
-			avatar = curavatar;       // lulz these names are terrible
-		}
-	}
-
-	private DataTable testSql()
-	{
-		// do stuff
-		using (SqlConnection conn = new SqlConnection(DatabaseConnectionString))
-		{
-			int tempGroup = Int32.Parse(Request.QueryString["groupid"]);
-			SqlCommand cmd = new SqlCommand("SELECT * FROM postt where pgroupid = " + tempGroup + ";", conn);
-			cmd.Connection.Open();
-			DataTable TempTable = new DataTable();
-			TempTable.Load(cmd.ExecuteReader());
-			return TempTable;
-		}
-	}
-
-
-	protected void Page_Load(object sender, EventArgs e)
-	{
-		int tempGroup = Int32.Parse(Request.QueryString["groupid"]);
-		string tempGName = Request.QueryString["groupname"];
 		//Connect to the database and check to see if user already exists, if it does, compare the password
 		string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
 		SqlConnection conn = new SqlConnection(connectionString);
-		string query = "select TOP(20) * from postt p left join users u on u.userid = p.puserid left join groups g on g.groupid = p.pgroupid where p.pgroupid = " + tempGroup + ";";
+		string query = "select TOP(20) * from postt p join groups g on g.groupid = p.pgroupid where p.commentid IS NULL and p.pgroupid = " + tempGroupID + " order by p.postid desc;";
 		SqlCommand cmd = new SqlCommand(query, conn);
 
 		conn.Open();
 
 		//Actually execute the query and return the results
 		SqlDataReader reader = cmd.ExecuteReader();
-		string[] checkarray = new string[22];
+		string[] checkarray = new string[16];
+
+		List<Post> posts = new List<Post>();
 		while (reader.Read())
 		{
-			checkarray[0] = reader[0].ToString();       //postid
-			checkarray[1] = reader[1].ToString();       //ptext
-			checkarray[2] = reader[2].ToString();       //ptimestamp
-			checkarray[3] = reader[3].ToString();       //phascom
-			checkarray[4] = reader[4].ToString();       //commentid
-			checkarray[5] = reader[5].ToString();       //puserid
-			checkarray[6] = reader[6].ToString();       //pgroupid
-			checkarray[7] = reader[7].ToString();       //pcode
-			checkarray[8] = reader[8].ToString();       //ppicfile
-			checkarray[9] = reader[9].ToString();       //pedate
+			checkarray[0] = reader[0].ToString();     //postid
+			checkarray[1] = reader[1].ToString();     //ptext
+			checkarray[2] = reader[2].ToString();     //ptimestamp
+			checkarray[3] = reader[3].ToString();     //phascom
+			checkarray[4] = reader[4].ToString();     //commentid
+			checkarray[5] = reader[5].ToString();     //puserid
+			checkarray[6] = reader[6].ToString();     //pgroupid
+			checkarray[7] = reader[7].ToString();     //pcode
+			checkarray[8] = reader[8].ToString();     //ppicfile
+			checkarray[9] = reader[9].ToString();     //pedate
+			checkarray[10] = reader[10].ToString();     //petime
+			checkarray[11] = reader[11].ToString();     //peinfo
+			checkarray[12] = reader[12].ToString();     //groupid
+			checkarray[13] = reader[13].ToString();     //groupname
+			checkarray[14] = reader[14].ToString();     //groupavatar
+			checkarray[15] = reader[15].ToString();     //gabout
+
+			int id = Int32.Parse(checkarray[0]);
+            DateTime time = SqlDateHelper.parseSqlDate(checkarray[2]);
+            bool hasComments = bool.Parse(checkarray[3]);			
+			User user = new User(tempGroupName, checkarray[20], tempGroupID);
+			Control post = addFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, false), time, id, hasComments);
+			post.ID = "post" + id;
+			post.ClientIDMode = System.Web.UI.ClientIDMode.Static; // this supposedly makes client ID's the same as ASP ID's
+			posts.Add(new Post(post, time));
+		}
+		reader.Close();
+		conn.Close();
+		return posts;
+	}
+
+
+	private List<Post> getComments(int postId)
+	{
+		int tempGroupID = Int32.Parse(Request.QueryString["groupid"]);
+		string tempGroupName = Request.QueryString["groupname"];
+
+		//Connect to the database and check to see if user already exists, if it does, compare the password
+		string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
+		SqlConnection conn = new SqlConnection(connectionString);
+		string query = "select TOP(20) * from postt p left join users u on u.userid = p.puserid left join groups g on g.groupid = p.pgroupid  where p.commentid = " + postId.ToString() + " order by p.postid desc;";
+		SqlCommand cmd = new SqlCommand(query, conn);
+
+		conn.Open();
+
+		//Actually execute the query and return the results
+		SqlDataReader reader = cmd.ExecuteReader();
+		string[] checkarray = new string[23];
+
+		List<Post> posts = new List<Post>();
+		while (reader.Read())
+		{
+			checkarray[0] = reader[0].ToString();     //postid
+			checkarray[1] = reader[1].ToString();     //ptext
+			checkarray[2] = reader[2].ToString();     //ptimestamp
+			checkarray[3] = reader[3].ToString();     //phascom
+			checkarray[4] = reader[4].ToString();     //commentid
+			checkarray[5] = reader[5].ToString();     //puserid
+			checkarray[6] = reader[6].ToString();     //pgroupid
+			checkarray[7] = reader[7].ToString();     //pcode
+			checkarray[8] = reader[8].ToString();     //ppicfile
+			checkarray[9] = reader[9].ToString();     //pedate
 			checkarray[10] = reader[10].ToString();     //petime
 			checkarray[11] = reader[11].ToString();     //peinfo
 			checkarray[12] = reader[12].ToString();     //userid
@@ -93,182 +110,204 @@ public partial class GroupProfile : System.Web.UI.Page
 			checkarray[19] = reader[19].ToString();     //groupid
 			checkarray[20] = reader[20].ToString();     //groupname
 			checkarray[21] = reader[21].ToString();     //groupavatar
-		}
-		//Check to see if the user is a group admin
-		if (Int32.Parse(Session["GroupAdmin"].ToString()) == 1)
-		{
-			Session["TempUsername"] = Session["Username"];
-			Session["TempUserId"] = Session["UserId"];
-			Session["UserId"] = tempGroup;
-			Session["Username"] = tempGName;
+			checkarray[22] = reader[22].ToString();     //gabout
 
-			Group group = new Group(checkarray[20], checkarray[21]);
-			AddPost(Panel, group, checkarray[1], checkarray[7], checkarray[8]);
-		}
-		else
-		{
-			Group group = new Group(checkarray[20], checkarray[21]);
-			User user = new User(checkarray[13], checkarray[16]);
-			AddPost(Panel, user, group, checkarray[1], checkarray[7], checkarray[8]);
+			int id = Int32.Parse(checkarray[0]);
+            DateTime time = SqlDateHelper.parseSqlDate(checkarray[2]);
+            bool hasComments = bool.Parse(checkarray[3]);
+			User user = new User(tempGroupName, checkarray[20], tempGroupID);
+			Control post = addFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, false), time, id, hasComments);
+			post.ID = "post" + id;
+			post.ClientIDMode = System.Web.UI.ClientIDMode.Static; // this supposedly makes client ID's the same as ASP ID's
+			posts.Add(new Post(post, time));
 		}
 		reader.Close();
 		conn.Close();
+		return posts;
 	}
 
-	private void AddPost(Panel panel, User user, Group group, String text, String imgSrc, String codeSrc)
+
+	// so, using just ASP the whole page reloads, and then a modal pops up.....
+	// that is a terrible UX. so TO JAVASCRIPT WE GOOOOOO!!!
+	// ^ javascript saved our day here.
+	public void onReply(object sender, EventArgs evt)
 	{
-		// layout of this code block should resemble the layout of the generated HTML!
-		// ( i.e. outer elements are created first, and added after - creation is open tag, adding is close tag
-		Panel post = new Panel();
-		post.CssClass = "post-container";
-		Panel block = new Panel();
-		block.CssClass = "post-block";
-
-		// make the username and avatar container
-		Panel userContainer = new Panel();
-		userContainer.CssClass = "user-info";
-
-		if (group.avatar != "NULL")
-		{
-			Image userAvatar = new Image();
-			userAvatar.CssClass = "avatar";
-			userAvatar.ImageUrl = "/pictures/avatars/" + user.avatar;
-			// and finally add them to the container
-			userContainer.Controls.Add(userAvatar);
-		}
-
-		Label userText = new Label();
-		userText.Text = user.username;
-
-		// and finally add them to the container
-		userContainer.Controls.Add(userText);
-
-		// and add the container to the outer block
-		block.Controls.Add(userContainer);
-
-		if (codeSrc != null && codeSrc != "")
-		{
-			//Literal code = new Literal();
-			//code.Text = "<pre><code>" + "</code></pre>"; //ROFL HOW FAST CAN YOU SAY CODE INJECTION!
-
-			Panel codePanel = new Panel();
-			codePanel.CssClass = "content-container code-content";
-
-			// make the code element - this involves some special html tags that don't exist in asp
-			// so F**K ASP.NET and let's write literal HTML
-			Literal codePre = new Literal();
-			codePre.Text = "<pre><code>";
-			Label code = new Label();
-			code.Text = HttpUtility.HtmlEncode(codeSrc); // maybe not code injection? 
-			Literal codePost = new Literal();
-			codePost.Text = "</pre></code>";
-
-			// and add the code to the container
-			codePanel.Controls.Add(codePre);
-			codePanel.Controls.Add(code);
-			codePanel.Controls.Add(codePost);
-
-			block.Controls.Add(codePanel);
-		}
-		if (imgSrc != null && imgSrc != "" && imgSrc != "System.Web.UI.WebControls.FileUpload")
-		{
-			Panel imageContainer = new Panel();
-			imageContainer.CssClass = "content-container img-content";
-
-			Image img = new Image();
-			img.CssClass = "post-image";
-			img.ImageUrl = "~/pictures/postpics/" + imgSrc;
-			imageContainer.Controls.Add(img);
-
-			//and finally add the container to the outer block
-			block.Controls.Add(imageContainer);
-		}
-
-		post.Controls.Add(block);
-		panel.Controls.Add(post);
+		Page.ClientScript.RegisterStartupScript(this.GetType(), "derpyderp", "$('#PostModal').modal('toggle')", true);
 	}
 
-	private void AddPost(Panel panel, Group group, String text, String imgSrc, String codeSrc)
+	// so, the whole page reloads, and then a modal pops up.....
+	// that is a terrible UX. so TO JAVASCRIPT WE GOOOOOO
+	public void loadComments(object sender, EventArgs evt)
 	{
-		// layout of this code block should resemble the layout of the generated HTML!
-		// ( i.e. outer elements are created first, and added after - creation is open tag, adding is close tag
-		Panel post = new Panel();
-		post.CssClass = "post-container";
-		Panel block = new Panel();
-		block.CssClass = "post-block";
+		int postId = Int32.Parse((sender as Button).Attributes["postid"]);
+		List<Post> comments = getComments(postId);
 
-		// make the username and avatar container
-		Panel userContainer = new Panel();
-		userContainer.CssClass = "user-info";
+		// find a post with the matching postID in the DOM...... !!!!!!!!!!! FML! WHY C#! WHY!!!!
+		Control Post = GroupPanel.FindControl("post" + postId);
+		int i = GroupPanel.Controls.IndexOf(Post) + 1; // then find that element in the list of controls, so we can add stuff after it.
 
-		if (group.avatar != "NULL")
+		foreach (Post post in comments)
 		{
-			Image userAvatar = new Image();
-			userAvatar.CssClass = "avatar";
-			userAvatar.ImageUrl = "/pictures/avatars/" + group.avatar;
-			// and finally add them to the container
-			userContainer.Controls.Add(userAvatar);
+			GroupPanel.Controls.AddAt(i, post.control);
+			i++;
 		}
 
-		Label groupText = new Label();
-		groupText.Text = group.groupname;
+	}
 
-		// and finally add them to the container
-		userContainer.Controls.Add(groupText);
+	// add a footer block to the posts!
+	private Control addFooter(Control original, DateTime time, int postID, bool hasComments)
+	{
 
-		// and add the container to the outer block
-		block.Controls.Add(userContainer);
+		// now for the footer
 
-		// add the text container
-		Panel textContainer = new Panel();
-		textContainer.CssClass = "content-container text-content";
+		Panel footer = new Panel();
+		footer.CssClass = "post-footer";
 
-		Label textLabel = new Label();
-		textLabel.Text = text;
-		textContainer.Controls.Add(textLabel);
+		// add timestamp
+		Label timestampLabel = new Label();
+		timestampLabel.CssClass = "timestamp-label";
+		timestampLabel.Text = time.ToString();
+		footer.Controls.Add(timestampLabel);
 
-		//and finally add the container to the outer block
-		block.Controls.Add(textContainer);
-
-		if (codeSrc != null && codeSrc != "")
+		if (hasComments)
 		{
-			//Literal code = new Literal();
-			//code.Text = "<pre><code>" + "</code></pre>"; //ROFL HOW FAST CAN YOU SAY CODE INJECTION!
-
-			Panel codePanel = new Panel();
-			codePanel.CssClass = "content-container code-content";
-
-			// make the code element - this involves some special html tags that don't exist in asp
-			// so F**K ASP.NET and let's write literal HTML
-			Literal codePre = new Literal();
-			codePre.Text = "<pre><code>";
-			Label code = new Label();
-			code.Text = HttpUtility.HtmlEncode(codeSrc); // maybe not code injection? 
-			Literal codePost = new Literal();
-			codePost.Text = "</pre></code>";
-
-			// and add the code to the container
-			codePanel.Controls.Add(codePre);
-			codePanel.Controls.Add(code);
-			codePanel.Controls.Add(codePost);
-
-			block.Controls.Add(codePanel);
-		}
-		if (imgSrc != null && imgSrc != "" && imgSrc != "System.Web.UI.WebControls.FileUpload")
-		{
-			Panel imageContainer = new Panel();
-			imageContainer.CssClass = "content-container img-content";
-
-			Image img = new Image();
-			img.CssClass = "post-image";
-			img.ImageUrl = "~/pictures/postpics/" + imgSrc;
-			imageContainer.Controls.Add(img);
-
-			//and finally add the container to the outer block
-			block.Controls.Add(imageContainer);
+			//add the load comment control
+			Button loadComments = new Button();
+			loadComments.CssClass = "load-comments-button";
+			loadComments.Text = "load comments";
+			loadComments.Attributes["postid"] = postID.ToString();
+			loadComments.Click += new EventHandler(this.loadComments);
+			footer.Controls.Add(loadComments);
 		}
 
-		post.Controls.Add(block);
-		panel.Controls.Add(post);
+
+		//add the load comment control
+		Button replyButton = new Button();
+		replyButton.CssClass = "reply-button";
+		replyButton.Text = "reply";
+		// this sneaky bit of javascript opens a modal window to reply to a particular post. wooooooo
+		replyButton.OnClientClick = "$('#PostModal').modal('toggle'); $('#PostButton').attr('replyPost', " + postID + "); document.getElementById('HiddenThing').value=" + postID + "; return false;";
+		footer.Controls.Add(replyButton);
+
+		original.Controls.Add(footer);
+		return original;
+	}
+
+
+	// add a footer block to the posts!
+	private Control addCommentFooter(Control original, DateTime time, int postID)
+	{
+
+		// now for the footer
+
+		Panel footer = new Panel();
+		footer.CssClass = "post-footer";
+
+		// add timestamp
+		Label timestampLabel = new Label();
+		timestampLabel.CssClass = "timestamp-label";
+		timestampLabel.Text = time.ToString();
+		footer.Controls.Add(timestampLabel);
+
+		original.Controls.Add(footer);
+		return original;
+	}
+
+
+	private List<User> allUsers()
+	{
+		//Connect to the database and check to see if user already exists, if it does, compare the password
+		string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
+		SqlConnection conn = new SqlConnection(connectionString);
+		string query = "select * from users";
+		SqlCommand cmd = new SqlCommand(query, conn);
+
+		conn.Open();
+
+		//Actually execute the query and return the results
+		SqlDataReader reader = cmd.ExecuteReader();
+		string[] checkarray = new string[7]; // GAHKLJSHDFLKJHDSGKLJDSF I HATE ASP I HATE ASP I HATE ASP I HATE ASP I HATE ASP I HATE ASP I HATE ASP I HATE ASP I HATE ASP
+
+		List<User> users = new List<User>();
+
+		while (reader.Read())
+		{
+			checkarray[0] = reader[0].ToString(); //userid
+			checkarray[1] = reader[1].ToString(); //username
+			checkarray[2] = reader[2].ToString(); //userrealname
+			checkarray[3] = reader[3].ToString(); //usergitname
+			checkarray[4] = reader[4].ToString(); //useravatar
+			checkarray[5] = reader[5].ToString(); //useremail
+		  //checkarray[9] = reader[9].ToString(); //userpassword
+
+			User user = new User(checkarray[1], checkarray[4], Int32.Parse(checkarray[0]));
+			user.gitname = checkarray[3];
+			users.Add(user);
+		}
+		reader.Close();
+		conn.Close();
+		return users;
+	}
+
+	// merge the list of list of posts into a single list - aka flattening by one dimension.
+	private List<Post> flatten(List<List<Post>> ALLTHELISTS)
+	{
+		List<Post> finalList = new List<Post>();
+
+		foreach (List<Post> list in ALLTHELISTS)
+		{
+			finalList.AddRange(list);
+		}
+
+		return finalList;
+	}
+
+
+	protected void Page_Load(object sender, EventArgs e)
+	{
+		//Check to see if the user has logged in, if not disable ability to post a car
+		if (Session["Username"] == null)
+		{
+			Response.Redirect("Login.aspx");
+		}
+
+		int tempGroupAdmin = Int32.Parse(Request.QueryString["groupadmin"]);
+		int tempGroupID = Int32.Parse(Request.QueryString["groupid"]);
+		string tempGroupName = Request.QueryString["groupname"];
+
+		//Check to see if the user is a group admin
+		if (tempGroupAdmin == 1)
+		{
+			if (Int32.Parse(Session["UserId"].ToString()) % 2 == 0)
+			{
+				Session["TempUsername"] = Session["Username"];
+				Session["TempUserId"] = Session["UserId"];
+				Session["UserName"] = tempGroupName;
+				Session["UserId"] = tempGroupID;
+			}
+			else {
+				Session["UserName"] = tempGroupName;
+				Session["UserId"] = tempGroupID;
+			}
+		}
+		else
+		{
+			// hides the post button on the navbar
+			Page.ClientScript.RegisterStartupScript(this.GetType(), "notgroupadmin", "$('#PostModalToggler').hide()", true);
+		}
+
+		List<List<Post>> ALLTHEPOSTS = new List<List<Post>>(); // place to put all our lists
+		List<Post> userPosts = getPosts(); // get user posts from database
+		ALLTHEPOSTS.Add(userPosts); // add the user psot list to the listy list
+
+		// finally, flatten all the lists into one list, and sort it.
+		List<Post> posts = flatten(ALLTHEPOSTS);
+		posts.Sort();
+		posts.Reverse();
+		// then add them to the page!
+		foreach (Post post in posts)
+		{
+			GroupPanel.Controls.Add(post.control);
+		}
 	}
 }

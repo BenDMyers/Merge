@@ -41,24 +41,21 @@ public class UserPost
         Panel userContainer = new Panel();
         userContainer.CssClass = "user-info";
 
-        if (user.avatar != "NULL")
-        {
-            Image userAvatar = new Image();
-            userAvatar.CssClass = "avatar";
-            userAvatar.ImageUrl = "/pictures/avatars/" + user.avatar;
-            // and finally add them to the container
-            userContainer.Controls.Add(userAvatar);
-        }
-
-        Label userText = new Label();
-        userText.Text = user.username;
-
+        Image userAvatar = new Image();
+        userAvatar.CssClass = "avatar";
+        userAvatar.ImageUrl = "/pictures/avatars/" + user.avatar;
         // and finally add them to the container
-        userContainer.Controls.Add(userText);
+        userContainer.Controls.Add(userAvatar);
+
+		HyperLink userText = new HyperLink();
+		userText.Text = user.username;
+		userText.NavigateUrl = "~/GroupProfile.aspx?userid=" + user.userid + "&username=" + user.username;
+
+		// and finally add them to the container
+		userContainer.Controls.Add(userText);
 
         // and add the container to the outer block
         block.Controls.Add(userContainer);
-
 
         // add the text container
         Panel textContainer = new Panel();
@@ -110,9 +107,7 @@ public class UserPost
         }
 
         post.Controls.Add(block);
-
-       
-
+		
         return post;
     }
 }
