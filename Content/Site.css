@@ -241,7 +241,7 @@ textarea {
     font-weight: bold;
 }
 
-.post-block>.text-content {
+.text-content {
     /* The text component of each post */
     font-size: 125%;
     padding: 10px 10px 10px 10px;
@@ -271,7 +271,7 @@ textarea {
 
 
 /* PROFILE HEADERS */
-#ProfilePanel {
+#ProfilePanel, .info-panel {
     background-color: #666666;
     margin-top: 20px;
     margin-bottom: 20px;
@@ -283,19 +283,17 @@ textarea {
     border-radius: 20px;
     display: inline;
 }
-.info-sidepanel {
+/*.info-sidepanel {
     display: inline;
-}
+}*/
 .info-realname {
     font-size: xx-large;
     text-transform: uppercase;
 }
 .info-username, .info-git-logo, .info-gitname, .info-about {
     color: rgba(242, 242, 242, 0.75);
+    font-size: larger;
 }
 .info-username {
     font-variant: small-caps;
-}
-.info-gitname a {
-    color: rgba(226, 226, 226, 0.75);
 }

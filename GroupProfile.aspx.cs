@@ -56,6 +56,7 @@ public partial class GroupProfile : System.Web.UI.Page
         avatarImg.ImageUrl = user.avatar;
         avatarImg.CssClass = "info-biopic";
         InfoPanel.Controls.Add(avatarImg);
+        InfoPanel.CssClass = "info-panel";
 
         Panel info = new Panel();
         info.CssClass = "info-sidepanel";
@@ -222,7 +223,7 @@ public partial class GroupProfile : System.Web.UI.Page
 		{
 			//add the load comment control
 			Button loadComments = new Button();
-			loadComments.CssClass = "load-comments-button";
+			loadComments.CssClass = "load-comments-button btn btn-info";
 			loadComments.Text = "load comments";
 			loadComments.Attributes["postid"] = postID.ToString();
 			loadComments.Click += new EventHandler(this.loadComments);
@@ -232,7 +233,7 @@ public partial class GroupProfile : System.Web.UI.Page
 
 		//add the load comment control
 		Button replyButton = new Button();
-		replyButton.CssClass = "reply-button";
+		replyButton.CssClass = "reply-button btn btn-primary";
 		replyButton.Text = "reply";
 		// this sneaky bit of javascript opens a modal window to reply to a particular post. wooooooo
 		replyButton.OnClientClick = "$('#PostModal').modal('toggle'); $('#PostButton').attr('replyPost', " + postID + "); document.getElementById('HiddenThing').value=" + postID + "; return false;";

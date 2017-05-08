@@ -54,6 +54,7 @@ public partial class UserProfile : System.Web.UI.Page
         avatarImg.ImageUrl = user.avatar;
         avatarImg.CssClass = "info-biopic";
         ProfilePanel.Controls.Add(avatarImg);
+        ProfilePanel.CssClass = "info-panel";
 
         Panel info = new Panel();
         info.CssClass = "info-sidepanel";
@@ -75,7 +76,7 @@ public partial class UserProfile : System.Web.UI.Page
         info.Controls.Add(gitLogo);
 
         Label aboutLabel = new Label();
-        aboutLabel.Text = gitname;
+        aboutLabel.Text = " " + gitname;
         aboutLabel.CssClass = "info-gitname";
         info.Controls.Add(aboutLabel);
 
