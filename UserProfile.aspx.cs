@@ -80,13 +80,8 @@ public partial class UserProfile : System.Web.UI.Page
         info.Controls.Add(aboutLabel);
 
         ProfilePanel.Controls.Add(info);
-
     }
-
-
-
-
-
+	
 	private List<Post> getPosts()
 	{
 		int tempUserID = Int32.Parse(Request.QueryString["userid"]);

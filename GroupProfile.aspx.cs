@@ -90,7 +90,7 @@ public partial class GroupProfile : System.Web.UI.Page
 
 		//Actually execute the query and return the results
 		SqlDataReader reader = cmd.ExecuteReader();
-		string[] checkarray = new string[16];
+		string[] checkarray = new string[13];
 
 		List<Post> posts = new List<Post>();
 		while (reader.Read())
@@ -104,18 +104,15 @@ public partial class GroupProfile : System.Web.UI.Page
 			checkarray[6] = reader[6].ToString();     //pgroupid
 			checkarray[7] = reader[7].ToString();     //pcode
 			checkarray[8] = reader[8].ToString();     //ppicfile
-			checkarray[9] = reader[9].ToString();     //pedate
-			checkarray[10] = reader[10].ToString();     //petime
-			checkarray[11] = reader[11].ToString();     //peinfo
-			checkarray[12] = reader[12].ToString();     //groupid
-			checkarray[13] = reader[13].ToString();     //groupname
-			checkarray[14] = reader[14].ToString();     //groupavatar
-			checkarray[15] = reader[15].ToString();     //gabout
+			checkarray[9] = reader[9].ToString();     //groupid
+			checkarray[10] = reader[10].ToString();     //groupname
+			checkarray[11] = reader[11].ToString();     //groupavatar
+			checkarray[12] = reader[12].ToString();     //gabout
 
 			int id = Int32.Parse(checkarray[0]);
             DateTime time = SqlDateHelper.parseSqlDate(checkarray[2]);
             bool hasComments = bool.Parse(checkarray[3]);
-            string avatar = checkarray[14]; // these are all group posts, so don't need to test if its a user, and the nubmering is different in the response
+            string avatar = checkarray[11]; 
             User user = new User(tempGroupName, avatar, tempGroupID, tempGroupAdmin);
 			Control post = addFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, false), time, id, hasComments);
 			post.ID = "post" + id;
@@ -158,33 +155,15 @@ public partial class GroupProfile : System.Web.UI.Page
 			checkarray[6] = reader[6].ToString();     //pgroupid
 			checkarray[7] = reader[7].ToString();     //pcode
 			checkarray[8] = reader[8].ToString();     //ppicfile
-			checkarray[9] = reader[9].ToString();     //pedate
-			checkarray[10] = reader[10].ToString();     //petime
-			checkarray[11] = reader[11].ToString();     //peinfo
-			checkarray[12] = reader[12].ToString();     //userid
-			checkarray[13] = reader[13].ToString();     //username
-			checkarray[14] = reader[14].ToString();     //userrealname
-			checkarray[15] = reader[15].ToString();     //usergitname
-			checkarray[16] = reader[16].ToString();     //useravatar
-			checkarray[17] = reader[17].ToString();     //useremail
-			checkarray[18] = reader[18].ToString();     //userpassword
-			checkarray[19] = reader[19].ToString();     //groupid
-			checkarray[20] = reader[20].ToString();     //groupname
-			checkarray[21] = reader[21].ToString();     //groupavatar
-			checkarray[22] = reader[22].ToString();     //gabout
+			checkarray[9] = reader[9].ToString();     //groupid
+			checkarray[10] = reader[10].ToString();     //groupname
+			checkarray[11] = reader[11].ToString();     //groupavatar
+			checkarray[12] = reader[12].ToString();     //gabout
 
 			int id = Int32.Parse(checkarray[0]);
             DateTime time = SqlDateHelper.parseSqlDate(checkarray[2]);
             bool hasComments = bool.Parse(checkarray[3]);
-            string avatar;
-            if (id%2 == 0)
-            {
-                avatar = checkarray[16];
-            }
-            else
-            {
-                avatar = checkarray[21];
-            }
+            string avatar = checkarray[11];
 			User user = new User(tempGroupName, avatar, tempGroupID, tempGroupAdmin);
 			Control post = addFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, false), time, id, hasComments);
 			post.ID = "post" + id;
