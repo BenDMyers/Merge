@@ -351,8 +351,9 @@ public partial class UserProfile : System.Web.UI.Page
 			Page.ClientScript.RegisterStartupScript(this.GetType(), "notgroupadmin", "$('#PostModalToggler').hide()", true);
 		}
 
-        makeProfilePanel(Int32.Parse((string)Session["UserId"]));
+		int tempUserID = Int32.Parse(Request.QueryString["userid"]);
 
+		makeProfilePanel(tempUserID);
 
         List<List<Post>> ALLTHEPOSTS = new List<List<Post>>(); // place to put all our lists
 		List<Post> userPosts = getPosts(); // get user posts from database
