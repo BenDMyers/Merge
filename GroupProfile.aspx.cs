@@ -46,7 +46,7 @@ public partial class GroupProfile : System.Web.UI.Page
         //we're going to build a User object to let it take care of server file paths for our avatar.
         // in the future, maybe User would do something more useful, idk.
         User user = new User(name, avatar, gid, tempGroupAdmin);
-
+        this.Title = user.username;
 
         reader.Close();
         conn.Close();

@@ -88,11 +88,11 @@ database stuffs Kaylee-->
 
     <h1>Add a new group</h1>
     <p> group name:
-    <asp:TextBox ID="NewGroupName" runat="server" /> </p>
+    <asp:TextBox ID="NewGroupName" CssClass="form-control" runat="server" /> </p>
     <p> description:
-    <asp:TextBox ID="NewGroupAbout" runat="server" /> </p>
-    <p>avatar: <asp:FileUpload ID="NewGroupAvatar" AllowMultiple="false" runat="server" CssClass="form-control-file" type="file"/></p>
-    <asp:Button ID="NewGroup" runat="server" OnClick="NewGroup_OnClick" Text="Add Group"/>
+    <asp:TextBox ID="NewGroupAbout" CssClass="form-control" runat="server" /> </p>
+    <p>avatar: <asp:FileUpload ID="NewGroupAvatar" CssClass="form-control-file" AllowMultiple="false" runat="server" type="file"/></p>
+    <asp:Button ID="NewGroup" CssClass="btn btn-default" runat="server" OnClick="NewGroup_OnClick" Text="Add Group"/>
 
     <asp:Panel ID="debugr" runat="server"></asp:Panel>
 

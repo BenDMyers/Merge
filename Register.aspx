@@ -79,7 +79,7 @@
                     <asp:TextBox ID="Name" runat="server" CssClass="form-control"></asp:TextBox> <br />
 					<p>Username<asp:RequiredFieldValidator ID="UsernameVal" ControlToValidate="Username" ErrorMessage="Username is required." runat="server">*</asp:RequiredFieldValidator></p>
                     <asp:TextBox ID="Username" runat="server" CssClass="form-control"></asp:TextBox> <br />
-					<p>GitHub Username<asp:RequiredFieldValidator ID="GitValidator" ControlToValidate="Git" ErrorMessage="GitHub username is required." runat="server">*</asp:RequiredFieldValidator></p>
+					<p>GitHub Username</p>
                     <asp:TextBox ID="Git" runat="server" CssClass="form-control"></asp:TextBox> <br />
                     <p>Password<asp:RequiredFieldValidator ID="PasswordVal" ControlToValidate="Password" ErrorMessage="Password is required." runat="server">*</asp:RequiredFieldValidator></p>
                     <asp:TextBox ID="Password" Text="Password" TextMode="Password" runat="server" CssClass="form-control"></asp:TextBox> <br />
