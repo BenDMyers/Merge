@@ -40,10 +40,12 @@ public partial class NewsFeed : System.Web.UI.Page
             try
             {
                 DateTime time = DateTime.ParseExact(date, format, null);
-                time = DateTime.SpecifyKind(time, DateTimeKind.Local);
+                // now...... make it into a certain timezone!
+                var myTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time");
+                DateTime currentDateTime = TimeZoneInfo.ConvertTimeFromUtc(time, myTimeZone);
 
                 // we could also do some datetime timezone stuffs to convert everythin into UTC.
-                return time;
+                return currentDateTime;
             } catch ( System.FormatException e)
             {
                 // eh, this isn't the right format.. we'll try the next one.
