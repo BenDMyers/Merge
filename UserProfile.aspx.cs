@@ -293,9 +293,10 @@ public partial class UserProfile : System.Web.UI.Page
 
 		List<User> users = new List<User>();
 
+		int tempAdmin = Int32.Parse(Request.QueryString["admin"]);
+
 		while (reader.Read())
 		{
-			int tempGroupAdmin = Int32.Parse(Request.QueryString["admin"]);
 			checkarray[0] = reader[0].ToString(); //userid
 			checkarray[1] = reader[1].ToString(); //username
 			checkarray[2] = reader[2].ToString(); //userrealname
@@ -304,7 +305,7 @@ public partial class UserProfile : System.Web.UI.Page
 			checkarray[5] = reader[5].ToString(); //useremail
 												  //checkarray[9] = reader[9].ToString(); //userpassword
 
-			User user = new User(checkarray[1], checkarray[4], Int32.Parse(checkarray[0]), tempGroupAdmin);
+			User user = new User(checkarray[1], checkarray[4], Int32.Parse(checkarray[0]), tempAdmin);
 			user.gitname = checkarray[3];
 			users.Add(user);
 		}
