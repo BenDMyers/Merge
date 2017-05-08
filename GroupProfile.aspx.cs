@@ -16,13 +16,12 @@ public partial class GroupProfile : System.Web.UI.Page
 
 	// WHY THIS NO PARSE??   "5/5 9:03:42 PM"
 
-    private void makeProfilePanel()
+    private void makeProfilePanel(int gid)
     {
-        int gid = 1;
         //Connect to the database and check to see if user already exists, if it does, compare the password
         string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
         SqlConnection conn = new SqlConnection(connectionString);
-        string query = "select * from groups where p.groupid = " + gid + ";";
+        string query = "select * from groups where groupid = " + gid + ";";
         SqlCommand cmd = new SqlCommand(query, conn);
 
         conn.Open();
@@ -43,6 +42,9 @@ public partial class GroupProfile : System.Web.UI.Page
         string avatar = checkarray[2];
         string about = checkarray[4];
 
+        //we're going to build a User object to let it take care of server file paths for our avatar.
+        // in the future, maybe User would do something more useful, idk.
+        User user = new User(name, avatar, gid);
 
 
         reader.Close();
@@ -50,23 +52,24 @@ public partial class GroupProfile : System.Web.UI.Page
 
         // now build a sweet panel!
         Image avatarImg = new Image();
-        avatarImg.ImageUrl = avatar;
+        avatarImg.ImageUrl = user.avatar;
+        avatarImg.CssClass = "info-biopic";
+        ProfilePanel.Controls.Add(avatarImg);
 
         Panel info = new Panel();
+        info.CssClass = "info-sidepanel";
 
         Label nameLabel = new Label();
         nameLabel.Text = name;
-        nameLabel.CssClass = "profile-name";
+        nameLabel.CssClass = "info-realname";
         info.Controls.Add(nameLabel);
 
         Label aboutLabel = new Label();
         aboutLabel.Text = about;
-        aboutLabel.CssClass = "profile-about";
+        aboutLabel.CssClass = "info-about";
         info.Controls.Add(aboutLabel);
 
-
-
-
+        ProfilePanel.Controls.Add(info);
 
     }
     
@@ -109,8 +112,9 @@ public partial class GroupProfile : System.Web.UI.Page
 
 			int id = Int32.Parse(checkarray[0]);
             DateTime time = SqlDateHelper.parseSqlDate(checkarray[2]);
-            bool hasComments = bool.Parse(checkarray[3]);			
-			User user = new User(tempGroupName, checkarray[20], tempGroupID);
+            bool hasComments = bool.Parse(checkarray[3]);
+            string avatar = checkarray[14]; // these are all group posts, so don't need to test if its a user, and the nubmering is different in the response
+            User user = new User(tempGroupName, avatar, tempGroupID);
 			Control post = addFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, false), time, id, hasComments);
 			post.ID = "post" + id;
 			post.ClientIDMode = System.Web.UI.ClientIDMode.Static; // this supposedly makes client ID's the same as ASP ID's
@@ -169,7 +173,16 @@ public partial class GroupProfile : System.Web.UI.Page
 			int id = Int32.Parse(checkarray[0]);
             DateTime time = SqlDateHelper.parseSqlDate(checkarray[2]);
             bool hasComments = bool.Parse(checkarray[3]);
-			User user = new User(tempGroupName, checkarray[20], tempGroupID);
+            string avatar;
+            if (id%2 == 0)
+            {
+                avatar = checkarray[16];
+            }
+            else
+            {
+                avatar = checkarray[21];
+            }
+			User user = new User(tempGroupName, avatar, tempGroupID);
 			Control post = addFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, false), time, id, hasComments);
 			post.ID = "post" + id;
 			post.ClientIDMode = System.Web.UI.ClientIDMode.Static; // this supposedly makes client ID's the same as ASP ID's
@@ -329,8 +342,10 @@ public partial class GroupProfile : System.Web.UI.Page
 		int tempGroupID = Int32.Parse(Request.QueryString["groupid"]);
 		string tempGroupName = Request.QueryString["groupname"];
 
-		//Check to see if the user is a group admin
-		if (tempGroupAdmin == 1)
+        makeProfilePanel(tempGroupID);
+
+        //Check to see if the user is a group admin
+        if (tempGroupAdmin == 1)
 		{
 			if (Int32.Parse(Session["UserId"].ToString()) % 2 == 0)
 			{

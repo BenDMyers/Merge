@@ -17,7 +17,7 @@ public class User
     public User(String curusername, String curavatar, int curuserid)
     {
         username = curusername;   // lulz these names are terrible
-        avatar = curavatar;       // lulz these names are terrible
+        avatar = "/pictures/avatars/" + curavatar;       // lulz these names are terrible
 		userid = curuserid;
     }
 }
