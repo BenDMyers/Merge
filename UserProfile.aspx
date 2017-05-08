@@ -11,6 +11,6 @@ see Alex and Ben
 database stuffs Kaylee-->
 
     <asp:Panel ID="InfoPanel" runat="server"></asp:Panel>
-    <asp:Panel ID="Panel" runat="server"></asp:Panel>
+    <asp:Panel ID="UserPostPanel" runat="server"></asp:Panel>
 
 </asp:Content>
