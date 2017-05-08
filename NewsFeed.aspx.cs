@@ -22,7 +22,7 @@ public partial class NewsFeed : System.Web.UI.Page
 		//Connect to the database and check to see if user already exists, if it does, compare the password
 		string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
         SqlConnection conn = new SqlConnection(connectionString);
-        string query = "select TOP(20) * from postt p left join users u on u.userid = p.puserid left join groups g on g.groupid = p.pgroupid left join member m on m.mgroupid = g.groupid where u.userid = p.puserid or m.muserid =" + Session["UserId"] + ";";
+        string query = "select TOP(20) * from postt p left join users u on u.userid = p.puserid left join groups g on g.groupid = p.pgroupid left join member m on m.mgroupid = g.groupid where (u.userid = p.puserid or m.muserid =" + Session["UserId"] + ") and commentid is null;";
         SqlCommand cmd = new SqlCommand(query, conn);
 
         conn.Open();
@@ -60,6 +60,8 @@ public partial class NewsFeed : System.Web.UI.Page
 			int id = Int32.Parse(checkarray[0]);
 			DateTime time = SqlDateHelper.parseSqlDate(checkarray[2]);
 			bool hasComments = bool.Parse(checkarray[3]);
+            bool isComment = checkarray[4] != null && checkarray[4] != "";
+
 			int admin = 0;
 			if (checkarray[21] == "1")
 			{
@@ -72,7 +74,7 @@ public partial class NewsFeed : System.Web.UI.Page
 				if (admin == 1)
 				{
 					User user = new User(checkarray[17], checkarray[18], Int32.Parse(checkarray[16]), admin);
-					Control post = addFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, false), time, id, hasComments);
+					Control post = addFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, isComment), time, id, hasComments, isComment);
 					post.ID = "post" + id;
 					post.ClientIDMode = System.Web.UI.ClientIDMode.Static; // this supposedly makes client ID's the same as ASP ID's
 					posts.Add(new Post(post, time));
@@ -80,7 +82,7 @@ public partial class NewsFeed : System.Web.UI.Page
 				else
 				{
 					User user = new User(checkarray[17], checkarray[18], Int32.Parse(checkarray[16]), admin);
-					Control post = addFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, false), time, id, hasComments);
+					Control post = addFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, isComment), time, id, hasComments, isComment);
 					post.ID = "post" + id;
 					post.ClientIDMode = System.Web.UI.ClientIDMode.Static; // this supposedly makes client ID's the same as ASP ID's
 					posts.Add(new Post(post, time));
@@ -91,7 +93,7 @@ public partial class NewsFeed : System.Web.UI.Page
 				if (Int32.Parse(checkarray[9]) == Int32.Parse(Session["UserId"].ToString()))
 				{
 					User user = new User(checkarray[10], checkarray[13], Int32.Parse(checkarray[9]), 1);
-					Control post = addFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, false), time, id, hasComments);
+					Control post = addFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, isComment), time, id, hasComments, isComment);
 					post.ID = "post" + id;
 					post.ClientIDMode = System.Web.UI.ClientIDMode.Static; // this supposedly makes client ID's the same as ASP ID's
 					posts.Add(new Post(post, time));
@@ -99,7 +101,7 @@ public partial class NewsFeed : System.Web.UI.Page
 				else
 				{
 					User user = new User(checkarray[10], checkarray[13], Int32.Parse(checkarray[9]), 0);
-					Control post = addFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, false), time, id, hasComments);
+					Control post = addFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, isComment), time, id, hasComments, isComment);
 					post.ID = "post" + id;
 					post.ClientIDMode = System.Web.UI.ClientIDMode.Static; // this supposedly makes client ID's the same as ASP ID's
 					posts.Add(new Post(post, time));
@@ -156,6 +158,7 @@ public partial class NewsFeed : System.Web.UI.Page
 			int id = Int32.Parse(checkarray[0]);
             DateTime time = SqlDateHelper.parseSqlDate(checkarray[2]);
             bool hasComments = bool.Parse(checkarray[3]);
+            bool isComment = checkarray[4] != null && checkarray[4] != "";
 			bool admin = false;
 			if (checkarray[21] != "")
 			{
@@ -170,7 +173,7 @@ public partial class NewsFeed : System.Web.UI.Page
 				if (admin)
 				{
 					User user = new User(checkarray[17], checkarray[18], Int32.Parse(checkarray[16]), one);
-					Control post = addFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, false), time, id, hasComments);
+					Control post = addFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, isComment), time, id, hasComments, isComment);
 					post.ID = "post" + id;
 					post.ClientIDMode = System.Web.UI.ClientIDMode.Static; // this supposedly makes client ID's the same as ASP ID's
 					posts.Add(new Post(post, time));
@@ -178,7 +181,7 @@ public partial class NewsFeed : System.Web.UI.Page
 				else
 				{
 					User user = new User(checkarray[17], checkarray[18], Int32.Parse(checkarray[16]), zero);
-					Control post = addFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, false), time, id, hasComments);
+					Control post = addFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, isComment), time, id, hasComments, isComment);
 					post.ID = "post" + id;
 					post.ClientIDMode = System.Web.UI.ClientIDMode.Static; // this supposedly makes client ID's the same as ASP ID's
 					posts.Add(new Post(post, time));
@@ -189,7 +192,7 @@ public partial class NewsFeed : System.Web.UI.Page
 				if (Int32.Parse(checkarray[9]) == Int32.Parse(Session["UserId"].ToString()))
 				{
 					User user = new User(checkarray[10], checkarray[13], Int32.Parse(checkarray[9]), one);
-					Control post = addFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, false), time, id, hasComments);
+					Control post = addFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, isComment), time, id, hasComments, isComment);
 					post.ID = "post" + id;
 					post.ClientIDMode = System.Web.UI.ClientIDMode.Static; // this supposedly makes client ID's the same as ASP ID's
 					posts.Add(new Post(post, time));
@@ -197,7 +200,7 @@ public partial class NewsFeed : System.Web.UI.Page
 				else
 				{
 					User user = new User(checkarray[10], checkarray[13], Int32.Parse(checkarray[9]), zero);
-					Control post = addFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, false), time, id, hasComments);
+					Control post = addFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, isComment), time, id, hasComments, isComment);
 					post.ID = "post" + id;
 					post.ClientIDMode = System.Web.UI.ClientIDMode.Static; // this supposedly makes client ID's the same as ASP ID's
 					posts.Add(new Post(post, time));
@@ -238,7 +241,7 @@ public partial class NewsFeed : System.Web.UI.Page
     }
 
     // add a footer block to the posts!
-    private Control addFooter(Control original, DateTime time, int postID, bool hasComments)
+    private Control addFooter(Control original, DateTime time, int postID, bool hasComments, bool isComment)
     {
 
         // now for the footer
@@ -265,12 +268,15 @@ public partial class NewsFeed : System.Web.UI.Page
 
 
         //add the load comment control
-        LinkButton replyButton = new LinkButton();
-        replyButton.CssClass = "reply-button btn btn-primary";
-        replyButton.Text = "<span class='fa fa-reply'></span> Reply";
-        // this sneaky bit of javascript opens a modal window to reply to a particular post. wooooooo
-        replyButton.OnClientClick = "$('#PostModal').modal('toggle'); $('#PostButton').attr('replyPost', " + postID + "); document.getElementById('HiddenThing').value=" + postID + "; return false;";
-        footer.Controls.Add(replyButton);
+        if (!isComment)
+        {
+            LinkButton replyButton = new LinkButton();
+            replyButton.CssClass = "reply-button btn btn-primary";
+            replyButton.Text = "<span class='fa fa-reply'></span> Reply";
+            // this sneaky bit of javascript opens a modal window to reply to a particular post. wooooooo
+            replyButton.OnClientClick = "$('#PostModal').modal('toggle'); $('#PostButton').attr('replyPost', " + postID + "); document.getElementById('HiddenThing').value=" + postID + "; return false;";
+            footer.Controls.Add(replyButton);
+        }
 
         original.Controls.Add(footer);
         return original;

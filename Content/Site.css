@@ -227,6 +227,22 @@ textarea {
     margin-bottom: 20px;
     border-radius: 20px 20px;
 }
+.comment-post {
+    background-color: #333333 !important;
+    margin-left: 50px;
+}
+
+.comment-post .text-content {
+    font-style: italic;
+}
+
+.comment-indicator {
+    font-size: 400%;
+    float: left;
+    font-weight: bold;
+    letter-spacing: -20px;
+    margin-right: 15px;
+}
 
 .avatar {
 	min-height: 24px;

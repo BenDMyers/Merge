@@ -25,6 +25,7 @@ public class UserPost
 
             Label commentIndicator = new Label();
             commentIndicator.Text = "//";
+            commentIndicator.CssClass = "comment-indicator";
 
             comment.Controls.Add(commentIndicator);
             post.Controls.Add(comment);

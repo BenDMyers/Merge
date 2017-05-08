@@ -128,9 +128,10 @@ public partial class UserProfile : System.Web.UI.Page
 			int id = Int32.Parse(checkarray[0]);
 			DateTime time = SqlDateHelper.parseSqlDate(checkarray[2]);
 			bool hasComments = bool.Parse(checkarray[3]);
+            bool isComment = checkarray[4] != null && checkarray[4] != "";
 			string avatar = checkarray[13]; // these are all group posts, so don't need to test if its a user, and the nubmering is different in the response
 			User user = new User(tempUserName, avatar, tempUserID, tempAdmin);
-			Control post = addFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, false), time, id, hasComments);
+			Control post = addFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, isComment), time, id, hasComments, isComment);
 			post.ID = "post" + id;
 			post.ClientIDMode = System.Web.UI.ClientIDMode.Static; // this supposedly makes client ID's the same as ASP ID's
 			posts.Add(new Post(post, time));
@@ -182,9 +183,10 @@ public partial class UserProfile : System.Web.UI.Page
 			int id = Int32.Parse(checkarray[0]);
 			DateTime time = SqlDateHelper.parseSqlDate(checkarray[2]);
 			bool hasComments = bool.Parse(checkarray[3]);
-			string avatar = checkarray[13];
+            bool isComment = checkarray[4] != null && checkarray[4] != "";
+            string avatar = checkarray[13];
 			User user = new User(tempUserName, avatar, tempUserID, tempAdmin);
-			Control post = addFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, false), time, id, hasComments);
+			Control post = addFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, isComment), time, id, hasComments, isComment);
 			post.ID = "post" + id;
 			post.ClientIDMode = System.Web.UI.ClientIDMode.Static; // this supposedly makes client ID's the same as ASP ID's
 			posts.Add(new Post(post, time));
@@ -223,7 +225,7 @@ public partial class UserProfile : System.Web.UI.Page
 	}
 
 	// add a footer block to the posts!
-	private Control addFooter(Control original, DateTime time, int postID, bool hasComments)
+	private Control addFooter(Control original, DateTime time, int postID, bool hasComments, bool isComment)
 	{
 
 		// now for the footer
@@ -249,13 +251,16 @@ public partial class UserProfile : System.Web.UI.Page
 		}
 
 
-		//add the load comment control
-		Button replyButton = new Button();
-		replyButton.CssClass = "reply-button btn btn-primary";
-		replyButton.Text = "Reply";
-		// this sneaky bit of javascript opens a modal window to reply to a particular post. wooooooo
-		replyButton.OnClientClick = "$('#PostModal').modal('toggle'); $('#PostButton').attr('replyPost', " + postID + "); document.getElementById('HiddenThing').value=" + postID + "; return false;";
-		footer.Controls.Add(replyButton);
+        //add the load comment control
+        if (!isComment)
+        {
+            Button replyButton = new Button();
+            replyButton.CssClass = "reply-button btn btn-primary";
+            replyButton.Text = "Reply";
+            // this sneaky bit of javascript opens a modal window to reply to a particular post. wooooooo
+            replyButton.OnClientClick = "$('#PostModal').modal('toggle'); $('#PostButton').attr('replyPost', " + postID + "); document.getElementById('HiddenThing').value=" + postID + "; return false;";
+            footer.Controls.Add(replyButton);
+        }
 
 		original.Controls.Add(footer);
 		return original;
