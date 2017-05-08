@@ -43,7 +43,7 @@ public class UserPost
 
         Image userAvatar = new Image();
         userAvatar.CssClass = "avatar";
-        userAvatar.ImageUrl = "/pictures/avatars/" + user.avatar;
+        userAvatar.ImageUrl = user.avatar; // user.avatar contains server path info as well, so its all in one place
         // and finally add them to the container
         userContainer.Controls.Add(userAvatar);
 
