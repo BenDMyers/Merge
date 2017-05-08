@@ -24,7 +24,7 @@ public partial class NewsFeed : System.Web.UI.Page
         //Connect to the database and check to see if user already exists, if it does, compare the password
         string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
         SqlConnection conn = new SqlConnection(connectionString);
-        string query = "select TOP(20) * from postt p left join users u on u.userid = p.puserid left join groups g on g.groupid = p.pgroupid where p.commentid IS NULL order by p.postid desc;";
+        string query = "select TOP(20) * from postt p left join users u on u.userid = p.puserid left join groups g on g.groupid = p.pgroupid left join member m on m.mgroupid = g.groupid where u.userid = p.puserid or m.muserid =" + Session["UserId"] + ";";
         SqlCommand cmd = new SqlCommand(query, conn);
 
         conn.Open();
@@ -94,7 +94,7 @@ public partial class NewsFeed : System.Web.UI.Page
         //Connect to the database and check to see if user already exists, if it does, compare the password
         string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
         SqlConnection conn = new SqlConnection(connectionString);
-        string query = "select TOP(20) * from postt p left join users u on u.userid = p.puserid left join groups g on g.groupid = p.pgroupid where p.commentid = " + Int32.Parse(postId.ToString()) + " order by p.postid desc;";
+        string query = "select TOP(20) * from postt p left join users u on u.userid = p.puserid left join groups g on g.groupid = p.pgroupid left join member m on m.mgroupid = g.groupid where (u.userid = p.puserid or m.muserid =" + Session["UserId"] + ") and p.commentid = " + Int32.Parse(postId.ToString()) + ";";
         SqlCommand cmd = new SqlCommand(query, conn);
 
         conn.Open();
