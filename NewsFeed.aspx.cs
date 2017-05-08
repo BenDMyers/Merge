@@ -9,10 +9,12 @@ using System.Data.SqlClient;
 
 public partial class NewsFeed : System.Web.UI.Page
 {
-	// this is a shortcut for your connection string
-	static string DatabaseConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
+    // this is a shortcut for your connection string
+    static string DatabaseConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
 
-    string sqlDatetime = "M/d h:mm:ss tt";
+    //string sqlDatetime = "M/d h:mm:ss tt";
+
+    List<String> sqlDatetimeFormats = new List<string>(new String[]{"M/d/yyyy h:mm:ss tt", "M/d h:mm:ss tt"});
     string outputTimestamp = "M/d h:mm:ss tt";
 
     // WHY THIS NO PARSE??   "5/5 9:03:42 PM"
@@ -29,6 +31,27 @@ public partial class NewsFeed : System.Web.UI.Page
             TempTable.Load(cmd.ExecuteReader());
             return TempTable;
         }
+    }
+
+    private DateTime parseSqlDate(String date)
+    {
+        foreach( String format in sqlDatetimeFormats)
+        {
+            try
+            {
+                DateTime time = DateTime.ParseExact(date, format, null);
+                // now...... make it into a certain timezone!
+                var myTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time");
+                DateTime currentDateTime = TimeZoneInfo.ConvertTimeFromUtc(time, myTimeZone);
+
+                // we could also do some datetime timezone stuffs to convert everythin into UTC.
+                return currentDateTime;
+            } catch ( System.FormatException e)
+            {
+                // eh, this isn't the right format.. we'll try the next one.
+            }
+        }
+        return DateTime.Now; // couldn't find a datetime format that worked... sooo why not user now?
     }
 
 
@@ -73,8 +96,7 @@ public partial class NewsFeed : System.Web.UI.Page
 			checkarray[21] = reader[21].ToString();     //groupavatar
 
 			int id = Int32.Parse(checkarray[0]);
-			DateTime time = DateTime.ParseExact(checkarray[2], sqlDatetime, null);
-			time = DateTime.SpecifyKind(time, DateTimeKind.Local);
+			DateTime time = parseSqlDate(checkarray[2]);
 			bool hasComments = bool.Parse(checkarray[3]);
 
 			//Check to see if the user is a group admin
@@ -144,8 +166,7 @@ public partial class NewsFeed : System.Web.UI.Page
 			checkarray[21] = reader[21].ToString();     //groupavatar
 
 			int id = Int32.Parse(checkarray[0]);
-			DateTime time = DateTime.ParseExact(checkarray[2], sqlDatetime, null);
-			time = DateTime.SpecifyKind(time, DateTimeKind.Local);
+			DateTime time = parseSqlDate(checkarray[2]);
 			bool hasComments = bool.Parse(checkarray[3]);
 
 			//Check to see if posr is from group else user
@@ -165,8 +186,6 @@ public partial class NewsFeed : System.Web.UI.Page
 				post.ClientIDMode = System.Web.UI.ClientIDMode.Static; // this supposedly makes client ID's the same as ASP ID's
 				posts.Add(new Post(post, time));
 			}
-
-
 		}
 		reader.Close();
         conn.Close();
@@ -219,9 +238,9 @@ public partial class NewsFeed : System.Web.UI.Page
         if (hasComments)
         {
             //add the load comment control
-            Button loadComments = new Button();
-            loadComments.CssClass = "load-comments-button";
-            loadComments.Text = "load comments";
+            LinkButton loadComments = new LinkButton();
+            loadComments.CssClass = "load-comments-button btn";
+            loadComments.Text = "<span style='font-weight: bold; font-size: smaller;'>//</span> Load Comments";
             loadComments.Attributes["postid"] = postID.ToString();
             loadComments.Click += new EventHandler(this.loadComments);
             footer.Controls.Add(loadComments);
@@ -229,9 +248,9 @@ public partial class NewsFeed : System.Web.UI.Page
 
 
         //add the load comment control
-        Button replyButton = new Button();
-        replyButton.CssClass = "reply-button";
-        replyButton.Text = "reply";
+        LinkButton replyButton = new LinkButton();
+        replyButton.CssClass = "reply-button btn btn-primary";
+        replyButton.Text = "<span class='fa fa-reply'></span> Reply";
         // this sneaky bit of javascript opens a modal window to reply to a particular post. wooooooo
         replyButton.OnClientClick = "$('#PostModal').modal('toggle'); $('#PostButton').attr('replyPost', " + postID + "); document.getElementById('HiddenThing').value=" + postID + "; return false;";
         footer.Controls.Add(replyButton);
@@ -329,11 +348,21 @@ public partial class NewsFeed : System.Web.UI.Page
         ALLTHEPOSTS.Add(userPosts); // add the user psot list to the listy list
 
         List<User> users = allUsers(); // get all the users - we will then fetch each of their git feeds.
+        if (users.Count <=0 ) {
+            Post error = new Post(GithubPosts.errorPost("woops. no github users"), DateTime.UtcNow);
+            userPosts.Add(error);
+        }
         foreach (User user in users) {
             if (user.gitname != null && user.gitname != "NULL" && user.gitname != "")
             {
                 List<Post> githubPosts = GithubPosts.gitPosts(user.gitname); // if they have a github name, get their feed as a seperate list
                 ALLTHEPOSTS.Add(githubPosts);
+                if (githubPosts.Count <=0 )
+                {
+                    Post error = new Post(GithubPosts.errorPost("woops. no events for this user"), DateTime.UtcNow);
+                    // we couldn't get git info... soooooo
+                    githubPosts.Add(error);
+                }
             }
         }
 

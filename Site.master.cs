@@ -102,7 +102,7 @@ public partial class SiteMaster : MasterPage
 	{
 
         Control button = sender as Control;
-        DateTime myDateTime = DateTime.Now;
+        DateTime myDateTime = DateTime.UtcNow;
 
         if (PostPic.HasFile)
 		{

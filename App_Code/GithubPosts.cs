@@ -43,7 +43,13 @@ public class GithubPosts
         // implement some getters for basic info
         public DateTime getTimestamp()
         {
-            return DateTime.Parse(this.created_at, null, DateTimeStyles.RoundtripKind);
+            DateTime utcTime =  DateTime.Parse(this.created_at, null, DateTimeStyles.RoundtripKind);
+            // now...... make it into a certain timezone!
+            var myTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time");
+            DateTime currentDateTime = TimeZoneInfo.ConvertTimeFromUtc(utcTime, myTimeZone);
+
+            // we could also do some datetime timezone stuffs to convert everythin into UTC.
+            return currentDateTime;
         }
         public String getUsername()
         {
@@ -76,7 +82,7 @@ public class GithubPosts
             Panel gitContainer = new Panel();
             gitContainer.CssClass = "content-container git-content";
 
-            gitContainer.Controls.Add(generateInner(evt));
+            gitContainer.Controls.Add(inner);
 
 
             //and finally add the container to the outer block
@@ -117,7 +123,7 @@ public class GithubPosts
 
     }
 
-    // simple helper class for github posts of the form [username "did something to" repository-name]
+    // creates an error post for developers, and to let users know that github might be down or something.
     private class ActionEventPost : EventPost
     {
         private String action;
@@ -126,7 +132,7 @@ public class GithubPosts
         {
             this.action = action;
         }
-        
+
         // generate the post content - this gets put insode containers later.
         public override Control generateInner(Event evt)
         {
@@ -171,6 +177,46 @@ public class GithubPosts
     // this holds the generators for all the github event types. initially empty :(
     private static Dictionary<String, EventPost> eventPostFactories = new Dictionary<String, EventPost>();
 
+    public static Control errorPost(String oops)
+    {
+
+        Label inner = new Label();
+        inner.Text = oops;
+
+        // layout of this code block should resemble the layout of the generated HTML!
+        // ( i.e. outer elements are created first, and added after - creation is open tag, adding is close tag
+        Panel post = new Panel();
+        post.CssClass = "post-container";
+        Panel block = new Panel();
+        block.CssClass = "post-block";
+
+        // add the inner container
+        Panel gitContainer = new Panel();
+        gitContainer.CssClass = "content-container git-content git-error";
+
+        gitContainer.Controls.Add(inner);
+
+
+        //and finally add the container to the outer block
+        block.Controls.Add(gitContainer);
+
+        post.Controls.Add(block);
+
+
+
+        Panel footer = new Panel();
+        footer.CssClass = "post-footer";
+
+        // add timestamp
+        Label timestampLabel = new Label();
+        timestampLabel.CssClass = "timestamp-label";
+        timestampLabel.Text = DateTime.UtcNow.ToString();
+        footer.Controls.Add(timestampLabel);
+        post.Controls.Add(footer);
+
+        return post;
+    }
+
     public static List<Post> gitPosts(String githubUsername)
     {
         // define the post relationship between event types and their generators
@@ -189,8 +235,10 @@ public class GithubPosts
 
         if (response.ErrorException != null)
         {
+
+            Post error = new Post(errorPost(response.ErrorException.Message), DateTime.UtcNow);
             // we couldn't get git info... soooooo
-            return new List<Post>();
+            return new List<Post>(new Post[] { error });
         }
         else
         {
