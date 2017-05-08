@@ -32,6 +32,7 @@ public partial class ChatGroup : System.Web.UI.Page
         {
             dr.Read();
             outgoingUser.InnerText = dr["groupname"].ToString();
+            this.Title = "Chat with " + dr["groupname"].ToString();
         }
 
         conn.Close();
