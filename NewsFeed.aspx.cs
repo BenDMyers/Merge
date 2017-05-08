@@ -41,6 +41,8 @@ public partial class NewsFeed : System.Web.UI.Page
             {
                 DateTime time = DateTime.ParseExact(date, format, null);
                 time = DateTime.SpecifyKind(time, DateTimeKind.Local);
+
+                // we could also do some datetime timezone stuffs to convert everythin into UTC.
                 return time;
             } catch ( System.FormatException e)
             {

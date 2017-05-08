@@ -165,7 +165,7 @@ public partial class SiteMaster : MasterPage
                 com.Parameters.AddWithValue("@codetext", WriteCodeBox.Text);
                 com.Parameters.AddWithValue("@userid", Int32.Parse(Session["UserId"].ToString()));
 
-                //com.ExecuteNonQuery();
+                com.ExecuteNonQuery();
 
                 conn.Close();
             }
