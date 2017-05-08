@@ -17,9 +17,10 @@ public partial class GroupProfile : System.Web.UI.Page
 	// WHY THIS NO PARSE??   "5/5 9:03:42 PM"
 
     private void makeProfilePanel(int gid)
-    {
-        //Connect to the database and check to see if user already exists, if it does, compare the password
-        string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
+	{
+		int tempGroupAdmin = Int32.Parse(Request.QueryString["admin"]);
+		//Connect to the database and check to see if user already exists, if it does, compare the password
+		string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
         SqlConnection conn = new SqlConnection(connectionString);
         string query = "select * from groups where groupid = " + gid + ";";
         SqlCommand cmd = new SqlCommand(query, conn);
@@ -44,7 +45,8 @@ public partial class GroupProfile : System.Web.UI.Page
 
         //we're going to build a User object to let it take care of server file paths for our avatar.
         // in the future, maybe User would do something more useful, idk.
-        User user = new User(name, avatar, gid);
+        User user = new User(name, avatar, gid, tempGroupAdmin);
+        this.Title = user.username;
 
 
         reader.Close();
@@ -77,6 +79,7 @@ public partial class GroupProfile : System.Web.UI.Page
 	{
 		int tempGroupID = Int32.Parse(Request.QueryString["groupid"]);
 		string tempGroupName = Request.QueryString["groupname"];
+		int tempGroupAdmin = Int32.Parse(Request.QueryString["admin"]);
 
 		//Connect to the database and check to see if user already exists, if it does, compare the password
 		string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
@@ -114,7 +117,7 @@ public partial class GroupProfile : System.Web.UI.Page
             DateTime time = SqlDateHelper.parseSqlDate(checkarray[2]);
             bool hasComments = bool.Parse(checkarray[3]);
             string avatar = checkarray[14]; // these are all group posts, so don't need to test if its a user, and the nubmering is different in the response
-            User user = new User(tempGroupName, avatar, tempGroupID);
+            User user = new User(tempGroupName, avatar, tempGroupID, tempGroupAdmin);
 			Control post = addFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, false), time, id, hasComments);
 			post.ID = "post" + id;
 			post.ClientIDMode = System.Web.UI.ClientIDMode.Static; // this supposedly makes client ID's the same as ASP ID's
@@ -130,6 +133,7 @@ public partial class GroupProfile : System.Web.UI.Page
 	{
 		int tempGroupID = Int32.Parse(Request.QueryString["groupid"]);
 		string tempGroupName = Request.QueryString["groupname"];
+		int tempGroupAdmin = Int32.Parse(Request.QueryString["admin"]);
 
 		//Connect to the database and check to see if user already exists, if it does, compare the password
 		string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
@@ -182,7 +186,7 @@ public partial class GroupProfile : System.Web.UI.Page
             {
                 avatar = checkarray[21];
             }
-			User user = new User(tempGroupName, avatar, tempGroupID);
+			User user = new User(tempGroupName, avatar, tempGroupID, tempGroupAdmin);
 			Control post = addFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, false), time, id, hasComments);
 			post.ID = "post" + id;
 			post.ClientIDMode = System.Web.UI.ClientIDMode.Static; // this supposedly makes client ID's the same as ASP ID's
@@ -299,6 +303,7 @@ public partial class GroupProfile : System.Web.UI.Page
 
 		while (reader.Read())
 		{
+			int tempGroupAdmin = Int32.Parse(Request.QueryString["groupadmin"]);
 			checkarray[0] = reader[0].ToString(); //userid
 			checkarray[1] = reader[1].ToString(); //username
 			checkarray[2] = reader[2].ToString(); //userrealname
@@ -307,7 +312,7 @@ public partial class GroupProfile : System.Web.UI.Page
 			checkarray[5] = reader[5].ToString(); //useremail
 		  //checkarray[9] = reader[9].ToString(); //userpassword
 
-			User user = new User(checkarray[1], checkarray[4], Int32.Parse(checkarray[0]));
+			User user = new User(checkarray[1], checkarray[4], Int32.Parse(checkarray[0]), tempGroupAdmin);
 			user.gitname = checkarray[3];
 			users.Add(user);
 		}
@@ -329,7 +334,6 @@ public partial class GroupProfile : System.Web.UI.Page
 		return finalList;
 	}
 
-
 	protected void Page_Load(object sender, EventArgs e)
 	{
 		//Check to see if the user has logged in, if not disable ability to post a car
@@ -338,14 +342,14 @@ public partial class GroupProfile : System.Web.UI.Page
 			Response.Redirect("Login.aspx");
 		}
 
-		int tempGroupAdmin = Int32.Parse(Request.QueryString["groupadmin"]);
+		int tempAdmin = Int32.Parse(Request.QueryString["admin"]);
 		int tempGroupID = Int32.Parse(Request.QueryString["groupid"]);
 		string tempGroupName = Request.QueryString["groupname"];
 
         makeProfilePanel(tempGroupID);
 
         //Check to see if the user is a group admin
-        if (tempGroupAdmin == 1)
+        if (tempAdmin == 1)
 		{
 			if (Int32.Parse(Session["UserId"].ToString()) % 2 == 0)
 			{

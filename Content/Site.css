@@ -262,14 +262,14 @@ textarea {
 
 
 /* PROFILE HEADERS */
-#InfoPanel {
+#ProfilePanel {
     background-color: #666666;
     margin-top: 20px;
     margin-bottom: 20px;
     border-radius: 20px 20px;
 }
 .info-biopic {
-    height: inherit;
+    min-height: 100%;
     max-width: 33%;
     border-radius: 20px;
     display: inline;
@@ -281,9 +281,12 @@ textarea {
     font-size: xx-large;
     text-transform: uppercase;
 }
-.info-username, .info-git-logo, .info-git-name {
-    color: rgba(255, 255, 255, 0.75);
+.info-username, .info-git-logo, .info-gitname {
+    color: rgba(242, 242, 242, 0.75);
 }
 .info-username {
-
+    font-variant: small-caps;
+}
+.info-gitname a {
+    color: rgba(226, 226, 226, 0.75);
 }
