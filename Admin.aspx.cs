@@ -4,15 +4,28 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Data.SqlClient;
 
 public partial class Admin : System.Web.UI.Page
 {
+    private void doQuery(string query)
+    {
+        string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
+        SqlConnection con = new SqlConnection(connectionString);
+        con.Open();
+            SqlCommand cmd = new SqlCommand(query, con);
+            cmd.ExecuteNonQuery();
+        con.Close();
+    }
     private void removeUser(int uid)
     {
         // do something
         Label lbl = new Label();
         lbl.Text = "remove user " + uid.ToString();
         debugr.Controls.Add(lbl);
+
+        doQuery("delete from users where userid=" + uid.ToString() + ";");
+        
     }
     private void editUser(int uid)
     {
@@ -20,6 +33,8 @@ public partial class Admin : System.Web.UI.Page
         Label lbl = new Label();
         lbl.Text = "edit user " + uid.ToString();
         debugr.Controls.Add(lbl);
+
+        Response.Redirect("/EditUser.aspx?uid=" + uid);
     }
     private void removeGroup(int gid)
     {
@@ -27,6 +42,8 @@ public partial class Admin : System.Web.UI.Page
         Label lbl = new Label();
         lbl.Text = "remove group " + gid.ToString();
         debugr.Controls.Add(lbl);
+
+        doQuery("delete from member where mgroupid=" + gid + "; delete from groups where groupid=" + gid + ";");
     }
     private void editGroup(int gid)
     {
@@ -34,6 +51,7 @@ public partial class Admin : System.Web.UI.Page
         Label lbl = new Label();
         lbl.Text = "edit group " + gid.ToString();
         debugr.Controls.Add(lbl);
+        Response.Redirect("/EditGroup.aspx?gid=" + gid);
     }
 
     protected void UserView_OnRowCommand(object sender, GridViewCommandEventArgs e)
@@ -45,6 +63,7 @@ public partial class Admin : System.Web.UI.Page
         {
             case "RemoveUser":
                 removeUser(uid);
+                Response.Redirect("/Admin.aspx"); // force whole page reload
                 break;
             case "EditUser":
                 editUser(uid);
@@ -62,6 +81,7 @@ public partial class Admin : System.Web.UI.Page
         {
             case "RemoveGroup":
                 removeGroup(gid);
+                Response.Redirect("/Admin.aspx"); // force whole page reload
                 break;
             case "EditGroup":
                 editGroup(gid);
@@ -94,5 +114,6 @@ public partial class Admin : System.Web.UI.Page
         }
         // Username is available
         RegisterGroupData.Insert();
+        Response.Redirect("/Admin.aspx"); // force whole page reload
     }
 }

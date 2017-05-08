@@ -29,6 +29,7 @@ public partial class Register : System.Web.UI.Page
 		SqlDataReader edr = emailcmd.ExecuteReader();
 		var emailTaken = edr.HasRows;
 		edr.Close();
+        con.Close();
 
 		if (emailTaken)
 		{
