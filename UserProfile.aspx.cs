@@ -298,18 +298,18 @@ public partial class UserProfile : System.Web.UI.Page
 
 		List<User> users = new List<User>();
         reader.Read();
-			int tempGroupAdmin = Int32.Parse(Request.QueryString["admin"]);
-			checkarray[0] = reader[0].ToString(); //userid
-			checkarray[1] = reader[1].ToString(); //username
-			checkarray[2] = reader[2].ToString(); //userrealname
-			checkarray[3] = reader[3].ToString(); //usergitname
-			checkarray[4] = reader[4].ToString(); //useravatar
-			checkarray[5] = reader[5].ToString(); //useremail
+		int tempAdmin = Int32.Parse(Request.QueryString["admin"]);
+		checkarray[0] = reader[0].ToString(); //userid
+		checkarray[1] = reader[1].ToString(); //username
+		checkarray[2] = reader[2].ToString(); //userrealname
+		checkarray[3] = reader[3].ToString(); //usergitname
+		checkarray[4] = reader[4].ToString(); //useravatar
+		checkarray[5] = reader[5].ToString(); //useremail
 												  //checkarray[9] = reader[9].ToString(); //userpassword
 
-			User user = new User(checkarray[1], checkarray[4], Int32.Parse(checkarray[0]), tempGroupAdmin);
-			user.gitname = checkarray[3];
-			users.Add(user);
+		User user = new User(checkarray[1], checkarray[4], Int32.Parse(checkarray[0]), tempAdmin);
+		user.gitname = checkarray[3];
+		users.Add(user);
 
 		reader.Close();
 		conn.Close();
@@ -366,7 +366,7 @@ public partial class UserProfile : System.Web.UI.Page
         //}
         //foreach (User user in users)
         //{
-        User user = getUser(0);
+        User user = getUser(Int32.Parse(Request.QueryString["userid"]));
 		if (user.gitname != null && user.gitname != "NULL" && user.gitname != "")
 		{
 			List<Post> githubPosts = GithubPosts.gitPosts(user.gitname); // if they have a github name, get their feed as a seperate list
