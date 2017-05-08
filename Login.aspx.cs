@@ -67,4 +67,9 @@ public partial class Login : System.Web.UI.Page
 
 		conn.Close();
 	}
+
+	protected void contactclick(object sender, EventArgs e)
+	{
+		Response.Redirect("Contact.aspx");
+	}
 }

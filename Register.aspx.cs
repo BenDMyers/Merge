@@ -12,7 +12,12 @@ public partial class Register : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
 
-    }
+	}
+
+	protected void contactclick(object sender, EventArgs e)
+	{
+		Response.Redirect("Contact.aspx");
+	}
 
 	public void submitclick(object sender, EventArgs e) {
 		string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;

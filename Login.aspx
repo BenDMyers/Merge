@@ -44,6 +44,10 @@
                 <div class="container">
                     <div class="navbar-header">
                         <a class="navbar-brand site-brand" runat="server" href="~/">Merge</a>
+						
+                    <div class="nav navbar-nav navbar-right">
+                        <asp:LinkButton ID="Contact" CssClass="btn btn-primary navbar-btn btn-margins" OnClick="contactclick" runat="server" Text="Contact Us" />
+                    </div>
                     </div>
                 </div>
             </div>

@@ -43,12 +43,11 @@
             <div class="navbar navbar-inverse navbar-fixed-top">
                 <div class="container">
                     <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
                         <a class="navbar-brand site-brand" runat="server" href="~/">Merge</a>
+						
+                    <div class="nav navbar-nav navbar-right">
+                        <asp:LinkButton ID="Contact" CssClass="btn btn-primary navbar-btn btn-margins" OnClick="contactclick" runat="server" Text="Contact Us" />
+                    </div>
                     </div>
                 </div>
             </div>
