@@ -11,7 +11,7 @@ Google calendar stuff
 see Alex and Drew
 database stuffs Kaylee-->
     
-    <asp:Panel ID="ProfilePanel" CssClass="info-bio" runat="server"></asp:Panel>
+    <asp:Panel ID="InfoPanel" CssClass="info-bio" runat="server"></asp:Panel>
     <asp:Panel ID="GroupPanel" runat="server"></asp:Panel>
 
 </asp:Content>

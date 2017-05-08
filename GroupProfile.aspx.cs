@@ -55,7 +55,7 @@ public partial class GroupProfile : System.Web.UI.Page
         Image avatarImg = new Image();
         avatarImg.ImageUrl = user.avatar;
         avatarImg.CssClass = "info-biopic";
-        ProfilePanel.Controls.Add(avatarImg);
+        InfoPanel.Controls.Add(avatarImg);
 
         Panel info = new Panel();
         info.CssClass = "info-sidepanel";
@@ -70,7 +70,7 @@ public partial class GroupProfile : System.Web.UI.Page
         aboutLabel.CssClass = "info-about";
         info.Controls.Add(aboutLabel);
 
-        ProfilePanel.Controls.Add(info);
+        InfoPanel.Controls.Add(info);
 
     }
     

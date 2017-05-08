@@ -53,17 +53,6 @@ public partial class Register : System.Web.UI.Page
 					System.Diagnostics.Debug.WriteLine("Upload status: The file could not be uploaded. The following error occured: " + ex.Message);
 				}
 			}
-			else
-			{
-				try
-				{
-					Avatar.SaveAs(Server.MapPath("~/pictures/avatars/default.jpg"));
-				}
-				catch (Exception ex)
-				{
-					System.Diagnostics.Debug.WriteLine("There was a problem creating your profile. Error: " + ex.Message);
-				}
-			}
 			// Username is available
 			RegisterUserData.Insert();
 			Response.Redirect("Login.aspx");
