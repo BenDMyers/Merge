@@ -107,7 +107,7 @@ public partial class GroupList : System.Web.UI.Page
 
 		HyperLink groupText = new HyperLink();
 		groupText.Text = group.groupname;
-		groupText.NavigateUrl = "~/GroupProfile.aspx?groupid=" + group.id +"&groupname=" + group.groupname + "&groupadmin=" + group.admin;
+		groupText.NavigateUrl = "~/GroupProfile.aspx?groupid=" + group.id +"&groupname=" + group.groupname + "&admin=" + group.admin;
 
 		// and finally add them to the container
 		userContainer.Controls.Add(groupText);
