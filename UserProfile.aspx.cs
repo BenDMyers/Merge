@@ -26,19 +26,6 @@ public partial class UserProfile : System.Web.UI.Page
 		}
 	}
 
-	private DataTable testSql()
-	{
-		// do stuff
-		using (SqlConnection conn = new SqlConnection(DatabaseConnectionString))
-		{
-			SqlCommand cmd = new SqlCommand("SELECT * FROM POSTT", conn);
-			cmd.Connection.Open();
-			DataTable TempTable = new DataTable();
-			TempTable.Load(cmd.ExecuteReader());
-			return TempTable;
-		}
-	}
-
 	protected void Page_Load(object sender, EventArgs e)
 	{
 		//Check to see if the user has logged in, if not disable ability to post a car
@@ -68,8 +55,6 @@ public partial class UserProfile : System.Web.UI.Page
         SqlConnection conn = new SqlConnection(connectionString);
 
         //string userInfoQuery = "select * from users where userid = " + 
-
-
 
         // Fetch posts
         string query = "select TOP(20) * from postt p left join users u on u.userid = p.puserid where p.puserid = " + Int32.Parse(queriedUser) + " order by p.ptimestamp desc;";

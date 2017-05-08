@@ -19,28 +19,16 @@ public partial class GroupList : System.Web.UI.Page
 		public String groupname;
 		public String avatar;
 		public int id;
+		public int admin;
 
-		public Group(String curgroupname, String curavatar, int curid)
+		public Group(String curgroupname, String curavatar, int curid, int curadmin)
 		{
 			groupname = curgroupname;   // lulz these names are terrible
 			avatar = curavatar;       // lulz these names are terrible
 			id = curid;
+			admin = curadmin;
 		}
 	}
-
-	private DataTable testSql()
-	{
-		// do stuff
-		using (SqlConnection conn = new SqlConnection(DatabaseConnectionString))
-		{
-			SqlCommand cmd = new SqlCommand("SELECT * FROM group", conn);
-			cmd.Connection.Open();
-			DataTable TempTable = new DataTable();
-			TempTable.Load(cmd.ExecuteReader());
-			return TempTable;
-		}
-	}
-
 
 	protected void Page_Load(object sender, EventArgs e)
 	{
@@ -51,7 +39,7 @@ public partial class GroupList : System.Web.UI.Page
 		}
 		if (Int32.Parse(Session["UserId"].ToString())%2 == 1)
 		{
-			Session["GroupAdmin"] = "0";
+			Session["GroupAdmin"] = 0;
 			Session["UserId"] = Session["TempUserId"];
 			Session["Username"] = Session["TempUsername"];
 		}
@@ -84,13 +72,14 @@ public partial class GroupList : System.Web.UI.Page
 			checkarray[12] = reader[12].ToString();     //groupavatar
 			checkarray[13] = reader[13].ToString();     //gabout
 
-			if (checkarray[2] == "True") {
-				Session["GroupAdmin"] = "1";
+			int adminprop = 0;
+			if (Convert.ToBoolean(checkarray[2])) {
+				adminprop = 1;
 			}
-			Session["GroupId"] = checkarray[10];
+			Session["GroupId"] = Int32.Parse(checkarray[10]);
 			Session["GroupName"] = checkarray[11];
 
-			Group group = new Group(checkarray[11], checkarray[12], Int32.Parse(checkarray[10]));
+			Group group = new Group(checkarray[11], checkarray[12], Int32.Parse(checkarray[10]), adminprop);
 			AddPost(GroupListPanel, group);
 		}
 		reader.Close();
@@ -121,7 +110,7 @@ public partial class GroupList : System.Web.UI.Page
 
 		HyperLink groupText = new HyperLink();
 		groupText.Text = group.groupname;
-		groupText.NavigateUrl = "~/GroupProfile.aspx?groupid=" + group.id +"&groupname=" + group.groupname;
+		groupText.NavigateUrl = "~/GroupProfile.aspx?groupid=" + group.id +"&groupname=" + group.groupname + "&groupadmin=" + group.admin;
 
 		// and finally add them to the container
 		userContainer.Controls.Add(groupText);

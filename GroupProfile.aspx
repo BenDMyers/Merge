@@ -11,6 +11,6 @@ Google calendar stuff
 see Alex and Drew
 database stuffs Kaylee-->
 
-    <asp:Panel ID="Panel" runat="server"></asp:Panel>
+    <asp:Panel ID="GroupPanel" runat="server"></asp:Panel>
 
 </asp:Content>

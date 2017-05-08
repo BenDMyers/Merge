@@ -34,7 +34,6 @@ public partial class NewsFeed : System.Web.UI.Page
 
     private List<Post> getPosts()
     {
-
         //Connect to the database and check to see if user already exists, if it does, compare the password
         string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
         SqlConnection conn = new SqlConnection(connectionString);
@@ -45,47 +44,58 @@ public partial class NewsFeed : System.Web.UI.Page
 
         //Actually execute the query and return the results
         SqlDataReader reader = cmd.ExecuteReader();
-        string[] checkarray = new string[21];
+        string[] checkarray = new string[22];
 
         List<Post> posts = new List<Post>();
         while (reader.Read())
         {
-            checkarray[0] = reader[0].ToString();       //postid
-            checkarray[1] = reader[1].ToString();       //ptext
-            checkarray[2] = reader[2].ToString();       //ptimestamp
-            checkarray[3] = reader[3].ToString();       //phascom
-            checkarray[4] = reader[4].ToString();       //commentid
-            checkarray[5] = reader[5].ToString();       //puserid
-            checkarray[6] = reader[6].ToString();       //pgroupid
-            checkarray[7] = reader[7].ToString();       //pcode
-            checkarray[8] = reader[8].ToString();       //ppicfile
-            checkarray[9] = reader[9].ToString();       //pedate
-            checkarray[10] = reader[10].ToString();     //petime
-            checkarray[11] = reader[11].ToString();     //peinfo
-            checkarray[12] = reader[12].ToString();     //userid
-            checkarray[13] = reader[13].ToString();     //username
-            checkarray[14] = reader[14].ToString();     //userrealname
-            checkarray[15] = reader[15].ToString();     //useravatar
-            checkarray[16] = reader[16].ToString();     //useremail
-            checkarray[17] = reader[17].ToString();     //userpassword
-            checkarray[18] = reader[18].ToString();     //groupid
-            checkarray[19] = reader[19].ToString();     //groupname
-            checkarray[20] = reader[20].ToString();     //groupavatar
+			checkarray[0] = reader[0].ToString();     //postid
+			checkarray[1] = reader[1].ToString();     //ptext
+			checkarray[2] = reader[2].ToString();     //ptimestamp
+			checkarray[3] = reader[3].ToString();     //phascom
+			checkarray[4] = reader[4].ToString();     //commentid
+			checkarray[5] = reader[5].ToString();     //puserid
+			checkarray[6] = reader[6].ToString();     //pgroupid
+			checkarray[7] = reader[7].ToString();     //pcode
+			checkarray[8] = reader[8].ToString();     //ppicfile
+			checkarray[9] = reader[9].ToString();     //pedate
+			checkarray[10] = reader[10].ToString();     //petime
+			checkarray[11] = reader[11].ToString();     //peinfo
+			checkarray[12] = reader[12].ToString();     //userid
+			checkarray[13] = reader[13].ToString();     //username
+			checkarray[14] = reader[14].ToString();     //userrealname
+			checkarray[15] = reader[15].ToString();     //usergitname
+			checkarray[16] = reader[16].ToString();     //useravatar
+			checkarray[17] = reader[17].ToString();     //useremail
+			checkarray[18] = reader[18].ToString();     //userpassword
+			checkarray[19] = reader[19].ToString();     //groupid
+			checkarray[20] = reader[20].ToString();     //groupname
+			checkarray[21] = reader[21].ToString();     //groupavatar
 
-            int id = Int32.Parse(checkarray[0]);
-            User user = new User(checkarray[13], checkarray[15]);
-            DateTime time = DateTime.ParseExact(checkarray[2], sqlDatetime, null);
-            time = DateTime.SpecifyKind(time, DateTimeKind.Local);
-            bool hasComments = bool.Parse(checkarray[3]);
-            Control post = addFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, false), time, id, hasComments);
-            post.ID = "post" + id;
-            post.ClientIDMode = System.Web.UI.ClientIDMode.Static; // this supposedly makes client ID's the same as ASP ID's
+			int id = Int32.Parse(checkarray[0]);
+			DateTime time = DateTime.ParseExact(checkarray[2], sqlDatetime, null);
+			time = DateTime.SpecifyKind(time, DateTimeKind.Local);
+			bool hasComments = bool.Parse(checkarray[3]);
 
+			//Check to see if the user is a group admin
+			if (checkarray[13] == "")
+			{
+				User user = new User(checkarray[20], checkarray[21], Int32.Parse(checkarray[19]));
+				Control post = addFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, false), time, id, hasComments);
+				post.ID = "post" + id;
+				post.ClientIDMode = System.Web.UI.ClientIDMode.Static; // this supposedly makes client ID's the same as ASP ID's
+				posts.Add(new Post(post, time));
+			}
+			else
+			{
+				User user = new User(checkarray[13], checkarray[16], Int32.Parse(checkarray[12]));
+				Control post = addFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, false), time, id, hasComments);
+				post.ID = "post" + id;
+				post.ClientIDMode = System.Web.UI.ClientIDMode.Static; // this supposedly makes client ID's the same as ASP ID's
+				posts.Add(new Post(post, time));
+			}
 
-
-            posts.Add(new Post(post, time));
-
-        }
+		}
         reader.Close();
         conn.Close();
         return posts;
@@ -98,51 +108,67 @@ public partial class NewsFeed : System.Web.UI.Page
         //Connect to the database and check to see if user already exists, if it does, compare the password
         string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
         SqlConnection conn = new SqlConnection(connectionString);
-        string query = "select TOP(20) * from postt p left join users u on u.userid = p.puserid left join groups g on g.groupid = p.pgroupid  where p.commentid = " + postId.ToString() + " order by p.postid desc;";
+        string query = "select TOP(20) * from postt p left join users u on u.userid = p.puserid left join groups g on g.groupid = p.pgroupid where p.commentid = " + Int32.Parse(postId.ToString()) + " order by p.postid desc;";
         SqlCommand cmd = new SqlCommand(query, conn);
 
         conn.Open();
 
         //Actually execute the query and return the results
         SqlDataReader reader = cmd.ExecuteReader();
-        string[] checkarray = new string[21];
+        string[] checkarray = new string[22];
 
         List<Post> posts = new List<Post>();
         while (reader.Read())
         {
-            checkarray[0] = reader[0].ToString();       //postid
-            checkarray[1] = reader[1].ToString();       //ptext
-            checkarray[2] = reader[2].ToString();       //ptimestamp
-            checkarray[3] = reader[3].ToString();       //phascom
-            checkarray[4] = reader[4].ToString();       //commentid
-            checkarray[5] = reader[5].ToString();       //puserid
-            checkarray[6] = reader[6].ToString();       //pgroupid
-            checkarray[7] = reader[7].ToString();       //pcode
-            checkarray[8] = reader[8].ToString();       //ppicfile
-            checkarray[9] = reader[9].ToString();       //pedate
-            checkarray[10] = reader[10].ToString();     //petime
-            checkarray[11] = reader[11].ToString();     //peinfo
-            checkarray[12] = reader[12].ToString();     //userid
-            checkarray[13] = reader[13].ToString();     //username
-            checkarray[14] = reader[14].ToString();     //userrealname
-            checkarray[15] = reader[15].ToString();     //useravatar
-            checkarray[16] = reader[16].ToString();     //useremail
-            checkarray[17] = reader[17].ToString();     //userpassword
-            checkarray[18] = reader[18].ToString();     //groupid
-            checkarray[19] = reader[19].ToString();     //groupname
-            checkarray[20] = reader[20].ToString();     //groupavatar
+			checkarray[0] = reader[0].ToString();     //postid
+			checkarray[1] = reader[1].ToString();     //ptext
+			checkarray[2] = reader[2].ToString();     //ptimestamp
+			checkarray[3] = reader[3].ToString();     //phascom
+			checkarray[4] = reader[4].ToString();     //commentid
+			checkarray[5] = reader[5].ToString();     //puserid
+			checkarray[6] = reader[6].ToString();     //pgroupid
+			checkarray[7] = reader[7].ToString();     //pcode
+			checkarray[8] = reader[8].ToString();     //ppicfile
+			checkarray[9] = reader[9].ToString();     //pedate
+			checkarray[10] = reader[10].ToString();     //petime
+			checkarray[11] = reader[11].ToString();     //peinfo
+			checkarray[12] = reader[12].ToString();     //userid
+			checkarray[13] = reader[13].ToString();     //username
+			checkarray[14] = reader[14].ToString();     //userrealname
+			checkarray[15] = reader[15].ToString();     //usergitname
+			checkarray[16] = reader[16].ToString();     //useravatar
+			checkarray[17] = reader[17].ToString();     //useremail
+			checkarray[18] = reader[18].ToString();     //userpassword
+			checkarray[19] = reader[19].ToString();     //groupid
+			checkarray[20] = reader[20].ToString();     //groupname
+			checkarray[21] = reader[21].ToString();     //groupavatar
 
-            int id = Int32.Parse(checkarray[0]);
-            User user = new User(checkarray[13], checkarray[15]);
-            DateTime time = DateTime.ParseExact(checkarray[2], sqlDatetime, null);
-            time = DateTime.SpecifyKind(time, DateTimeKind.Local);
-            Control post = addCommentFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, true), time, id);
-            
+			int id = Int32.Parse(checkarray[0]);
+			DateTime time = DateTime.ParseExact(checkarray[2], sqlDatetime, null);
+			time = DateTime.SpecifyKind(time, DateTimeKind.Local);
+			bool hasComments = bool.Parse(checkarray[3]);
 
-            posts.Add(new Post(post, time));
+			//Check to see if posr is from group else user
+			if (checkarray[13] == "NULL")
+			{
+				User user = new User(checkarray[20], checkarray[21], Int32.Parse(checkarray[19]));
+				Control post = addFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, false), time, id, hasComments);
+				post.ID = "post" + id;
+				post.ClientIDMode = System.Web.UI.ClientIDMode.Static; // this supposedly makes client ID's the same as ASP ID's
+				posts.Add(new Post(post, time));
+			}
+			else
+			{
+				User user = new User(checkarray[13], checkarray[16], Int32.Parse(checkarray[12]));
+				Control post = addFooter(UserPost.makePost(user, checkarray[1], checkarray[8], checkarray[7], time, false), time, id, hasComments);
+				post.ID = "post" + id;
+				post.ClientIDMode = System.Web.UI.ClientIDMode.Static; // this supposedly makes client ID's the same as ASP ID's
+				posts.Add(new Post(post, time));
+			}
 
-        }
-        reader.Close();
+
+		}
+		reader.Close();
         conn.Close();
         return posts;
     }
@@ -261,7 +287,7 @@ public partial class NewsFeed : System.Web.UI.Page
             checkarray[5] = reader[5].ToString(); //useremail
             //checkarray[9] = reader[9].ToString(); //userpassword
 
-            User user = new User(checkarray[1], checkarray[4]);
+            User user = new User(checkarray[1], checkarray[4], Int32.Parse(checkarray[0]));
             user.gitname = checkarray[3];
             users.Add(user);
         }

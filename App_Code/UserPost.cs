@@ -41,14 +41,11 @@ public class UserPost
         Panel userContainer = new Panel();
         userContainer.CssClass = "user-info";
 
-        if (user.avatar != "NULL")
-        {
-            Image userAvatar = new Image();
-            userAvatar.CssClass = "avatar";
-            userAvatar.ImageUrl = "/pictures/avatars/" + user.avatar;
-            // and finally add them to the container
-            userContainer.Controls.Add(userAvatar);
-        }
+        Image userAvatar = new Image();
+        userAvatar.CssClass = "avatar";
+        userAvatar.ImageUrl = "/pictures/avatars/" + user.avatar;
+        // and finally add them to the container
+        userContainer.Controls.Add(userAvatar);
 
         Label userText = new Label();
         userText.Text = user.username;
@@ -110,9 +107,7 @@ public class UserPost
         }
 
         post.Controls.Add(block);
-
-       
-
+		
         return post;
     }
 }
