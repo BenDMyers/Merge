@@ -209,6 +209,9 @@
                 })
             </script>
         </div>
+
+        <!-- SHOW/HIDE CHATBAR ON COMMAND -->
+        <input type="button" id="chatToggle" class="btn fa-input btn-default" style="color: #191919;" onclick="$('#chatBar').toggle()" value="&#xf086;">
         <div class="container body-content">
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>
@@ -222,4 +225,3 @@
     </form>
 </body>
 </html>
-na

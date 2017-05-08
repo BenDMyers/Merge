@@ -27,12 +27,16 @@ textarea {
     font-variant: small-caps;
 }
 
+.fa-input {
+    font-family: FontAwesome, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
 /* Navbar recolors link of current page */
 .current-page a {
     color: #ff9900 !important;
 }
 .current-page a:hover {
-    color: #cc7a00; !important;
+    color: #cc7a00 !important;
 }
 
 
@@ -62,6 +66,7 @@ textarea {
 /* CHATBAR THINGS */
 
 #chatBar {
+    display: none;
     position: fixed;
     left: 0px;
     width: 200px;
@@ -70,6 +75,12 @@ textarea {
     padding-left: 0px;
     margin-top: 0px;
     top: 50px;
+}
+
+#chatToggle {
+    position: fixed;
+    bottom: 5px;
+    left: 5px;
 }
 
 /* folder bullet */
