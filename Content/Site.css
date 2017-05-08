@@ -164,6 +164,9 @@ textarea {
 /* MODALS AND OTHER FUN WITH BUTTONS*/
 
 /* minor tweaks for post and log out buttons */
+.btn {
+    transition: all .2s ease-in;
+}
 .btn-primary, .btn-danger, btn-info {
     color: #fff;
 }
@@ -255,12 +258,14 @@ textarea {
 }
 
 .timestamp-label {
-    margin: 5px;
+    margin: 10px;
 }
 .load-comments-button {
-    margin: 5px;
+    margin: 10px;
 }
-.reply-button 
+.reply-button {
+    margin: 10px;
+}
 
 /* Formatting for GitHub posts that appear in feed */
 .git-content {
@@ -281,7 +286,7 @@ textarea {
     min-height: 100%;
     max-width: 33%;
     border-radius: 20px;
-    display: inline;
+    float: left;
 }
 /*.info-sidepanel {
     display: inline;

@@ -60,12 +60,12 @@ public partial class UserProfile : System.Web.UI.Page
         info.CssClass = "info-sidepanel";
 
         Label nameLabel = new Label();
-        nameLabel.Text = name;
+        nameLabel.Text = name + "\n";
         nameLabel.CssClass = "info-realname";
         info.Controls.Add(nameLabel);
 
         Label usernameLabel = new Label();
-        usernameLabel.Text = username;
+        usernameLabel.Text = username + "\n";
         usernameLabel.CssClass = "info-username";
         info.Controls.Add(usernameLabel);
 
@@ -76,7 +76,7 @@ public partial class UserProfile : System.Web.UI.Page
         info.Controls.Add(gitLogo);
 
         Label aboutLabel = new Label();
-        aboutLabel.Text = " " + gitname;
+        aboutLabel.Text = " " + gitname + "\n";
         aboutLabel.CssClass = "info-gitname";
         info.Controls.Add(aboutLabel);
 
@@ -248,7 +248,7 @@ public partial class UserProfile : System.Web.UI.Page
 		//add the load comment control
 		Button replyButton = new Button();
 		replyButton.CssClass = "reply-button";
-		replyButton.Text = "reply";
+		replyButton.Text = "Reply";
 		// this sneaky bit of javascript opens a modal window to reply to a particular post. wooooooo
 		replyButton.OnClientClick = "$('#PostModal').modal('toggle'); $('#PostButton').attr('replyPost', " + postID + "); document.getElementById('HiddenThing').value=" + postID + "; return false;";
 		footer.Controls.Add(replyButton);
