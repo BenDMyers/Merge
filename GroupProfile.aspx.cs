@@ -41,7 +41,7 @@ public partial class GroupProfile : System.Web.UI.Page
         // name these properties!
         string name = checkarray[1];
         string avatar = checkarray[2];
-        string about = checkarray[4];
+        string about = checkarray[3];
 
         //we're going to build a User object to let it take care of server file paths for our avatar.
         // in the future, maybe User would do something more useful, idk.
@@ -234,7 +234,7 @@ public partial class GroupProfile : System.Web.UI.Page
 		//add the load comment control
 		Button replyButton = new Button();
 		replyButton.CssClass = "reply-button btn btn-primary";
-		replyButton.Text = "reply";
+		replyButton.Text = "Reply";
 		// this sneaky bit of javascript opens a modal window to reply to a particular post. wooooooo
 		replyButton.OnClientClick = "$('#PostModal').modal('toggle'); $('#PostButton').attr('replyPost', " + postID + "); document.getElementById('HiddenThing').value=" + postID + "; return false;";
 		footer.Controls.Add(replyButton);
