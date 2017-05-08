@@ -231,6 +231,9 @@ public class GithubPosts
         var request = new RestRequest();
         request.Resource = "users/" + githubUsername + "/events"; // what could possibly go wrong????
 
+        var authenticator = new HttpBasicAuthenticator("o0v0o", "hellogithub1");
+        authenticator.Authenticate(client, request);
+
         var response = client.Execute<List<Event>>(request);
 
         if (response.ErrorException != null)
