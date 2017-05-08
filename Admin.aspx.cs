@@ -24,7 +24,7 @@ public partial class Admin : System.Web.UI.Page
         lbl.Text = "remove user " + uid.ToString();
         debugr.Controls.Add(lbl);
 
-        doQuery("delete from users where userid=" + uid.ToString() + ";");
+        doQuery("delete from member where muserid=" + uid + "; delete from users where userid=" + uid + ";");
         
     }
     private void editUser(int uid)
