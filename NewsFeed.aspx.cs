@@ -193,9 +193,9 @@ public partial class NewsFeed : System.Web.UI.Page
         if (hasComments)
         {
             //add the load comment control
-            Button loadComments = new Button();
-            loadComments.CssClass = "load-comments-button";
-            loadComments.Text = "load comments";
+            LinkButton loadComments = new LinkButton();
+            loadComments.CssClass = "load-comments-button btn";
+            loadComments.Text = "<span style='font-weight: bold; font-size: smaller;'>//</span> Load Comments";
             loadComments.Attributes["postid"] = postID.ToString();
             loadComments.Click += new EventHandler(this.loadComments);
             footer.Controls.Add(loadComments);
@@ -203,9 +203,9 @@ public partial class NewsFeed : System.Web.UI.Page
 
 
         //add the load comment control
-        Button replyButton = new Button();
-        replyButton.CssClass = "reply-button";
-        replyButton.Text = "reply";
+        LinkButton replyButton = new LinkButton();
+        replyButton.CssClass = "reply-button btn btn-primary";
+        replyButton.Text = "<span class='fa fa-reply'></span> Reply";
         // this sneaky bit of javascript opens a modal window to reply to a particular post. wooooooo
         replyButton.OnClientClick = "$('#PostModal').modal('toggle'); $('#PostButton').attr('replyPost', " + postID + "); document.getElementById('HiddenThing').value=" + postID + "; return false;";
         footer.Controls.Add(replyButton);
