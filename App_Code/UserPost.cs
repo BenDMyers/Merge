@@ -47,15 +47,15 @@ public class UserPost
         // and finally add them to the container
         userContainer.Controls.Add(userAvatar);
 
-        Label userText = new Label();
-        userText.Text = user.username;
+		HyperLink userText = new HyperLink();
+		userText.Text = user.username;
+		userText.NavigateUrl = "~/GroupProfile.aspx?userid=" + user.userid + "&username=" + user.username;
 
-        // and finally add them to the container
-        userContainer.Controls.Add(userText);
+		// and finally add them to the container
+		userContainer.Controls.Add(userText);
 
         // and add the container to the outer block
         block.Controls.Add(userContainer);
-
 
         // add the text container
         Panel textContainer = new Panel();
